@@ -33,10 +33,10 @@ const Intro = () => {
             className="flex gap-6 mt-4 ml-5">
                 <motion.a  
                 whileHover={{ scale: 1.2 }}
-                href=""><p>Diets</p></motion.a>
+                href="#diets"><p>Diets</p></motion.a>
                 <motion.a 
                  whileHover={{ scale: 1.2 }}
-                href=""><p>Planprogram</p></motion.a>
+                href="#planprogram"><p>Planprogram</p></motion.a>
                 <motion.a
                  whileHover={{ scale: 1.2 }}
                 href=""><p>Supplements</p></motion.a>

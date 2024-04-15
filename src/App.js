@@ -5,6 +5,7 @@ import Intro from './Intro';
 import Navbar from './Navbar';
 import About from './About';
 import Diets from './Diets';
+import Planprogram from './PlanProgram';
 
 
 function App() {
@@ -19,6 +20,8 @@ function App() {
           <About/>
           <div className="empty"/>
           <Diets/>
+          <div className="empty2"/>
+          <Planprogram/>
           <div className="empty"/>
       </header>
     </div>

@@ -38,6 +38,9 @@ z-index: 999;
 .empty{
   height: 120px;
 }
+.empty2{
+  height: 150px;
+}
 .showi2{
   display: none;
 }
@@ -119,4 +122,30 @@ z-index: 999;
   border-radius: 100%;
   width: 60px;
   height: 60px;
+}
+.healthy{
+  border-radius: 10px ;
+  background-color:#475E36;
+  color: #FAFBF9;
+  width: 300px ;
+  height: 400px;
+}
+@media (max-width:764px) {
+  .healthy{
+    width: 500px;
+    height: 340px;
+  }
+}
+@media (max-width:570px) {
+  .healthy{
+    width: 400px;
+    height: 340px !important;
+  }
+}
+@media (max-width:469px) {
+  .healthy{
+    width: 350px;
+    height: 365px !important;
+    margin-left: -20px;
+  }
 }
