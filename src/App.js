@@ -6,6 +6,9 @@ import Navbar from './Navbar';
 import About from './About';
 import Diets from './Diets';
 import Planprogram from './PlanProgram';
+import Suplements from './Suplements';
+import Clients from './Clients';
+import Example from './Example';
 
 
 function App() {
@@ -22,6 +25,11 @@ function App() {
           <Diets/>
           <div className="empty2"/>
           <Planprogram/>
+          <div className="empty"/>
+          <Suplements/>
+          <Example/>
+          <div className="empty"/>
+          <Clients/>
           <div className="empty"/>
       </header>
     </div>

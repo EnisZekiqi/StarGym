@@ -39,7 +39,7 @@ const Intro = () => {
                 href="#planprogram"><p>Planprogram</p></motion.a>
                 <motion.a
                  whileHover={{ scale: 1.2 }}
-                href=""><p>Supplements</p></motion.a>
+                href="#supplements"><p>Supplements</p></motion.a>
             </motion.div>
            </div>
            <div className="gowi">

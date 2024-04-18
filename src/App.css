@@ -130,10 +130,47 @@ z-index: 999;
   width: 300px ;
   height: 400px;
 }
+.llojet-suplementev{
+  border-radius: 10px ;
+  background-color:#475e363b;
+  color: #FAFBF9;
+  width: 1200px ;
+  height: 400px;
+  overflow-x:hidden;
+  overflow-y: auto;
+}
+.ddd{
+ 
+  background: rgba( 19, 26, 15, 0.35 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 5px );
+  -webkit-backdrop-filter: blur( 5px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+.llojet-suplementev::-webkit-scrollbar {
+  width: 5px; /* Set the width of the scrollbar */
+}
+.llojet-suplementev::-webkit-scrollbar-thumb {
+  background-color: #475E36; /* Set the color of the scrollbar thumb */
+  border-radius: 6px; /* Set the border radius of the thumb */
+  border: 1px solid transparent;
+  
+}
+.llojet-suplementev::-webkit-scrollbar-track {
+  background-color: #FAFBF9; /* Set the color of the scrollbar track */
+}
 @media (max-width:764px) {
   .healthy{
     width: 500px;
     height: 340px;
+  }
+  .llojet-suplementev{
+    width: 500px;
+    height: 340px;
+  }
+  .saba{
+    margin-left: 140px;
   }
 }
 @media (max-width:570px) {
@@ -141,11 +178,26 @@ z-index: 999;
     width: 400px;
     height: 340px !important;
   }
+  .llojet-suplementev{
+    width: 400px;
+    height: 340px !important;
+  }
+  .saba{
+    margin-left: 100px;
+  }
 }
 @media (max-width:469px) {
   .healthy{
     width: 350px;
     height: 365px !important;
     margin-left: -20px;
+  }
+  .llojet-suplementev{
+    width: 350px;
+    height: 365px !important;
+    margin-left: -20px;
+  }
+  .saba{
+    margin-left: 70px;
   }
 }

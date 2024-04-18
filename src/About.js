@@ -1,8 +1,10 @@
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MarkunreadIcon from '@mui/icons-material/Markunread';
 import PhoneIcon from '@mui/icons-material/Phone';
+import Avatar from '@mui/material/Avatar';
 import op from './images/op.webp'
 import {motion} from "framer-motion"
+import profile from './images/profile2.jpg'
 const About = () => {
 
 
@@ -18,11 +20,16 @@ const About = () => {
                     staggerChildren:1,
                     duration:0.5
                   }}
-                  viewport={{once:true}}
-                className="flex flex-col gap-4">
-                    <div className="flex gap-2"><LocationOnIcon sx={{color:"#475E36"}}/><p className='font-semibold'>Vushtrri / Faruk Beqiri</p></div>
-                    <div className="flex gap-2"><MarkunreadIcon sx={{color:"#475E36"}}/><p className='font-semibold'>enis_zekiqi@hotmail.com</p></div>
-                    <div className="flex gap-2"><PhoneIcon sx={{color:"#475E36"}}/><p className='font-semibold'>044-256-853</p></div>
+                  viewport={{amount:"all",once:true}}
+                className="flex flex-col gap-4 w-full md:w-1/3 text-center items-center">
+                    <p>I have a lot of experience in fitness industry so for the sake of the community i loved to share my knowledge to everyone else so they can achive their results</p>
+                    <div className="flex mt-4">
+                    <Avatar alt="Remy Sharp" src={profile} />
+                    <div className="flex flex-col items-center justify-center">
+                        <p className='font-bold text-md'>Enis Zekiqi</p>
+                        <p className='font-normal text-sm'>Creator of StarGym</p>
+                    </div>
+                    </div>
                 </motion.div>
                 <div class="card">
                 <img className='starx' src={op} alt="" />
