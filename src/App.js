@@ -30,7 +30,6 @@ function App() {
           <Example/>
           <div className="empty"/>
           <Clients/>
-          <div className="empty"/>
       </header>
     </div>
   );

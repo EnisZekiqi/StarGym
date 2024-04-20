@@ -4,12 +4,28 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { SuccessMessageProvider } from './SuccessMessageContext';
+import SignUp from './SignUp';
+import {
+   createBrowserRouter,
+   RouterProvider,
+ } from "react-router-dom";
+
+ const router = createBrowserRouter([
+   {
+     path: "/",
+     element: <App/> ,
+   },
+   {
+      path: "signup",
+      element: <SignUp/> ,
+    },
+])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
      <SuccessMessageProvider>
-        <App />
+     <RouterProvider router={router} />
      </SuccessMessageProvider>
   </React.StrictMode>
 );

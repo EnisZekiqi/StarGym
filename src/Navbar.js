@@ -47,7 +47,7 @@ const Navbar = () => {
                 
                 <div className="showi flex gap-4 mr-4 mt-4 mb-4">
                    <a href="#about"> <p className="font-semibold">About Us</p></a>
-                   <a href=""> <p className="font-semibold">Sign Up</p></a>
+                   <a href="/signup"> <p className="font-semibold">Sign Up</p></a>
                     <button onClick={()=>toggleInbox(false)} className="bg-transparent -mt-3">
                     <p className="font-semibold">Inbox</p>
                     </button>

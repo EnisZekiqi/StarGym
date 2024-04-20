@@ -168,6 +168,12 @@ z-index: 999;
 .kllient.scroll-transition {
   transition: scroll-left 1s ease-in-out;
 }
+.left-right{
+  width: 35px;
+  height: 35px;
+  background-color: #475E36;
+  border-radius: 50%;
+}
 .client1{
 border-radius: 0px 50px 0px 0px;
 border: #131A0F;
@@ -239,6 +245,77 @@ margin-top: 20px;
               width: 300px;
               height: 320px;
               }
+
+/* 
+///////////////////////////////////////////////////////////////////////
+*/
+.kllient .client1:hover{
+  transform: scale(1.1, 1.1);
+}
+
+
+.kllient:hover > .client2:not(:hover){
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
+}
+.kllient:hover > .client3:not(:hover){
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
+}
+.kllient:hover > .client4:not(:hover){
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
+}
+.kllient:hover > .client5:not(:hover){
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
+}
+.kllient:hover > .client6:not(:hover){
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
+}
+.kllient:hover > .client7:not(:hover){
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
+}
+
+
+.kllient .client2:hover{
+  transform: scale(1.1, 1.1);
+}
+
+
+.kllient:hover > .client1:not(:hover){
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
+}
+
+.kllient .client3:hover{
+  transform: scale(1.1, 1.1);
+}
+
+.kllient .client4:hover{
+  transform: scale(1.1, 1.1);
+}
+.kllient .client5:hover{
+  transform: scale(1.1, 1.1);
+}
+
+.kllient .client6:hover{
+  transform: scale(1.1, 1.1);
+}
+
+.kllient .client7:hover{
+  transform: scale(1.1, 1.1);
+}
+
+.vija{
+  margin-bottom: 60px;
+  border-top: 1px solid #111211;
+  width: max-content 1200px;
+}
+
+
 .ddd{
  
   background: rgba( 19, 26, 15, 0.35 );
