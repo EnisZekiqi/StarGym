@@ -6,6 +6,18 @@ import { useState } from 'react';
 
 const Diets = () => {
 
+  const containerVariants = {
+    initial: {opacity: 0, x: -20},
+    animate: { opacity: 1, x: 0,
+      transition: {
+        staggerChildren: 0.2 // Adjust the delay between each child animation
+      }
+    }
+  };
+  const childVariants = {
+    initial: { opacity: 0, x: -20 },
+    animate: { opacity: 1, x: 0 }
+  };
 
     const [healthy,setHealthy]=useState(true)
     const [mass,setMass]=useState(false)
@@ -51,13 +63,23 @@ const Diets = () => {
             <div className="text-diet w-full md:w-1/2">
             <p style={{color:"#111211"}} className="font-normal mb-2 text-center md:text-left"> Diets are important for your health and also for your fitness achivements , our diets are classified into some categories so you can achive the best result possible</p>
             </div>
-           <div className="flex gap-8  mt-8 md:mt-4">
            <motion.div
+             initial={{ x: -50 ,opacity:0}}
+             whileInView={{ x: 0,opacity:1 }}
+             transition={{
+                staggerChildren:1,
+                duration:0.5
+              }}
+              viewport={{amount:"all",once:true}}
+           className="flex gap-8  mt-8 md:mt-4">
+           <motion.div
+            variants={childVariants}
+            wwhileInView="animate"
              whileHover={{ scale: 1.1 }}
              whileTap={{
                 scale: 0.8,
               }}
-             
+              viewport={{amount:"all",once:true}}
              onClick={toggleHealthy}
            className="flex cursor-pointer flex-col rounded-md items-center gap-4 justify-center h-20 w-28">
            <NoFoodIcon sx={{transform:"scale(1.3)" ,color:"#475E36"
@@ -65,12 +87,14 @@ const Diets = () => {
            <p className='font-semibold'>Healthy Diet</p>
            </motion.div>
            <motion.div
+            variants={childVariants}
+            whileInView="animate"
            onClick={toggleMass}
              whileHover={{ scale: 1.1 }}
              whileTap={{
                 scale: 0.8,
               }}
-        
+              viewport={{amount:"all",once:true}}
            className="flex cursor-pointer flex-col items-center rounded-md gap-4 justify-center h-20 w-28">
            <LunchDiningIcon sx={{transform:"scale(1.3)" ,color:"#475E36"  , color:mass ? "#57946F":"#475E36"}} />
            <p className='font-semibold'>Mass Diet</p>
@@ -81,12 +105,14 @@ const Diets = () => {
                 scale: 0.8,
               }}
              onClick={toggleFat}
-            
+             variants={childVariants}
+             whileInView="animate"
+             viewport={{amount:"all",once:true}}
            className="flex cursor-pointer flex-col items-center rounded-md gap-4 justify-center  h-20 w-28">
            <SoupKitchenIcon sx={{transform:"scale(1.3)" ,color:"#475E36"  , color:fat ? "#57946F":"#475E36"}} />
            <p className='font-semibold'>Lose Fat Diet</p>
            </motion.div>
-           </div>
+           </motion.div>
            </div>
             <div className="obeja mt-12 md:mt-0">
                 <AnimatePresence>

@@ -8,6 +8,20 @@ import PoolIcon from '@mui/icons-material/Pool';
 import RunCircleIcon from '@mui/icons-material/RunCircle';
 const Planprogram = () => {
 
+
+  const containerVariants = {
+    initial: {opacity: 0, x: -20},
+    animate: { opacity: 1, x: 0,
+      transition: {
+        staggerChildren: 0.2 // Adjust the delay between each child animation
+      }
+    }
+  };
+  const childVariants = {
+    initial: { opacity: 0, x: -20 },
+    animate: { opacity: 1, x: 0 }
+  };
+
     const [bb,setBb]=useState(true)
     const [weight,setWeight]=useState(false)
     const [sport,setSport]=useState(false)
@@ -53,13 +67,22 @@ const Planprogram = () => {
             <div className="text-diet w-full md:w-1/2">
             <p style={{color:"#111211"}} className="font-normal mb-2 text-center md:text-left"> With Planprogram you can achive results as increasing muscle mass , asthetic shape of the body and much more </p>
             </div>
-           <div className="flex gap-8  mt-8 md:mt-4">
+           <motion.div
+            initial={{ x: -50 ,opacity:0}}
+            whileInView={{ x: 0,opacity:1 }}
+            transition={{
+               staggerChildren:1,
+               duration:0.5
+             }}
+             viewport={{amount:"all",once:true}}
+           className="flex gap-8  mt-8 md:mt-4">
            <motion.div
              whileHover={{ scale: 1.1 }}
              whileTap={{
                 scale: 0.8,
               }}
-             
+              variants={childVariants}
+            wwhileInView="animate"
              onClick={toggleBb}
            className="flex cursor-pointer flex-col rounded-md items-center gap-4 justify-center h-20 w-28">
            <FitnessCenterIcon sx={{transform:"scale(1.3)" ,color:"#475E36"
@@ -72,7 +95,8 @@ const Planprogram = () => {
              whileTap={{
                 scale: 0.8,
               }}
-        
+              variants={childVariants}
+              wwhileInView="animate"
            className="flex cursor-pointer flex-col items-center rounded-md gap-4 justify-center h-20 w-28">
            <RunCircleIcon sx={{transform:"scale(1.3)" ,color:"#475E36"  , color:weight ? "#57946F":"#475E36"}} />
            <p className='font-semibold'>Weight Loss</p>
@@ -83,12 +107,13 @@ const Planprogram = () => {
                 scale: 0.8,
               }}
              onClick={toggleSport}
-            
+             variants={childVariants}
+            wwhileInView="animate"
            className="flex cursor-pointer flex-col items-center rounded-md gap-4 justify-center  h-20 w-28">
            <PoolIcon sx={{transform:"scale(1.3)" ,color:"#475E36"  , color:sport ? "#57946F":"#475E36"}} />
            <p className='font-semibold'>Sports</p>
            </motion.div>
-           </div>
+           </motion.div>
            </div>
             <div className="obeja mt-12 md:mt-0">
                 <AnimatePresence>
