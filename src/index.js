@@ -9,6 +9,7 @@ import {
    createBrowserRouter,
    RouterProvider,
  } from "react-router-dom";
+import EditProfile from './EditProfile';
 
  const router = createBrowserRouter([
    {
@@ -18,6 +19,10 @@ import {
    {
       path: "signup",
       element: <SignUp/> ,
+    },
+    {
+      path: "editprofile",
+      element: <EditProfile/> ,
     },
 ])
 

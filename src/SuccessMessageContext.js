@@ -5,11 +5,13 @@ const SuccessMessageContext = createContext();
 export const useSuccessMessage = () => useContext(SuccessMessageContext);
 
 export const SuccessMessageProvider = ({ children }) => {
-  const [successMessage, setSuccessMessage] = useState('');
+  const [formDataArray, setFormDataArray] = useState([]);
 
-
+  const setSuccessMessage = (data) => {
+    setFormDataArray(data);
+  };
   return (
-    <SuccessMessageContext.Provider value={{ successMessage, setSuccessMessage }}>
+    <SuccessMessageContext.Provider value={{ formDataArray, setSuccessMessage }}>
       {children}
     </SuccessMessageContext.Provider>
   );
