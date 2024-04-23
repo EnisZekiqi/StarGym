@@ -71,7 +71,7 @@ const Diets = () => {
                 duration:0.5
               }}
               viewport={{amount:"all",once:true}}
-           className="flex gap-8  mt-8 md:mt-4">
+           className="flex gap-0 md:gap-8 mt-8 md:mt-4">
            <motion.div
             variants={childVariants}
             wwhileInView="animate"
@@ -84,7 +84,7 @@ const Diets = () => {
            className="flex cursor-pointer flex-col rounded-md items-center gap-4 justify-center h-20 w-28">
            <NoFoodIcon sx={{transform:"scale(1.3)" ,color:"#475E36"
           , color:healthy ? "#57946F":"#475E36"}} />
-           <p className='font-semibold'>Healthy Diet</p>
+           <p className='font-semibold '>Healthy Diet</p>
            </motion.div>
            <motion.div
             variants={childVariants}

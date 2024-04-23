@@ -367,7 +367,7 @@ margin-top: 20px;
   .healthy{
     width: 350px;
     height: 365px !important;
-    margin-left: -20px;
+    margin-left: -25px;
   }
   .llojet-suplementev{
     width: 350px;
@@ -414,6 +414,106 @@ border-radius: 10px;
 
 .input-wrapper input:focus {
   outline-color: #475E36;
+}
+
+.input-wrapper2 input {
+  background-color: #FAFBF9;
+  border: none;
+  padding: 10px;
+  font-size: 1rem;
+  width: 13em;
+  border-radius: 1rem;
+  color: #475E36;
+  box-shadow: 0 0.4rem #94b57d;
+  border: 1px solid #131A0F;
+  cursor: pointer;
+}
+
+.input-wrapper2 input:focus {
+  outline-color: #475E36;
+}
+
+.avatar{
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  color: #FAFBF9;
+  background-color: #475E36;
+  align-items: center;
+}
+.backdrop{
+
+  position: absolute;
+top:0;
+left:0;
+height: 100%;
+width: 100%;
+background: #000000e1;
+display: flex;
+justify-content: center;
+align-items: center;
+animation: fadeOut 3s ease forwards;
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  50%{
+    opacity:1;
+  }
+  100% {
+    opacity: 0;
+    display: none; /* Hide the backdrop after animation */
+  }
+}
+.backdrop2{
+
+  position: fixed;
+top:0;
+left:0;
+height: 100%;
+width: 100%;
+background: #000000e1;
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 998
+
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 50px;
+  --b: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #FAFBF9;
+  -webkit-mask:
+    repeating-conic-gradient(#0000 0deg,#000 1deg 70deg,#0000 71deg 90deg),
+    radial-gradient(farthest-side,#0000 calc(100% - var(--b) - 1px),#000 calc(100% - var(--b)));
+  -webkit-mask-composite: destination-in;
+          mask-composite: intersect;
+  animation: l5 1s infinite;
+}
+@keyframes l5 {to{transform: rotate(.5turn)}}
+
+.loginform{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #131A0F;
+  border-radius: 10px;
+  width: 300px; /* Adjust the width as needed */
+  height: 300px;
+  background: rgba(19, 26, 15, 0.25);
+  box-shadow: 0px 0px 11px 2px rgba(19, 26, 15, 0.75);
+  -webkit-box-shadow: -1px 0px 11px 2px rgba(19, 26, 15, 0.75);
+  -moz-box-shadow: -1px 0px 11px 2px rgba(19, 26, 15, 0.75);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 999;
+
 }
 .btnsign{
   border-radius: 5px;

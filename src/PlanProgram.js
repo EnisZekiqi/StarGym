@@ -75,7 +75,7 @@ const Planprogram = () => {
                duration:0.5
              }}
              viewport={{amount:"all",once:true}}
-           className="flex gap-8  mt-8 md:mt-4">
+           className="flex gap-0 md:gap-8  mt-8 md:mt-4">
            <motion.div
              whileHover={{ scale: 1.1 }}
              whileTap={{

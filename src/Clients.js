@@ -201,7 +201,7 @@ const trigger7 =()=>{
 
 
     return ( 
-        <div className="Clients">
+        <div id='clients' className="Clients">
             <h1 className="text-center font-extrabold text-3xl">Clients</h1>
 
            <div  className='flex justify-center gap-6 mt-6'>
