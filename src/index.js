@@ -10,6 +10,7 @@ import {
    RouterProvider,
  } from "react-router-dom";
 import EditProfile from './EditProfile';
+import Main from './Main';
 
  const router = createBrowserRouter([
    {
@@ -23,6 +24,10 @@ import EditProfile from './EditProfile';
     {
       path: "editprofile",
       element: <EditProfile/> ,
+    },
+    {
+      path: "main",
+      element: <Main/> ,
     },
 ])
 

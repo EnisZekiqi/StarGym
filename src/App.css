@@ -446,13 +446,18 @@ border-radius: 10px;
   position: absolute;
 top:0;
 left:0;
-height: 100%;
+height: 110%;
 width: 100%;
 background: #000000e1;
 display: flex;
 justify-content: center;
 align-items: center;
 animation: fadeOut 3s ease forwards;
+}
+@media (max-width:764px) {
+  .backdrop{
+    height: 155%;
+  }
 }
 @keyframes fadeOut {
   0% {
