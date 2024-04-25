@@ -7,14 +7,17 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import Cookies from 'js-cookie';
+
 
 const EditProfile = () => {
     const { formDataArray } = useSuccessMessage();
 
   // Extract email and password from the form data array
   const email = formDataArray[0];
-  const password = formDataArray[1];
-  const [nickname, setNickname] = useState(localStorage.getItem('nickname') || '');
+ 
+  const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
+const [password, setPassword] = useState(Cookies.get('password') || '');
   
   const [color,setColor]=useState('#475E36')
   const [error,setError]=useState(false)
@@ -30,12 +33,13 @@ const EditProfile = () => {
   const handleSubmit = () => {
     if (nickname.trim()) {
       const firstLetter = nickname.trim().charAt(0).toUpperCase(); // Extract the first letter and convert it to uppercase
-      // Set the default avatar photo using the first letter
-      // For example, you can set it as the background image of a div
-      // Here's a basic example:
+      
       const defaultAvatar = document.getElementById('defaultAvatar');
       defaultAvatar.textContent = firstLetter;
     }
+    Cookies.set('nickname', nickname);
+    Cookies.set('password', password);
+    
     if(nickname.trim() === ''){
       setError(true)
       setOpen(true);

@@ -13,6 +13,7 @@
     "axios": "^1.6.8",
     "express": "^4.19.2",
     "framer-motion": "^11.0.28",
+    "js-cookie": "^3.0.5",
     "json-server": "^1.0.0-alpha.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

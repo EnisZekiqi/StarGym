@@ -9,6 +9,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import Cookies from 'js-cookie';
+import { useEffect } from "react";
 const Navbar = () => {
 
     ///success message ///
@@ -56,19 +58,33 @@ const Navbar = () => {
         setState({ ...state, [anchor]: open });
       };
 
-      const [nickname, setNickname] = useState('');
-      const [password, setPassword] = useState('');
+      const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
+      const [password, setPassword] = useState(Cookies.get('password') || '');
       const [error,setError]=useState(false)
+      const [error2,setError2]=useState(false)
       const [success,setSuccess]=useState(false)
       const navigate =useNavigate()
 
+      useEffect(() => {
+        const storedNickname = Cookies.get('nickname');
+        const storedPassword = Cookies.get('password');
+        
+        if (storedNickname) {
+            setNickname(storedNickname);
+        }
+    
+        if (storedPassword) {
+            setPassword(storedPassword);
+        }
+    }, []);
       const handleSubmit = () => {
-        const storedNickname = localStorage.getItem('nickname'); // Get the stored nickname from localStorage
-        const storedPassword = localStorage.getItem('password')
+        const storedNickname = Cookies.get('nickname');
+        const storedPassword = Cookies.get('password');
         // Check if the entered nickname matches the stored one
 
         if(nickname.trim() === ''){
           setError(true)
+          setError2(false)
           setOpen1(true);
           setTimeout(() => {
             setError(false)
@@ -76,22 +92,34 @@ const Navbar = () => {
         }
         if(password.trim() === ''){
           setError(true)
+          setError2(false)
           setOpen1(true);
           setTimeout(() => {
             setError(false)
           }, 3000);
         }
 
+        if (nickname.trim() !== storedNickname || password !== storedPassword) {
+          setError2(true);
+          setTimeout(() => {
+              setNickname('');
+              setPassword('');
+              setError2(false);
+          }, 3000);
+      }
 
         if (nickname.trim() === storedNickname && password === storedPassword) {
-          setSuccess(true)
+          setSuccess(true);
           setTimeout(() => {
-            navigate('/main');
+                setNickname('');
+                setPassword('');
+              navigate('/main');
           }, 3000);
-        } else {
-          // Handle incorrect nickname
+      } else {
+          // Handle incorrect nickname/password
           // You can display an error message here
-        }
+      }
+       
 
       };
     
@@ -177,6 +205,23 @@ const Navbar = () => {
           sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
           >
           <p>Fill the empty field </p>
+          </Alert>
+            </Snackbar>
+      }
+      {error2 && 
+          <Snackbar
+          open={open1}
+          autoHideDuration={6000}
+          onClose={handleClose1}
+          message="Note archived"
+          
+        >
+            <Alert
+          severity="error"
+          variant="filled"
+          sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+          >
+          <p>Invalid nickname or password </p>
           </Alert>
             </Snackbar>
       }
