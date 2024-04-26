@@ -7,6 +7,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Cookies from 'js-cookie';
 
 
@@ -17,44 +19,48 @@ const EditProfile = () => {
   const email = formDataArray[0];
  
   const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
-const [password, setPassword] = useState(Cookies.get('password') || '');
-  
-  const [color,setColor]=useState('#475E36')
-  const [error,setError]=useState(false)
-  const handleNickname =(e)=>{
-    setNickname(e.target.value)
-  }
-
-  useEffect(() => {
-    // Save nickname to localStorage when it changes
-    localStorage.setItem('nickname', nickname);
-  }, [nickname]);
-
-  const handleSubmit = () => {
-    if (nickname.trim()) {
-      const firstLetter = nickname.trim().charAt(0).toUpperCase(); // Extract the first letter and convert it to uppercase
-      
-      const defaultAvatar = document.getElementById('defaultAvatar');
-      defaultAvatar.textContent = firstLetter;
-    }
-    Cookies.set('nickname', nickname);
-    Cookies.set('password', password);
+  const [password, setPassword] = useState(Cookies.get('password') || '');
     
-    if(nickname.trim() === ''){
-      setError(true)
-      setOpen(true);
-      setTimeout(() => {
-        setError(false)
-      }, 3000);
+    const [color,setColor]=useState('#475E36')
+    const [error,setError]=useState(false)
+    const handleNickname =(e)=>{
+      setNickname(e.target.value)
     }
-    localStorage.setItem('email', email);
-    localStorage.setItem('nickname', nickname);
-    localStorage.setItem('password', password);
-
-    // Redirect the user to another page
-    // Replace 'dashboard' with the path of the page you want to redirect to
-    window.location.href = '/main';
-  };
+    const handlePasswordChange = (e)=>{
+      setPassword(e.target.value)
+    }
+  
+    useEffect(() => {
+      // Save nickname to localStorage when it changes
+      Cookies.set('nickname', nickname, { expires: 365 });
+      Cookies.set('password', password, { expires: 365 });
+    }, [nickname,password]);
+  
+    const handleSubmit = () => {
+      if (nickname.trim()) {
+        const firstLetter = nickname.trim().charAt(0).toUpperCase(); // Extract the first letter and convert it to uppercase
+        
+        const defaultAvatar = document.getElementById('defaultAvatar');
+        defaultAvatar.textContent = firstLetter;
+      }
+      Cookies.set('nickname', nickname);
+      Cookies.set('password', password);
+      
+      if(nickname.trim() === ''){
+        setError(true)
+        setOpen(true);
+        setTimeout(() => {
+          setError(false)
+        }, 3000);
+      }
+      localStorage.setItem('email', email);
+      localStorage.setItem('nickname', nickname);
+      localStorage.setItem('password', password);
+  
+      // Redirect the user to another page
+      // Replace 'dashboard' with the path of the page you want to redirect to
+      window.location.href = '/main';
+    };
 
   const handleColorChange = (e) => {
     setColor(e.target.value); // Update the color state with the selected color
@@ -80,9 +86,11 @@ const [password, setPassword] = useState(Cookies.get('password') || '');
     if (selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
-        setFile(reader.result); // Update the file state with the data URL of the selected file
+        const avatarDataURL = reader.result;
+        setFile(avatarDataURL);
+        Cookies.set('avatar', avatarDataURL); // Store the avatar image URL in cookies
       };
-      reader.readAsDataURL(selectedFile); // Convert the file to a data URL
+      reader.readAsDataURL(selectedFile);
     }
   }
   const [open, setOpen] = useState(false);
@@ -93,6 +101,12 @@ const [password, setPassword] = useState(Cookies.get('password') || '');
   
       setOpen(false);
     };
+
+    const [visibilityOn, setVisibilityOn] = useState(false);
+
+    const toggleVisibility = () => {
+      setVisibilityOn(!visibilityOn);
+  };
 
   return (
     <div>
@@ -130,14 +144,23 @@ const [password, setPassword] = useState(Cookies.get('password') || '');
           </div>
           <div className="xx items-center justify-center mt-4 md:mt-0">
           <h1 className='font-semibold text-lg mt-2 text-center'>Security</h1>
-          <li style={{listStyle:'none'}} className='text-center mt-4'><b>Password :</b> {password}</li>
+          <li style={{listStyle:'none'}} className='text-center mt-4'><b>Password :</b> 
+          <div class="input-wrapper2 mt-4">
+          <input  type={visibilityOn ? "text" : "password"} value={password} onChange={handlePasswordChange} />
+          {visibilityOn ? (
+            <VisibilityIcon onClick={toggleVisibility} sx={{cursor:"pointer",color:"#475E36" }}/>
+              ) : (
+                <VisibilityOffIcon onClick={toggleVisibility} sx={{cursor:"pointer",color:"#475E36"}}/>
+               )}
+          </div>
+           </li>
           </div>
             </div>
           </div>
             <div className="flex flex-col mb-4 mt-4 md:mt-0">
             <Alert className='w-fit' severity="warning">Email cannot be changed when you Sign up</Alert>
             <Alert className='w-fit' severity="warning">Nickname is necessary</Alert>
-            <Alert className='w-fit' severity="warning">Password cannot be changed when you Sign up</Alert>
+            <Alert className='w-fit' severity="warning">Account expires after 365 days</Alert>
             </div>
             <div className="flex items-center md:items-strech justify-center md:justify-end mt-8 md:mt-0">
           <button className='btnsign mr-2 mb-2 '><a href="/signup">Back</a></button>

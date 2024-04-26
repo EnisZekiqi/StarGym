@@ -99,16 +99,9 @@ const Navbar = () => {
           }, 3000);
         }
 
-        if (nickname.trim() !== storedNickname || password !== storedPassword) {
-          setError2(true);
-          setTimeout(() => {
-              setNickname('');
-              setPassword('');
-              setError2(false);
-          }, 3000);
-      }
+    
 
-        if (nickname.trim() === storedNickname && password === storedPassword) {
+        if (storedNickname && storedPassword && nickname.trim() === storedNickname && password === storedPassword) {
           setSuccess(true);
           setTimeout(() => {
                 setNickname('');

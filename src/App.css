@@ -485,6 +485,12 @@ align-items: center;
 z-index: 998
 
 }
+.inbox{
+  border: 1px solid #131A0F;
+  width: 300px;
+  height: 200px;
+  background-color: #475e363b;
+}
 
 /* HTML: <div class="loader"></div> */
 .loader {
