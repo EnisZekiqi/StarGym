@@ -29,6 +29,7 @@ background-color: aliceblue;
 backdrop-filter: blur(4px);
 z-index: 999;
 }
+
 .f{
   display: block;
 }
@@ -49,8 +50,15 @@ z-index: 999;
     display: none;
   }
   .showi2{
-    display: block;
+    display: flex;
+    flex-direction: row-reverse;
   }
+  .nonomi2{
+    display: block !important;
+  }
+}
+.nonomi2{
+  display: none;
 }
 .card {
   position: relative;
@@ -123,6 +131,7 @@ z-index: 999;
   width: 60px;
   height: 60px;
 }
+
 .healthy{
   border-radius: 10px ;
   background-color:#475E36;

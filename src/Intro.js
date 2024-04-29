@@ -1,6 +1,10 @@
 import {motion} from "framer-motion"
 import Groth from './images/Growth.svg'
+import Groth2 from './images/Growth (1).svg'
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 
+import { useDarkMode } from "./DarkModeContext";
 const variant ={
     initial:{
         opacity:0,
@@ -16,7 +20,10 @@ const variant ={
 }
 
 
+
 const Intro = () => {
+    const { darkMode } = useDarkMode();
+const { toggleDarkMode } = useDarkMode();
     return ( 
         <div className="Intro flex justify-center items-center gap-10 md:gap-0 md:justify-between flex-col md:flex-row  container mx-auto px-10">
            <div className="flex flex-col justify-center">
@@ -43,7 +50,13 @@ const Intro = () => {
             </motion.div>
            </div>
            <div className="gowi">
-            <img width="300px" height="300px" src={Groth} alt="" />
+            <div>
+                {
+                    darkMode ? 
+                    <img width="300px" height="300px" src={Groth} alt="" />:
+                    <img width="300px" height="300px" src={Groth2} alt="" />
+                }
+            </div>
            </div>
         </div>
      );

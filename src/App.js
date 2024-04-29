@@ -9,12 +9,19 @@ import Planprogram from './PlanProgram';
 import Suplements from './Suplements';
 import Clients from './Clients';
 import Example from './Example';
+import { useDarkMode } from "./DarkModeContext";
 
 
 function App() {
+
+  const { darkMode } = useDarkMode();
+  const { toggleDarkMode } = useDarkMode();
+
   return (
     <div className="App">
-      <header className="App-header">
+      <header  style={{ backgroundColor: darkMode ? "#FAFBF9" : "#050604", 
+        color:darkMode ? "#131A0F": "#E9F0E5"
+    }} className="App-header">
        
           <Navbar/>
           <div className="empty"/>

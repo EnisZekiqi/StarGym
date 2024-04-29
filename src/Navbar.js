@@ -11,6 +11,9 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import Cookies from 'js-cookie';
 import { useEffect } from "react";
+import { useDarkMode } from "./DarkModeContext";
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 const Navbar = () => {
 
     ///success message ///
@@ -140,6 +143,13 @@ const Navbar = () => {
     };
 
 
+    const { darkMode } = useDarkMode();
+    const { toggleDarkMode } = useDarkMode();
+
+    const handleClick = () => {
+      toggleDarkMode();
+    };
+
     return ( 
         <div className="navbar">
             <div className="flex justify-between ">
@@ -147,17 +157,36 @@ const Navbar = () => {
                     <h1 className="font-bold ml-4 text-3xl mt-4 mb-4">StarGym</h1>
                 
                 <div className="showi flex gap-4 mr-4 mt-4 mb-4">
+                <div className="nonomi3">
+                  <button style={{backgroundColor:"transparent"
+              ,display:darkMode ? "none":"block"
+              }} onClick={handleClick}><LightModeIcon sx={{color:"#FAFBF9"}}/></button>
+                {darkMode ? (
+                  <button style={{backgroundColor:"transparent",position:"absolute",marginLeft:'-25px'}} onClick={handleClick}><DarkModeIcon sx={{color:"#050604"}}/></button>
+                ) : ""
+                }
+                  </div>
                    <a href="#about"> <p className="font-semibold">About Us</p></a>
                     <button onClick={handleOpen} className="bg-transparent -mt-3">
                     <p className="font-semibold">Log In</p>
                     </button>
                     <a href="#clients"> <p className="font-semibold">Clients</p></a>
                 </div>
-                <div className="showi2">
-                    <button  onClick={toggleDrawer('right', true)} className="mt-4">< MenuIcon sx={{ color:"#131A0F"}}/></button>
+                <div className="showi2 gap-2">
+                    <button  onClick={toggleDrawer('right', true)} className="mt-4">< MenuIcon sx={{ color:darkMode ? "#131A0F": "#FAFBF9"}}/></button>
+                    <div className="nonomi2">
+                  <button style={{backgroundColor:"transparent"
+              ,display:darkMode ? "none":"block"
+              }} onClick={handleClick}><LightModeIcon sx={{color:"#FAFBF9",marginTop:'28px'}}/></button>
+                {darkMode ? (
+                  <button style={{backgroundColor:"transparent",position:"absolute",marginLeft:'-25px',marginTop:'28px'}} onClick={handleClick}><DarkModeIcon sx={{color:"#050604"}}/></button>
+                ) : ""
+                }
+                  </div>
                 </div>
             </div>
             <Modal
+
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -238,8 +267,10 @@ const Navbar = () => {
             <Drawer anchor="right" open={state.right} onClose={toggleDrawer('right', false)}>
             <div className='flex flex-col gap-4 justify-center items-center'  style={{ width: 200}}>
                <a className="mt-4" href="#about"><p className="font-semibold text-xl">About Us</p></a>
-               <a href=""><p className="font-semibold text-xl">Sign Up</p></a>
-               <a href=""><p className="font-semibold text-xl">Inbox</p></a>
+               <button onClick={handleOpen} className="bg-transparent -mt-3">
+                    <p className="font-semibold text-xl">Log In</p>
+                    </button>
+               <a href="#clients"><p className="font-semibold text-xl">Clients</p></a>
             </div>
             </Drawer>
            
