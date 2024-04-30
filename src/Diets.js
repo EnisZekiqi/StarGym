@@ -8,7 +8,7 @@ import { useDarkMode } from "./DarkModeContext";
 const Diets = () => {
 
   const containerVariants = {
-    initial: {opacity: 0, x: -20},
+    initial: {opacity: 0, x: -10},
     animate: { opacity: 1, x: 0,
       transition: {
         staggerChildren: 0.2 // Adjust the delay between each child animation
@@ -16,7 +16,7 @@ const Diets = () => {
     }
   };
   const childVariants = {
-    initial: { opacity: 0, x: -20 },
+    initial: { opacity: 0, x: -10 },
     animate: { opacity: 1, x: 0 }
   };
 

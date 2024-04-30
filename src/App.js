@@ -37,6 +37,7 @@ function App() {
           <Example/>
           <div className="empty"/>
           <Clients/>
+          <div className="empty3"/>
       </header>
     </div>
   );

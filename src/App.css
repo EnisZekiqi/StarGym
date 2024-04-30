@@ -42,6 +42,9 @@ z-index: 999;
 .empty2{
   height: 150px;
 }
+.empty3{
+  height: 50px;
+}
 .showi2{
   display: none;
 }
@@ -166,13 +169,13 @@ z-index: 999;
   width: 5px; /* Set the width of the scrollbar */
 }
 .kllient::-webkit-scrollbar-thumb {
-  background-color: #FAFBF9; /* Set the color of the scrollbar thumb */
+  background-color: transparent; /* Set the color of the scrollbar thumb */
   border-radius: 6px; /* Set the border radius of the thumb */
   border: 1px solid transparent;
   
 }
 .kllient::-webkit-scrollbar-track {
-  background-color: #FAFBF9; /* Set the color of the scrollbar track */
+  background-color: transparent; /* Set the color of the scrollbar track */
 }
 .kllient.scroll-transition {
   transition: scroll-left 1s ease-in-out;

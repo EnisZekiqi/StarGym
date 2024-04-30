@@ -73,11 +73,11 @@ const Navbar = () => {
         const storedPassword = Cookies.get('password');
         
         if (storedNickname) {
-            setNickname(storedNickname);
+          setNickname('');
         }
     
         if (storedPassword) {
-            setPassword(storedPassword);
+          setPassword('');
         }
     }, []);
       const handleSubmit = () => {
@@ -102,7 +102,23 @@ const Navbar = () => {
           }, 3000);
         }
 
-    
+        if (nickname.trim() !== storedNickname){
+          setError2(true)
+          setError(false)
+          setOpen1(true)
+          setTimeout(() => {
+            setError2(false)
+          }, 3000);
+        }
+        if (password.trim() !== storedPassword){
+          setError2(true)
+          setError(false)
+          setOpen1(true)
+          setTimeout(() => {
+            setError2(false)
+          }, 3000);
+        }
+
 
         if (storedNickname && storedPassword && nickname.trim() === storedNickname && password === storedPassword) {
           setSuccess(true);

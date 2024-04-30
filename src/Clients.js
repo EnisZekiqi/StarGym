@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { useDarkMode } from "./DarkModeContext";
 const Clients = () => {
 
     const fade = {
@@ -25,7 +26,9 @@ const Clients = () => {
                 duration:1
             }
         }
-    }
+    }  
+    
+    const { darkMode } = useDarkMode();
 
     const [reviewsCount, setReviewsCount] = useState(0);
 
@@ -238,13 +241,15 @@ const trigger7 =()=>{
                 onClick={trigger1}
                 style={{
                     backgroundColor:client1 ? "#475E36":"#475e363b",
-                    color:client1 ? "#FAFBF9":"#131A0F",
+                 color: client1 ? "#FAFBF9":"#131A0F",
                     boxShadow:client1 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
                     width:client1 ? "330px":"300px",
-                    transition:"0.5s ease"
+                    transition:"0.5s ease",
+                    backgroundColor:darkMode === client1 ? "#475E36":"#B2C9A1",
+                    color:darkMode === client1 ? "#E9F0E5":"#131A0F",
                 }}
                 className="client1 ml-6 flex-none">
-                <Avatar sx={{backgroundColor:client1 ?"#FAFBF9":"#475E36",marginTop:2,color:client1 ?"#131A0F":"#FAFBF9"}}   alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                <Avatar sx={{backgroundColor:darkMode && client1 ?"#B2C9A1":"#475E36",marginTop:2,color: darkMode && client1 ?"#131A0F":"#FAFBF9"}}   alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                 <div className="flex flex-col mt-5">
                     <h2 className='font-bold text-lg text-center'>Took some convincing</h2>
                     <h2 className='font-bold text-lg text-center'>but now that we're on StarGym </h2>
@@ -266,13 +271,15 @@ const trigger7 =()=>{
                 </div>
                 <div className="client2  flex-none"
                  onClick={trigger2}
-                style={{
-                    backgroundColor:client2 ? "#475E36":"#475e363b",
-                    color:client2 ? "#FAFBF9":"#131A0F",
-                    boxShadow:client2 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
-                    width:client2 ? "330px":"300px",
-                    transition:"0.5s ease"
-                }}
+                 style={{
+                  backgroundColor:client2 ? "#475E36":"#475e363b",
+               color: client2 ? "#FAFBF9":"#131A0F",
+                  boxShadow:client2 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
+                  width:client2 ? "330px":"300px",
+                  transition:"0.5s ease",
+                  backgroundColor:darkMode === client2 ? "#475E36":"#B2C9A1",
+                  color:darkMode === client2 ? "#E9F0E5":"#131A0F",
+              }}
                 >
                 <Avatar sx={{backgroundColor:client2 ?"#FAFBF9":"#475E36",marginTop:2,color:client2 ?"#131A0F":"#FAFBF9"}}   alt="Jeremy Sharp" src="/static/images/avatar/1.jpg" />
                 <div className="flex flex-col mt-5">
@@ -297,12 +304,14 @@ const trigger7 =()=>{
                 <div className="client3  flex-none"
                  onClick={trigger3}
                  style={{
-                    backgroundColor:client3 ? "#475E36":"#475e363b",
-                    color:client3 ? "#FAFBF9":"#131A0F",
-                    boxShadow:client3 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
-                    width:client3 ? "330px":"300px",
-                    transition:"0.5s ease"
-                }}
+                  backgroundColor:client3 ? "#475E36":"#475e363b",
+               color: client3 ? "#FAFBF9":"#131A0F",
+                  boxShadow:client3 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
+                  width:client3 ? "330px":"300px",
+                  transition:"0.5s ease",
+                  backgroundColor:darkMode === client3 ? "#475E36":"#B2C9A1",
+                  color:darkMode === client3 ? "#E9F0E5":"#131A0F",
+              }}
                 >
                 <Avatar sx={{backgroundColor:client3 ?"#FAFBF9":"#475E36",marginTop:2,color:client3 ?"#131A0F":"#FAFBF9"}}   alt="Chris Batho" src="/static/images/avatar/1.jpg" />
                 <div className="flex flex-col mt-5">
@@ -326,12 +335,14 @@ const trigger7 =()=>{
                 <div className="client4  flex-none"
                 onClick={trigger4}
                 style={{
-                   backgroundColor:client4 ? "#475E36":"#475e363b",
-                   color:client4 ? "#FAFBF9":"#131A0F",
-                   boxShadow:client4 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
-                   width:client4 ? "330px":"300px",
-                   transition:"0.5s ease"
-               }}
+                  backgroundColor:client4 ? "#475E36":"#475e363b",
+               color: client4 ? "#FAFBF9":"#131A0F",
+                  boxShadow:client4 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
+                  width:client4 ? "330px":"300px",
+                  transition:"0.5s ease",
+                  backgroundColor:darkMode === client4 ? "#475E36":"#B2C9A1",
+                  color:darkMode === client4 ? "#E9F0E5":"#131A0F",
+              }}
                 >
                 <Avatar sx={{backgroundColor:client4 ?"#FAFBF9":"#475E36",marginTop:2,color:client4 ?"#131A0F":"#FAFBF9"}}   alt="Maria Rodrigues" src="/static/images/avatar/1.jpg" />
                 <div className="flex flex-col mt-5">
@@ -356,12 +367,14 @@ const trigger7 =()=>{
                 <div className="client5  flex-none"
                 onClick={trigger5}
                 style={{
-                   backgroundColor:client5 ? "#475E36":"#475e363b",
-                   color:client5 ? "#FAFBF9":"#131A0F",
-                   boxShadow:client5 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
-                   width:client5 ? "330px":"300px",
-                   transition:"0.5s ease"
-               }}
+                  backgroundColor:client5 ? "#475E36":"#475e363b",
+               color: client5 ? "#FAFBF9":"#131A0F",
+                  boxShadow:client5 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
+                  width:client5 ? "330px":"300px",
+                  transition:"0.5s ease",
+                  backgroundColor:darkMode === client5 ? "#475E36":"#B2C9A1",
+                  color:darkMode === client5 ? "#E9F0E5":"#131A0F",
+              }}
                 >
                     <Avatar sx={{backgroundColor:client5 ?"#FAFBF9":"#475E36",marginTop:2,color:client5 ?"#131A0F":"#FAFBF9"}}   alt="Knet C.Dodds" src="/static/images/avatar/1.jpg" />
                 <div className="flex flex-col mt-5">
@@ -386,12 +399,14 @@ const trigger7 =()=>{
                 <div className="client6  flex-none"
                 onClick={trigger6}
                 style={{
-                   backgroundColor:client6 ? "#475E36":"#475e363b",
-                   color:client6 ? "#FAFBF9":"#131A0F",
-                   boxShadow:client6 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
-                   width:client6 ? "330px":"300px",
-                   transition:"0.5s ease"
-               }}
+                  backgroundColor:client6 ? "#475E36":"#475e363b",
+               color: client6 ? "#FAFBF9":"#131A0F",
+                  boxShadow:client6 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
+                  width:client6 ? "330px":"300px",
+                  transition:"0.5s ease",
+                  backgroundColor:darkMode === client6 ? "#475E36":"#B2C9A1",
+                  color:darkMode === client6 ? "#E9F0E5":"#131A0F",
+              }}
                 >
                     <Avatar sx={{backgroundColor:client6 ?"#FAFBF9":"#475E36",marginTop:2,color:client6 ?"#131A0F":"#FAFBF9"}}   alt="Debbie O'Brien" src="/static/images/avatar/1.jpg" />
                 <div className="flex flex-col mt-5">
@@ -415,12 +430,14 @@ const trigger7 =()=>{
                 <div className="client7  flex-none"
                 onClick={trigger7}
                 style={{
-                   backgroundColor:client7 ? "#475E36":"#475e363b",
-                   color:client7 ? "#FAFBF9":"#131A0F",
-                   boxShadow:client7 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
-                   width:client7 ? "330px":"300px",
-                   transition:"0.5s ease"
-               }}
+                  backgroundColor:client7 ? "#475E36":"#475e363b",
+               color: client7 ? "#FAFBF9":"#131A0F",
+                  boxShadow:client7 ? "-1px -1px 8px 5px rgba(71,94,54,0.75)" :"none",
+                  width:client7 ? "330px":"300px",
+                  transition:"0.5s ease",
+                  backgroundColor:darkMode === client7 ? "#475E36":"#B2C9A1",
+                  color:darkMode === client7 ? "#E9F0E5":"#131A0F",
+              }}
                 >
                     <Avatar sx={{backgroundColor:client7 ?"#FAFBF9":"#475E36",marginTop:2,color:client7 ?"#131A0F":"#FAFBF9"}}   alt="Ben Furfie" src="/static/images/avatar/1.jpg" />
                 <div className="flex flex-col mt-5">
@@ -450,20 +467,22 @@ const trigger7 =()=>{
                  whileTap={{
                     scale: 0.8
                   }}
-                className='left-right' onClick={triggerLeft}><ArrowBackIosNewIcon sx={{color:"#FAFBF9",marginLeft:-1}}/></motion.button>
+                  style={{backgroundColor:darkMode ? "#475E36":"#B2C9A1"}}
+                className='left-right' onClick={triggerLeft}><ArrowBackIosNewIcon sx={{color:darkMode ?"#FAFBF9":"#050604",marginLeft:-1}}/></motion.button>
                 <motion.button
                 whileTap={{
                     scale: 0.8
                   }}
-                className='left-right' onClick={triggerRight}><ArrowForwardIosIcon sx={{color:"#FAFBF9",marginLeft:1}}/></motion.button>
+                  style={{backgroundColor:darkMode ? "#475E36":"#B2C9A1"}}
+                className='left-right' onClick={triggerRight}><ArrowForwardIosIcon sx={{color:darkMode ?"#FAFBF9":"#050604",marginLeft:1}}/></motion.button>
             </div>
             <div className="empty"/>
             <div className='vija flex justify-between'>
             <h1 className="font-bold ml-4 text-3xl mt-4 mb-4">StarGym</h1>
             <div className="flex gap-6 mr-6 items-center">
-                <InstagramIcon sx={{color:"#475E36",scale:"1.3"}}/>
-                <FacebookIcon sx={{color:"#475E36",scale:"1.3"}}/>
-                <LinkedInIcon sx={{color:"#475E36",scale:"1.3"}}/>
+                <InstagramIcon sx={{color:darkMode ? "#475E36":"#B2C9A1",scale:"1.3"}}/>
+                <FacebookIcon sx={{color:darkMode ? "#475E36":"#B2C9A1",scale:"1.3"}}/>
+                <LinkedInIcon sx={{color:darkMode ? "#475E36":"#B2C9A1",scale:"1.3"}}/>
             </div>
             </div>
         </div>
