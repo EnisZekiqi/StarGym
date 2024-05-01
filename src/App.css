@@ -45,6 +45,9 @@ z-index: 999;
 .empty3{
   height: 50px;
 }
+.empty4{
+  height: 200px;
+}
 .showi2{
   display: none;
 }
@@ -548,6 +551,27 @@ z-index: 998
 .btnsign:hover{
   background-color: #131A0F;
   color: #FAFBF9;
+}
+.btnsign2{
+  border-radius: 5px;
+  border: 1px solid #131A0F;
+  background:transparent;
+  transition: all 0.3s ease-in-out
+}
+.btnsign2:hover{
+  background-color: #131A0F;
+  color: #FAFBF9;
+}
+
+.btnsign3{
+  border-radius: 5px;
+  border: 1px solid #E9F0E5;
+  background:transparent;
+  transition: all 0.3s ease-in-out
+}
+.btnsign3:hover{
+  background-color: #FAFBF9;
+  color: #131A0F;
 }
 .colli{
   background-image: url(images/Login.svg);

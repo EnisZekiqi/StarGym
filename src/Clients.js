@@ -204,7 +204,16 @@ const trigger7 =()=>{
 
 
     return ( 
-        <div id='clients' className="Clients">
+        <motion.div
+        variants={{
+          hidden:{opacity:0,y:75},
+          visible:{opacity:1,y:0},
+        }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once:true}}
+        transition={{duration:0.5,delay:0.25}}
+        id='clients' className="Clients">
             <h1 className="text-center font-extrabold text-3xl">Clients</h1>
 
            <div  className='flex justify-center gap-6 mt-6'>
@@ -217,7 +226,8 @@ const trigger7 =()=>{
                 delay:1
             }}}
             viewport={{once:true}}
-            className='font-light text-md text-center'>Costumers</motion.p>
+            style={{color:darkMode ? "#131A0F":"#525252"}}
+            className='font-normal text-md text-center'>Costumers</motion.p>
             </div>
             <div ref={ref2} className="flex flex-col ">
             <p className="font-semibold text-2xl"> {reviewsCount2.toLocaleString()}</p>
@@ -228,14 +238,12 @@ const trigger7 =()=>{
                 delay:1
             }}}
             viewport={{once:true}}
-            className='font-light text-md text-center'>Reviews</motion.p>
+            style={{color:darkMode ? "#131A0F":"#525252"}}
+            className='font-normal text-md text-center'>Reviews</motion.p>
             </div>
            </div>
           <motion.div
-            variants={fade}
-            initial="initial"
-            whileInView="animate"
-            viewport={{once:true}}
+            
             style={{maxWidth:"100%"}} className="kllient gap-6 overflow-x-auto flex mt-12">
                 <div
                 onClick={trigger1}
@@ -485,7 +493,7 @@ const trigger7 =()=>{
                 <LinkedInIcon sx={{color:darkMode ? "#475E36":"#B2C9A1",scale:"1.3"}}/>
             </div>
             </div>
-        </div>
+        </motion.div>
      );
 }
  

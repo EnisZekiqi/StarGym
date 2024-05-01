@@ -1,9 +1,10 @@
 import NoFoodIcon from '@mui/icons-material/NoFood';
 import LunchDiningIcon from '@mui/icons-material/LunchDining';
 import SoupKitchenIcon from '@mui/icons-material/SoupKitchen';
-import {motion,AnimatePresence} from "framer-motion"
-import { useState } from 'react';
+import {motion,AnimatePresence,useInView,useAnimation} from "framer-motion"
+import { useState,useEffect,useRef } from 'react';
 import { useDarkMode } from "./DarkModeContext";
+
 
 const Diets = () => {
 
@@ -48,9 +49,23 @@ const Diets = () => {
  const { darkMode } = useDarkMode();
  const { toggleDarkMode } = useDarkMode();
 
+ const ref =useRef(null)
+
+
     return ( 
-        <div id="diets" className="diets flex flex-col  md:flex-row container mx-auto px-12">
-           <div className="flex  flex-col items-center md:items-stretch gap-4">
+        <motion.div 
+        variants={{
+          hidden:{opacity:0,y:75},
+          visible:{opacity:1,y:0},
+        }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once:true}}
+        transition={{duration:0.5,delay:0.25}}
+        id="diets" className="diets flex flex-col  md:flex-row container mx-auto px-12">
+           <motion.div 
+           
+           className="flex  flex-col items-center md:items-stretch gap-4">
            <div
            style={{
             backgroundColor:darkMode ? "#475E36" :"#B2C9A1"
@@ -69,25 +84,13 @@ const Diets = () => {
             </div>
             <h3 style={{color:darkMode ? "#131A0F":"#E9F0E5"}} className="font-extrabold text-xl">Diets</h3>
             <div className="text-diet w-full md:w-1/2">
-            <p style={{color:darkMode ? "#131A0F":"#E9F0E5"}} className="font-normal mb-2 text-center md:text-left"> Diets are important for your health and also for your fitness achivements , our diets are classified into some categories so you can achive the best result possible</p>
+            <p style={{color:darkMode ? "#525252":"#525252"}} className="font-normal mb-2 text-lg text-center md:text-left"> Diets are important for your health and also for your fitness achivements , our diets are classified into some categories so you can achive the best result possible</p>
             </div>
            <motion.div
-             initial={{ x: -50 ,opacity:0}}
-             whileInView={{ x: 0,opacity:1 }}
-             transition={{
-                staggerChildren:1,
-                duration:0.5
-              }}
-              viewport={{amount:"all",once:true}}
+             
            className="flex gap-0 md:gap-8 mt-8 md:mt-4">
            <motion.div
-            variants={childVariants}
-            wwhileInView="animate"
-             whileHover={{ scale: 1.1 }}
-             whileTap={{
-                scale: 0.8,
-              }}
-              viewport={{amount:"all",once:true}}
+            
              onClick={toggleHealthy}
            className="flex cursor-pointer flex-col rounded-md items-center gap-4 justify-center h-20 w-28">
            <NoFoodIcon sx={{transform:"scale(1.3)" ,color:"#475E36"
@@ -96,14 +99,7 @@ const Diets = () => {
            <p className='font-semibold '>Healthy Diet</p>
            </motion.div>
            <motion.div
-            variants={childVariants}
-            whileInView="animate"
-           onClick={toggleMass}
-             whileHover={{ scale: 1.1 }}
-             whileTap={{
-                scale: 0.8,
-              }}
-              viewport={{amount:"all",once:true}}
+          
            className="flex cursor-pointer flex-col items-center rounded-md gap-4 justify-center h-20 w-28">
            <LunchDiningIcon sx={{transform:"scale(1.3)" ,color:"#475E36"  , color:mass ? "#57946F":"#475E36", color :darkMode ? "#475E36" :"#B2C9A1"}} />
            <p className='font-semibold'>Mass Diet</p>
@@ -122,7 +118,7 @@ const Diets = () => {
            <p className='font-semibold'>Lose Fat Diet</p>
            </motion.div>
            </motion.div>
-           </div>
+           </motion.div>
             <div className="obeja mt-12 md:mt-0">
                 <AnimatePresence>
                 {healthy && 
@@ -215,7 +211,7 @@ const Diets = () => {
                 }
                 </AnimatePresence>
             </div>
-        </div>
+        </motion.div>
      );
 }
  

@@ -9,17 +9,22 @@ import bcaa from './images/bcaa.webp'
 import vega from './images/vega.webp'
 import casein from './images/casein.webp'
 import amino from './images/amino.webp'
+import { useDarkMode } from "./DarkModeContext";
+
 const Example = () => {
+
+  const { darkMode } = useDarkMode();
+  
   return (
-    <div style={{backgroundColor:"#475E36"}} className=" mt-12">
+    <div style={{backgroundColor: darkMode ?"#475E36":"#B2C9A1"}} className=" mt-12">
       <div className="flex h-36 items-center justify-center">
-        <span style={{color:"#FAFBF9"}} className="font-semibold uppercase">
+        <span style={{color:darkMode ?"#E9F0E5":"#131A0F"}} className="font-semibold uppercase">
           Scroll down
         </span>
       </div>
       <HorizontalScrollCarousel />
       <div className="flex h-36 items-center justify-center">
-        <span style={{color:"#FAFBF9"}} className="font-semibold uppercase ">
+        <span style={{color:darkMode ? "#E9F0E5":"#131A0F"}} className="font-semibold uppercase ">
           Scroll up
         </span>
       </div>
@@ -34,7 +39,7 @@ const HorizontalScrollCarousel = () => {
   });
 
   const x = useTransform(scrollYProgress, [0, 1], ["1%", "-95%"]);
-
+  const { darkMode } = useDarkMode();
   return (
     <section ref={targetRef} style={{backgroundColor:"#131A0F"}} className="relative h-[300vh] ">
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">

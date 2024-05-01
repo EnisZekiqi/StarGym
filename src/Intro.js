@@ -26,17 +26,19 @@ const Intro = () => {
 const { toggleDarkMode } = useDarkMode();
     return ( 
         <div className="Intro flex justify-center items-center gap-10 md:gap-0 md:justify-between flex-col md:flex-row  container mx-auto px-10">
-           <div className="flex flex-col justify-center">
+           <motion.div 
+           variants={{
+            hidden:{opacity:0,y:75},
+            visible:{opacity:1,y:0},
+          }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once:true}}
+          transition={{duration:0.5,delay:0.25}}
+           className="flex flex-col justify-center">
            <h1 className="text-4xl ml-5 md:ml-0 sm:text-5xl font-extrabold">Complete your</h1>
             <h1 className="ml-8  md:ml-4 text-4xl sm:text-5xl font-extrabold">Fitness Goals</h1>   
             <motion.div
-           initial={{opacity:0 }}
-           animate={{opacity: 1 }}
-           transition={{
-            staggerChildren: 1,
-            duration:1
-          }}
-            whileInView="animate"
             className="flex gap-6 mt-4 ml-5">
                 <motion.a  
                 whileHover={{ scale: 1.2 }}
@@ -48,7 +50,7 @@ const { toggleDarkMode } = useDarkMode();
                  whileHover={{ scale: 1.2 }}
                 href="#supplements"><p>Supplements</p></motion.a>
             </motion.div>
-           </div>
+           </motion.div>
            <div className="gowi">
             <div>
                 {
