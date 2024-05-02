@@ -35,20 +35,24 @@ const { toggleDarkMode } = useDarkMode();
           whileInView="visible"
           viewport={{ once:true}}
           transition={{duration:0.5,delay:0.25}}
-           className="flex flex-col justify-center">
-           <h1 className="text-4xl ml-5 md:ml-0 sm:text-5xl font-extrabold">Complete your</h1>
-            <h1 className="ml-8  md:ml-4 text-4xl sm:text-5xl font-extrabold">Fitness Goals</h1>   
+           className="flex flex-col justify-center items-center md:items-stretch">
+           <h1 className="text-4xl  md:ml-0 sm:text-5xl font-extrabold">Complete your</h1>
+            <h1 className=" text-center  md:ml-4 text-4xl sm:text-5xl font-extrabold">Fitness Goals</h1>   
             <motion.div
-            className="flex gap-6 mt-4 ml-5">
-                <motion.a  
-                whileHover={{ scale: 1.2 }}
-                href="#diets"><p>Diets</p></motion.a>
+            style={{backgroundColor:darkMode ? "#475E36":"#B2C9A1", color:darkMode ? "#E9F0E5":"#131A0F"}}
+            className="flex divide-x-2 divide-white-400 rounded-xl px-4 py-4 items-center justify-center gap-6 mt-4 ">
                 <motion.a 
+               
+                whileHover={{ scale: 1.2 }}
+                href="#diets"><p className="text-center">Diets</p></motion.a>
+                <motion.a 
+                 
                  whileHover={{ scale: 1.2 }}
-                href="#planprogram"><p>Planprogram</p></motion.a>
+                href="#planprogram"><p className="text-center ml-3">Planprogram</p></motion.a>
                 <motion.a
+                 
                  whileHover={{ scale: 1.2 }}
-                href="#supplements"><p>Supplements</p></motion.a>
+                href="#supplements"><p className="text-center ml-2">Supplements</p></motion.a>
             </motion.div>
            </motion.div>
            <div className="gowi">

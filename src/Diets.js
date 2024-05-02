@@ -4,7 +4,7 @@ import SoupKitchenIcon from '@mui/icons-material/SoupKitchen';
 import {motion,AnimatePresence,useInView,useAnimation} from "framer-motion"
 import { useState,useEffect,useRef } from 'react';
 import { useDarkMode } from "./DarkModeContext";
-
+import { FiCreditCard, FiMail, FiUser, FiUsers } from "react-icons/fi";
 
 const Diets = () => {
 
@@ -51,6 +51,55 @@ const Diets = () => {
 
  const ref =useRef(null)
 
+ 
+ const HoverDevCards = () => {
+
+  const { darkMode } = useDarkMode();
+   return (
+     <div className="py-4">
+       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+         <Card
+           title="Account"
+           subtitle="Manage profile"
+           href="#"
+           Icon={FiUser}
+         />
+         <Card title="Email" subtitle="Manage email" href="#" Icon={FiMail} />
+         
+       </div>
+     </div>
+   );
+ };
+ 
+ const Card = ({ title, subtitle, Icon, href }) => {
+  const { darkMode } = useDarkMode();
+  const gradientClass = darkMode ? "bg-gradient-to-r from-emerald to-emerald" : "bg-gradient-to-r from-cyan to-cyan";
+  const gradientColor = darkMode ? "text-emerald group-hover:text-pink" :"text-cyan group-hover:text-emerald"
+   return (
+     <a
+       href={href}
+       style={{backgroundColor:darkMode? "#FAFBF9":"#050604"}}
+       className="w-full p-4 rounded border-[1px] border-slate-300 relative overflow-hidden group"
+     >
+       <div
+       style={{backgroundColor:darkMode ?"#050604":"#FAFBF9"}}
+       className={`absolute inset-0 ${gradientClass} translate-y-[100%] group-hover:translate-y-[0%] transition-transform duration-300`}/>
+
+       <Icon
+       style={{color:darkMode? "rgba(233, 240, 229,0.25)":"rgba(5, 6, 4,0.25)"}}
+       className="absolute z-10 -top-12 -right-12 text-9xl  group-hover:text-violet-400 group-hover:rotate-12 transition-transform duration-300" />
+       <Icon
+       className={`-mt-4 mb-6 text-2xl ${gradientColor} translate-y-[100%] transition-colors relative z-10 duration-300`}/>
+       <h3 className={`font-semibold  ${gradientColor} text-md md:text-lg text-neutral-600 group-hover:text-white relative z-10 duration-300`}>
+         {title}
+       </h3>
+       <p className={`text-neutral-600 ${gradientColor} font-semibold text-sm md:text-md group-hover:text-violet-200 relative z-10 duration-300`}>
+         {subtitle}
+       </p>
+     </a>
+   );
+ };
+ 
 
     return ( 
         <motion.div 
@@ -89,34 +138,7 @@ const Diets = () => {
            <motion.div
              
            className="flex gap-0 md:gap-8 mt-8 md:mt-4">
-           <motion.div
-            
-             onClick={toggleHealthy}
-           className="flex cursor-pointer flex-col rounded-md items-center gap-4 justify-center h-20 w-28">
-           <NoFoodIcon sx={{transform:"scale(1.3)" ,color:"#475E36"
-          , color:healthy === darkMode ? "#6BA884":"#B2C9A1",
-          color :darkMode ? "#475E36" :"#B2C9A1"}} />
-           <p className='font-semibold '>Healthy Diet</p>
-           </motion.div>
-           <motion.div
-          
-           className="flex cursor-pointer flex-col items-center rounded-md gap-4 justify-center h-20 w-28">
-           <LunchDiningIcon sx={{transform:"scale(1.3)" ,color:"#475E36"  , color:mass ? "#57946F":"#475E36", color :darkMode ? "#475E36" :"#B2C9A1"}} />
-           <p className='font-semibold'>Mass Diet</p>
-           </motion.div>
-           <motion.div
-             whileHover={{ scale: 1.1 }}
-             whileTap={{
-                scale: 0.8,
-              }}
-             onClick={toggleFat}
-             variants={childVariants}
-             whileInView="animate"
-             viewport={{amount:"all",once:true}}
-           className="flex cursor-pointer flex-col items-center rounded-md gap-4 justify-center  h-20 w-28">
-           <SoupKitchenIcon sx={{transform:"scale(1.3)" ,color:"#475E36"  , color:fat ? "#57946F":"#475E36", color :darkMode ? "#475E36" :"#B2C9A1"}} />
-           <p className='font-semibold'>Lose Fat Diet</p>
-           </motion.div>
+           <HoverDevCards/>
            </motion.div>
            </motion.div>
             <div className="obeja mt-12 md:mt-0">

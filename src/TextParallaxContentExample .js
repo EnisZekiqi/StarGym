@@ -93,10 +93,11 @@ const OverlayCopy = ({ subheading, heading }) => {
       style={{
         y,
         opacity,
+        color:"#E9F0E5"
       }}
       ref={targetRef}
       id="about"
-      className="absolute left-0 top-0 flex h-screen w-full flex-col items-center justify-center text-white"
+      className="absolute left-0 top-0 flex h-screen w-full flex-col items-center justify-center "
     >
       <p className="mb-2 text-center text-xl md:mb-4 md:text-3xl">
         {subheading}
@@ -105,31 +106,64 @@ const OverlayCopy = ({ subheading, heading }) => {
     </motion.div>
   );
 };
-const ExampleContent = () => {
+const ExampleContent = ({open , props}) => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start end", "end start"],
+  });
 
+
+  const scale = useTransform (scrollYProgress,[0.25, 0.5,0.75,1], [1,1,0.50,0.25])
+  const opacity = useTransform(scrollYProgress, [0.25, 0.5,0.75,1], [1,1,0.25,0.25]);
   const { darkMode } = useDarkMode();
     return(
-      <div className="mx-auto grid grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:max-w-5xl">
+      <motion.div
+      style={{
+        opacity
+      }}
+      ref={targetRef}
+      className="mx-auto grid grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:max-w-5xl">
       <h2 className="col-span-1 text-3xl font-bold md:col-span-4">
-        Additional content explaining the above card here
+        StarGym is for everybody you should try it out 
       </h2>
-      <div className="col-span-1 md:col-span-8">
-        <p className="mb-4 text-xl text-neutral-600 md:text-2xl">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi,
-          blanditiis soluta eius quam modi aliquam quaerat odit deleniti minima
-          maiores voluptate est ut saepe accusantium maxime doloremque nulla
-          consectetur possimus.
+      <div
+      className="col-span-1 md:col-span-8">
+        <p 
+        style={{color:'#525252'}}
+        className="mb-4 text-xl text-neutral-600 md:text-2xl">
+         StarGym was opened in <b>2008 </b> for everyone who want to achive their body goals,
+          we want our costumers to enjoy their experience in the gym and their success is our primary goal
         </p>
-        <p className="mb-8 text-xl text-neutral-600 md:text-2xl">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium
-          reiciendis blanditiis aliquam aut fugit sint.
-        </p>
+        <div className=" flex gap-4 mt-8 mb-8 text-md text-neutral-600 md:text-2xl">
+          <div className="ex flex gap-4 items-center">
+            <div 
+            style={{backgroundColor:'#525252'}}
+            className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-1 md:py-3">
+             <p style={{color:"#E9F0E5"}} className="text-center">+16</p>
+            </div>
+            <p className="font-normal text-lg">
+              Years of experience
+            </p>
+          </div>
+          <div className="wok flex gap-4 items-center">
+          <div 
+          style={{backgroundColor:'#525252'}}
+          className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-1 md:py-3">
+             <p style={{color:"#E9F0E5"}} className="text-center">112</p>
+            </div>
+            <p className="font-normal text-lg">
+              Employees and Workers
+            </p>
+          </div>
+        </div>
         <button 
+       
         className={`btnsign2 w-full px-9 py-4 text-xl ${darkMode ? 'btnsign2' : 'btnsign3'} md:w-fit`}>
           Learn more
         </button>
       </div>
-    </div>
+    </motion.div>
     )
 };
   const ExampleContent2 = () => (

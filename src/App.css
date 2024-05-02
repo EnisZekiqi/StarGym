@@ -559,7 +559,7 @@ z-index: 998
   transition: all 0.3s ease-in-out
 }
 .btnsign2:hover{
-  background-color: #131A0F;
+  background-color: #050604;
   color: #FAFBF9;
 }
 
@@ -571,7 +571,7 @@ z-index: 998
 }
 .btnsign3:hover{
   background-color: #FAFBF9;
-  color: #131A0F;
+  color: #050604;
 }
 .colli{
   background-image: url(images/Login.svg);
