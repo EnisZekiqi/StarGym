@@ -26,7 +26,7 @@ function App() {
           <Navbar/>
           <div className="empty"/>
           <Intro/>
-          <div className="empty"/>
+          <div id='empty2' className="empty2"/>
           <About/>
           <div className="empty"/>
           <Diets/>

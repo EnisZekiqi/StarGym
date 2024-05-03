@@ -36,7 +36,7 @@ const TextParallaxContent = ({ imgUrl, subheading, heading, children }) => {
         paddingRight: IMG_PADDING,
       }}
     >
-      <div className="relative h-[100vh] md:h-[120vh]">
+      <div className="relative h-[90vh] md:h-[120vh]">
         <StickyImage imgUrl={imgUrl} />
         <OverlayCopy heading={heading} subheading={subheading} />
       </div>
@@ -139,7 +139,7 @@ const ExampleContent = ({open , props}) => {
           <div className="ex flex gap-4 items-center">
             <div 
             style={{backgroundColor:'#525252'}}
-            className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-1 md:py-3">
+            className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-2 md:py-3">
              <p style={{color:"#E9F0E5"}} className="text-center">+16</p>
             </div>
             <p className="font-normal text-lg">
@@ -149,7 +149,7 @@ const ExampleContent = ({open , props}) => {
           <div className="wok flex gap-4 items-center">
           <div 
           style={{backgroundColor:'#525252'}}
-          className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-1 md:py-3">
+          className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-3 md:py-3">
              <p style={{color:"#E9F0E5"}} className="text-center">112</p>
             </div>
             <p className="font-normal text-lg">

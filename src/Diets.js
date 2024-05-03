@@ -4,7 +4,9 @@ import SoupKitchenIcon from '@mui/icons-material/SoupKitchen';
 import {motion,AnimatePresence,useInView,useAnimation} from "framer-motion"
 import { useState,useEffect,useRef } from 'react';
 import { useDarkMode } from "./DarkModeContext";
-import { FiCreditCard, FiMail, FiUser, FiUsers } from "react-icons/fi";
+import { FiCreditCard, FiMail, FiUser, FiUsers,FiActivity} from "react-icons/fi";
+import { MdNoFood } from "react-icons/md";
+import { FaPizzaSlice } from "react-icons/fa6";
 
 const Diets = () => {
 
@@ -21,7 +23,7 @@ const Diets = () => {
     animate: { opacity: 1, x: 0 }
   };
 
-    const [healthy,setHealthy]=useState(true)
+    const [healthy,setHealthy]=useState(false)
     const [mass,setMass]=useState(false)
     const [fat,setFat]=useState(false)
     
@@ -59,27 +61,27 @@ const Diets = () => {
      <div className="py-4">
        <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
          <Card
-           title="Account"
-           subtitle="Manage profile"
-           href="#"
-           Icon={FiUser}
+           title="Healthy Diet"
+           subtitle="Check offers"
+           Icon={MdNoFood}
+           onClick={toggleHealthy}
          />
-         <Card title="Email" subtitle="Manage email" href="#" Icon={FiMail} />
+         <Card onClick={toggleMass} title="Mass Diet" subtitle="Check offers" href="#" Icon={FaPizzaSlice} />
          
        </div>
      </div>
    );
  };
  
- const Card = ({ title, subtitle, Icon, href }) => {
+ const Card = ({ title, subtitle, Icon, href,onClick }) => {
   const { darkMode } = useDarkMode();
   const gradientClass = darkMode ? "bg-gradient-to-r from-emerald to-emerald" : "bg-gradient-to-r from-cyan to-cyan";
-  const gradientColor = darkMode ? "text-emerald group-hover:text-pink" :"text-cyan group-hover:text-emerald"
+  const gradientColor = darkMode ? "text-emerald group-hover:text-pink" :"text-cyan group-hover:text-rose"
    return (
      <a
-       href={href}
+     onClick={onClick}
        style={{backgroundColor:darkMode? "#FAFBF9":"#050604"}}
-       className="w-full p-4 rounded border-[1px] border-slate-300 relative overflow-hidden group"
+       className="w-full -mt-4 mb-8 p-4 rounded border-[1px] border-slate-300 relative overflow-hidden group"
      >
        <div
        style={{backgroundColor:darkMode ?"#050604":"#FAFBF9"}}
@@ -111,7 +113,7 @@ const Diets = () => {
         whileInView="visible"
         viewport={{ once:true}}
         transition={{duration:0.5,delay:0.25}}
-        id="diets" className="diets flex flex-col  md:flex-row container mx-auto px-12">
+        id="diets" className="diets flex flex-col  container mx-auto px-12">
            <motion.div 
            
            className="flex  flex-col items-center md:items-stretch gap-4">
@@ -146,8 +148,12 @@ const Diets = () => {
                 {healthy && 
                 <motion.div
                 initial={{opacity:0}}
-                whileInView={{opacity:1}}
-                exit={{opacity:0,display:"none"}}
+                whileInView={{opacity:1,transition:{
+                  duration:1,delay:0.3
+                }}}
+                exit={{opacity:0,display:"none",transition:{
+                  duration:0.5
+                }}}
                 viewport={{once:true}}
                 className="healthy">
                     <h3 className='font-semibold text-xl text-center'>Healthy Diet</h3>
