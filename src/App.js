@@ -25,8 +25,9 @@ function App() {
        
           <Navbar/>
           <div className="empty"/>
+          <div id='haka' className="empty"/>
           <Intro/>
-          <div id='empty2' className="empty2"/>
+          <div className="empty2"/>
           <About/>
           <div className="empty"/>
           <Diets/>

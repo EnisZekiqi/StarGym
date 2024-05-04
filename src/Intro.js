@@ -5,6 +5,9 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import whey from './images/whey-removebg-preview.png'
+import star from './images/star-svgrepo-com.svg'
+import star2 from './images/star-svgrepo-com (1).svg'
 
 import { useDarkMode } from "./DarkModeContext";
 const variant ={
@@ -31,7 +34,7 @@ const targetRef = useRef(null);
 
 
     return ( 
-        <div className="Intro flex mb-4 justify-center items-center gap-10 md:gap-0 flex-col md:flex-row  container mx-auto px-10">
+        <div className="Intro w-full flex mb-4 justify-center md:justify-between items-center gap-10 md:gap-14 flex-col-reverse md:flex-row  container mx-auto px-10">
            <motion.div 
            variants={{
             hidden:{opacity:0,y:75},
@@ -41,7 +44,7 @@ const targetRef = useRef(null);
           whileInView="visible"
           viewport={{ once:true}}
           transition={{duration:0.5,delay:0.25}}
-           className="flex flex-col justify-center items-center md:items-stretch ">
+           className="flex flex-col justify-center items-center md:items-stretch  ">
             <motion.div
               variants={{
                 hidden:{opacity:0,y:75},
@@ -52,7 +55,7 @@ const targetRef = useRef(null);
               viewport={{ once:true}}
               transition={{duration:0.5,delay:0.25}}
 
-            className="absolute blur-sm inset-0 flex items-start mt-28 justify-center pointer-events-none"> {/* Wrapper for decorative text */}
+            className="absolute blur-sm inset-0  md:flex hidden items-start mt-52 justify-start pointer-events-none"> {/* Wrapper for decorative text */}
                     <h1 className={` text-6xl mt-16 md:mt-0 md:text-9xl ${colorChange} font-extrabold opacity-15 `}>StarGym</h1> {/* Decorative text */}
                 </motion.div>
            <h1 className="text-4xl  md:ml-0 sm:text-5xl font-extrabold">Complete your</h1>
@@ -85,9 +88,60 @@ const targetRef = useRef(null);
             </div>
            </div>
          */}  
-         <div className="empty"></div>
+            <div className="mb-20 md:mb-0 ">
+            <Logo/>
+            </div>
+  
+
         </div>
      );
 }
  
+function Logo() {
+    const { darkMode } = useDarkMode();
+
+    const mull  = darkMode ? "framer-5mk8w01":"framer-5mk8w0"
+    const mull1 =darkMode ? "framer-1qys7kvv":"framer-1qys7kv"
+
+    return (
+        <div className="logo-container flex justify- items-center relative z-10">
+        <div className="framer-49gp17" data-framer-name="Badge" name="Badge">
+        <div className={` ${mull}`} data-border="true" data-framer-name="Outer" name="Outer"></div>
+        <div className={` ${mull1}`}data-border="true" data-framer-name="Inner" name="Inner"></div>
+        <div className="framer-n2f9q3-container" data-framer-name="Arc 1" name="Arc 1">
+          <div draggable="false" style={{ width: '100%', height: '100%', position: 'relative' }}>
+            <svg className="transform-origin-center-center" viewBox="0 0 100 100" overflow="visible" style={{ width: '144px', marginLeft: '8px', marginTop: '5px', height: '100%', position: 'absolute', inset: '0px', transformOrigin: 'center center', willChange: 'transform' }}>
+              <path id="curve-ey5bo0" d="M 0 50 L 0 30 A 1 1 0 0 1 100 30 L 100 50 L 100 70 A 1 1 0 0 1 0 70 L 0 30" strokeWidth="none" fill="transparent"></path>
+              <text>
+                <textPath href="#curve-ey5bo0" startOffset="0" dominantBaseline="hanging" style={{ width: '144px', fontSize: '10px', fontStyle: 'normal', fontWeight: '500', letterSpacing: '0.27em', lineHeight: '1em', fill: darkMode ? "#050604":"#FAFBF9" }}>
+                  ✦Welcome to StarGym ✦
+                </textPath>
+              </text>
+            </svg>
+          </div>
+        </div>
+        <div className="framer-113te4o-container" data-framer-name="Arc 2" name="Arc 2">
+          <div draggable="false" style={{ width: '100%', height: '100%', position: 'relative' }}>
+            <svg className="transform-origin-center-center" viewBox="0 0 100 100" overflow="visible" style={{ width: '100%', height: '100%', position: 'absolute', inset: '0px', transformOrigin: 'center center', willChange: 'transform' }}>
+              <path id="curve-40ufq5" d="M 0 50 L 0 70 A 1 1 0 1 0 100 70 L 100 30 A 1 1 0 1 0 0 30 L 0 50" strokeWidth="none" fill="transparent"></path>
+              <text>
+                <textPath href="#curve-40ufq5" startOffset="14.5" dominantBaseline="text-top" style={{ fontSize: '10px', fontStyle: 'normal', fontWeight: '500', letterSpacing: '0.27em', lineHeight: '1em', fill: darkMode ? "#050604":"#FAFBF9" }}>
+                  Achive your dream body
+                </textPath>
+              </text>
+            </svg>
+          </div>
+        </div>
+        <div data-framer-component-type="SVG" data-framer-name="Logo" name="Logo" className="framer-1rbdseg" style={{ imageRendering: 'pixelated', flexShrink: 0, backgroundSize: '100% 100%', backgroundImage: 'url("images/star-svgrepo-com.svg")' }}>
+           {darkMode ? 
+             <img src={star2} alt="" />:
+             <img src={star} alt="" />   
+        }
+        </div>
+      </div>
+      <div className="background-div flex top-18 left-40 right-0 rotate-180 w-1/2 h-1/2" style={{ backgroundColor: darkMode ? "#475E36" : "#B2C9A1" }}></div>
+        </div>
+    );
+  }
+  
 export default Intro;
