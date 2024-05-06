@@ -140,11 +140,68 @@ z-index: 999;
 }
 
 .healthy{
-  border-radius: 10px ;
-  background-color:#475E36;
-  color: #FAFBF9;
-  width: 300px ;
-  height: 400px;
+  
+}
+.card2 {
+  width: 220px;
+  height: 274px;
+  transition: all 0.2s;
+  position: relative;
+  cursor: pointer;
+}
+
+.card-inner {
+  width: inherit;
+  height: inherit;
+  background: rgba(255,255,255,.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+}
+
+.card2:hover {
+  transform: scale(1.04) rotate(1deg);
+}
+
+.circle {
+  width: 100px;
+  height: 100px;
+  
+  border-radius: 50%;
+  position: absolute;
+  animation: move-up6 2s ease-in infinite alternate-reverse;
+}
+.circle2 {
+  width: 60px;
+  height: 35px;
+  z-index: 100;
+  border-radius: 50%;
+  position: absolute;
+  margin-left: -10px;
+  margin-top: -5px;
+}
+
+.circle:nth-child(1) {
+  top: -25px;
+  left: -25px;
+}
+
+.circle:nth-child(2) {
+  bottom: -25px;
+  right: -25px;
+  animation-name: move-down1;
+}
+
+@keyframes move-up6 {
+  to {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes move-down1 {
+  to {
+    transform: translateY(10px);
+  }
 }
 .llojet-suplementev{
   border-radius: 10px ;
@@ -231,6 +288,15 @@ z-index: 999;
 
 .logo-container{
   background-color: #282c34;
+}
+.vija2{
+  background-color: #525252;
+  opacity: 1;
+  visibility: visible;
+}
+.dit :hover{
+  color:#525252;
+  transition: color 1s ease-in-out;
 }
  .framer-5mk8w0{
   font-size: 12px;
@@ -520,7 +586,7 @@ margin-top: 20px;
 .llojet-suplementev::-webkit-scrollbar-track {
   background-color: #FAFBF9; /* Set the color of the scrollbar track */
 }
-@media (max-width:764px) {
+/* @media (max-width:764px) {
   .healthy{
     width: 500px;
     height: 340px;
@@ -560,7 +626,7 @@ margin-top: 20px;
   .saba{
     margin-left: 70px;
   }
-}
+} */
 
 
 .gradient {

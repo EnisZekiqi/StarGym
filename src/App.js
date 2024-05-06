@@ -10,6 +10,7 @@ import Suplements from './Suplements';
 import Clients from './Clients';
 import Example from './Example';
 import { useDarkMode } from "./DarkModeContext";
+import FuzzyOverlayExample from './FuzzyOverlayExample';
 
 
 function App() {
@@ -24,9 +25,7 @@ function App() {
     }} className="App-header">
        
           <Navbar/>
-          <div className="empty"/>
-          <div id='haka' className="empty"/>
-          <Intro/>
+          <FuzzyOverlayExample/>
           <div className="empty2"/>
           <About/>
           <div className="empty"/>

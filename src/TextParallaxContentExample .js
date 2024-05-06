@@ -20,12 +20,37 @@ export const TextParallaxContentExample = () => {
         subheading="Quality"
         heading="Never compromise."
       >
-        <ExampleContent />
+        <ExampleContent2 />
       </TextParallaxContent>
     </div>
   );
 };
 
+const FuzzyOverlay = () => {
+  const { darkMode } = useDarkMode();
+return (
+  <motion.div
+    initial={{ transform: "translateX(-10%) translateY(-10%)" }}
+    animate={{
+      transform: "translateX(10%) translateY(10%)",
+    }}
+    transition={{
+      repeat: Infinity,
+      duration: 0.2,
+      ease: "linear",
+      repeatType: "mirror",
+    }}
+    // You can download these PNGs here:
+    // https://www.hover.dev/black-noise.png
+    // https://www.hover.dev/noise.png
+    style={{
+      backgroundImage: 'url("https://www.hover.dev/black-noise.png")',
+      // backgroundImage: 'url("/noise.png")',
+    }}
+    className="pointer-events-none absolute -inset-[100%] opacity-[7.5%]"
+  />
+);
+};
 const IMG_PADDING = 12;
 
 const TextParallaxContent = ({ imgUrl, subheading, heading, children }) => {
@@ -166,25 +191,42 @@ const ExampleContent = ({open , props}) => {
     </motion.div>
     )
 };
-  const ExampleContent2 = () => (
-    <div className="mx-auto grid grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:max-w-5xl">
+const ExampleContent2 = ({open , props}) => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start end", "end start"],
+  });
+
+
+  const scale = useTransform (scrollYProgress,[0.25, 0.5,0.75,1], [1,1,0.50,0.25])
+  const opacity = useTransform(scrollYProgress, [0.25, 0.5,0.75,1], [1,1,0.25,0.25]);
+  const { darkMode } = useDarkMode();
+    return(
+      <motion.div
+      style={{
+        opacity
+      }}
+      ref={targetRef}
+      className="mx-auto grid grid-cols-1 gap-8 px-4 pb-24 pt-12 md:grid-cols-12 md:max-w-5xl">
       <h2 className="col-span-1 text-3xl font-bold md:col-span-4">
-        Additional content explaining the above card here
+        StarGym offers you the best quality
       </h2>
-      <div className="col-span-1 md:col-span-8">
-        <p className="mb-4 text-xl text-neutral-600 md:text-2xl">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi,
-          blanditiis soluta eius quam modi aliquam quaerat odit deleniti minima
-          maiores voluptate est ut saepe accusantium maxime doloremque nulla
-          consectetur possimus.
+      <div
+      className="col-span-1 md:col-span-8">
+        <p 
+        style={{color:'#525252'}}
+        className="mb-4 text-xl text-neutral-600 md:text-2xl">
+       We want every costumer to feel secure , safe and happy in our enviroments , that 
+       is why we provideyou with the best quality in every aspect , including the 
+       personal staff we have 
         </p>
-        <p className="mb-8 text-xl text-neutral-600 md:text-2xl">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium
-          reiciendis blanditiis aliquam aut fugit sint.
-        </p>
-        <button className="btnsign w-full  px-9 py-4 text-xl  md:w-fit">
+        <button 
+       
+        className={`btnsign2 w-full px-9 py-4 text-xl ${darkMode ? 'btnsign2' : 'btnsign3'} md:w-fit`}>
           Learn more
         </button>
       </div>
-    </div>
-  );
+    </motion.div>
+    )
+};

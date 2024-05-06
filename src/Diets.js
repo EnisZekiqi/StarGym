@@ -102,6 +102,7 @@ const Diets = () => {
    );
  };
  
+ const [ open,setOpen]=useState(false)
 
     return ( 
         <motion.div 
@@ -149,32 +150,69 @@ const Diets = () => {
                 <motion.div
                 initial={{opacity:0}}
                 whileInView={{opacity:1,transition:{
-                  duration:1,delay:0.3
+                  duration:1,delay:0.3, staggerChildren: 0.3
                 }}}
                 exit={{opacity:0,display:"none",transition:{
                   duration:0.5
                 }}}
                 viewport={{once:true}}
-                className="healthy">
-                    <h3 className='font-semibold text-xl text-center'>Healthy Diet</h3>
-                    <h5 className='text-start font-semibold mt-8 ml-2 text-lg'>Tips</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - Do not get thirsty</li>
-                        <li> - Do not skip breakfast</li>
-                        <li> - Get active</li>
-                        <li> - Eat less salt: no more than 6g a day for adults</li>
-                      </ul>
-                    </div>
-                    <h5 className='text-start font-semibold mt-4 ml-2 text-lg'>Foods</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - Fish and portion of oily fish</li>
-                        <li> - Lots of fruit and vegetables</li>
-                        <li> - Protein Foods</li>
-                        <li> - Low carb foods</li>
-                      </ul>
-                    </div>
+                className="healthy flex flex-col md:flex-row justify-center md:justify-between gap-20 items-center">
+                    <div class="card2">
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}}
+                      class="circle2"><p 
+                      style={{color:darkMode ? "#E9F0E5":"#131A0F"}}
+                      className="text-center font-semibold mt-1">Basic</p></div>
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}} 
+                      class="circle" Icon={MdNoFood}></div>
+                      <div class="card-inner">
+                        <div className="flex flex-col gap-4 mt-4 items-center">
+                          <h3 className='text-center font-bold text-2xl mt-4'>Free</h3>
+                          <p className='text-center'>Offers you a basic diet for beginners,including snacks and smoothies</p>
+                          <button 
+                         className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} w-fit px-2 py-2`}>Show More</button>
+                        </div>
+                      </div>
+                  </div>
+                  <div  class="card2">
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}}
+                      class="circle2"><p 
+                      style={{color:darkMode ? "#E9F0E5":"#131A0F"}}
+                      className="text-center font-semibold mt-1">Pro</p></div>
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}} 
+                      class="circle"></div>
+                      <div class="card-inner">
+                        <div className="flex flex-col gap-4 mt-4 items-center">
+                          <h3 className='text-center font-bold text-2xl mt-4'>Free</h3>
+                          <p className='text-center'>Offers you a basic diet for beginners,including snacks and smoothies</p>
+                          <button 
+                          style={{width:"fit-content"}}
+                          className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} w-fit px-2 py-2`}>Show More</button>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="card2">
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}}
+                      class="circle2"><p 
+                      style={{color:darkMode ? "#E9F0E5":"#131A0F"}}
+                      className="text-center font-semibold mt-1">Basic2</p></div>
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}} 
+                      class="circle"></div>
+                      <div class="card-inner">
+                        <div className="flex flex-col gap-4 mt-4 items-center">
+                          <h3 className='text-center font-bold text-2xl mt-4'>Free</h3>
+                          <p className='text-center'>Offers you a basic diet for beginners,including snacks and smoothies</p>
+                          <button 
+                          style={{width:"fit-content"}}
+                          className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} w-fit px-2 py-2`}>Show More</button>
+                        </div>
+                      </div>
+                  </div>
                 </motion.div>
                 }
                 </AnimatePresence>
@@ -182,8 +220,12 @@ const Diets = () => {
                 {mass && 
                 <motion.div
                 initial={{opacity:0}}
-                whileInView={{opacity:1}}
-                exit={{opacity:0,display:"none"}}
+                whileInView={{opacity:1,transition:{
+                  duration:1,delay:0.3
+                }}}
+                exit={{opacity:0,display:"none",transition:{
+                  duration:0.5
+                }}}
                 viewport={{once:true}}
                 className="healthy">
                     <h3 className='font-semibold text-xl text-center'>Mass Diet</h3>

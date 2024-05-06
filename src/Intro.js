@@ -34,7 +34,7 @@ const targetRef = useRef(null);
 
 
     return ( 
-        <div className="Intro w-full flex mb-4 justify-center md:justify-between items-center gap-10 md:gap-14 flex-col-reverse md:flex-row  container mx-auto px-10">
+        <div className="Intro w-full flex mb-4 justify-center md:justify-center items-center gap-10 md:gap-14 flex-col-reverse md:flex-row  container mx-auto px-10">
            <motion.div 
            variants={{
             hidden:{opacity:0,y:75},
@@ -55,7 +55,7 @@ const targetRef = useRef(null);
               viewport={{ once:true}}
               transition={{duration:0.5,delay:0.25}}
 
-            className="absolute blur-sm inset-0  md:flex hidden items-start mt-52 justify-start pointer-events-none"> {/* Wrapper for decorative text */}
+            className="absolute blur-sm inset-0  md:flex hidden items-start mt-52 justify-center pointer-events-none"> {/* Wrapper for decorative text */}
                     <h1 className={` text-6xl mt-16 md:mt-0 md:text-9xl ${colorChange} font-extrabold opacity-15 `}>StarGym</h1> {/* Decorative text */}
                 </motion.div>
            <h1 className="text-4xl  md:ml-0 sm:text-5xl font-extrabold">Complete your</h1>
@@ -88,9 +88,8 @@ const targetRef = useRef(null);
             </div>
            </div>
          */}  
-            <div className="mb-20 md:mb-0 ">
-            <Logo/>
-            </div>
+          
+         <FuzzyOverlayExample/>
   
 
         </div>
@@ -104,7 +103,7 @@ function Logo() {
     const mull1 =darkMode ? "framer-1qys7kvv":"framer-1qys7kv"
 
     return (
-        <div className="logo-container flex justify- items-center relative z-10">
+        <div className="logo-container flex justify-center items-center relative z-10">
         <div className="framer-49gp17" data-framer-name="Badge" name="Badge">
         <div className={` ${mull}`} data-border="true" data-framer-name="Outer" name="Outer"></div>
         <div className={` ${mull1}`}data-border="true" data-framer-name="Inner" name="Inner"></div>
@@ -144,4 +143,60 @@ function Logo() {
     );
   }
   
+  const FuzzyOverlayExample = () => {
+    return (
+      // NOTE: An overflow of hidden will be required on a wrapping
+      // element to see expected results
+      <div className="relative overflow-hidden">
+        <ExampleContent />
+        <FuzzyOverlay />
+      </div>
+    );
+  };
+  
+  const FuzzyOverlay = () => {
+    return (
+      <motion.div
+        initial={{ transform: "translateX(-10%) translateY(-10%)" }}
+        animate={{
+          transform: "translateX(10%) translateY(10%)",
+        }}
+        transition={{
+          repeat: Infinity,
+          duration: 0.2,
+          ease: "linear",
+          repeatType: "mirror",
+        }}
+        // You can download these PNGs here:
+        // https://www.hover.dev/black-noise.png
+        // https://www.hover.dev/noise.png
+        style={{
+          backgroundImage: 'url("/black-noise.png")',
+          // backgroundImage: 'url("/noise.png")',
+        }}
+        className="pointer-events-none absolute -inset-[100%] opacity-[15%]"
+      />
+    );
+  };
+  
+  const ExampleContent = () => {
+    return (
+      <div className="relative grid h-screen place-content-center space-y-6 bg-neutral-950 p-8">
+        <p className="text-center text-6xl font-black text-neutral-50">
+          Fuzzy Overlay Example
+        </p>
+        <p className="text-center text-neutral-400">
+          This is a basic example of using a lo-fi fuzzy overlay 📺
+        </p>
+        <div className="flex items-center justify-center gap-3">
+          <button className="text-neutral-20 w-fit px-4 py-2 font-semibold text-neutral-200 transition-colors hover:bg-neutral-800">
+            Pricing
+          </button>
+          <button className="w-fit bg-neutral-200 px-4 py-2 font-semibold text-neutral-700 transition-colors hover:bg-neutral-50">
+            Try it free
+          </button>
+        </div>
+      </div>
+    );
+  };
 export default Intro;

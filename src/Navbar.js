@@ -167,7 +167,7 @@ const Navbar = () => {
     };
 
     return ( 
-        <div className="navbar">
+        <div className="navbar bg-tran">
             <div className="flex justify-between ">
                
                     <h1 className="font-bold ml-4 text-3xl mt-4 mb-4">StarGym</h1>
