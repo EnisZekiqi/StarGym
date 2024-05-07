@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useDarkMode } from "./DarkModeContext";
+import LogInAccess from './LogInAccess'
 
 export const TextParallaxContentExample = () => {
     const { darkMode } = useDarkMode();
@@ -131,7 +132,8 @@ const OverlayCopy = ({ subheading, heading }) => {
     </motion.div>
   );
 };
-const ExampleContent = ({open , props}) => {
+const ExampleContent = () => {
+ 
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -174,7 +176,7 @@ const ExampleContent = ({open , props}) => {
           <div className="wok flex gap-4 items-center">
           <div 
           style={{backgroundColor:'#525252'}}
-          className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-3 md:py-3">
+          className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-1 md:py-3">
              <p style={{color:"#E9F0E5"}} className="text-center">112</p>
             </div>
             <p className="font-normal text-lg">
@@ -182,11 +184,8 @@ const ExampleContent = ({open , props}) => {
             </p>
           </div>
         </div>
-        <button 
-       
-        className={`btnsign2 w-full px-9 py-4 text-xl ${darkMode ? 'btnsign2' : 'btnsign3'} md:w-fit`}>
-          Learn more
-        </button>
+        
+        <LogInAccess/>
       </div>
     </motion.div>
     )
@@ -221,11 +220,7 @@ const ExampleContent2 = ({open , props}) => {
        is why we provideyou with the best quality in every aspect , including the 
        personal staff we have 
         </p>
-        <button 
-       
-        className={`btnsign2 w-full px-9 py-4 text-xl ${darkMode ? 'btnsign2' : 'btnsign3'} md:w-fit`}>
-          Learn more
-        </button>
+        <LogInAccess/>
       </div>
     </motion.div>
     )

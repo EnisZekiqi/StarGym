@@ -7,6 +7,9 @@ import { useDarkMode } from "./DarkModeContext";
 import { FiCreditCard, FiMail, FiUser, FiUsers,FiActivity} from "react-icons/fi";
 import { MdNoFood } from "react-icons/md";
 import { FaPizzaSlice } from "react-icons/fa6";
+import DoneIcon from '@mui/icons-material/Done';
+import { FaCrown } from "react-icons/fa6";
+import LogInAccessJr from './LogInAccessJr'
 
 const Diets = () => {
 
@@ -75,6 +78,8 @@ const Diets = () => {
  
  const Card = ({ title, subtitle, Icon, href,onClick }) => {
   const { darkMode } = useDarkMode();
+  const [healthy,setHealthy]=useState(false)
+  
   const gradientClass = darkMode ? "bg-gradient-to-r from-emerald to-emerald" : "bg-gradient-to-r from-cyan to-cyan";
   const gradientColor = darkMode ? "text-emerald group-hover:text-pink" :"text-cyan group-hover:text-rose"
    return (
@@ -166,31 +171,50 @@ const Diets = () => {
                       <div 
                       style={{background:darkMode ? "#475E36":"#B2C9A1"}} 
                       class="circle" Icon={MdNoFood}></div>
-                      <div class="card-inner">
-                        <div className="flex flex-col gap-4 mt-4 items-center">
-                          <h3 className='text-center font-bold text-2xl mt-4'>Free</h3>
-                          <p className='text-center'>Offers you a basic diet for beginners,including snacks and smoothies</p>
-                          <button 
-                         className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} w-fit px-2 py-2`}>Show More</button>
+                         <div class="card-inner">
+                        <div className="flex flex-col gap-4 mt-4 items-start">
+                          <h3 className='text-center font-normal text-2xl mt-5 ml-4'>Enterprise</h3>
+                          <h1 className='text-start font-bold text-3xl ml-4'>$0 /<b className='font-normal text-sm'>month</b></h1>
+                          <ul className='ml-4 flex flex-col gap-2'>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Basic in web support</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>2 users in your account</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Limited Diets</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Basic Diets</li>
+                            <li className='opacity-0'><DoneIcon sx={{marginRight:'5px'}}/></li>
+                          </ul>
+                          <div className="w-full flex items-center justify-center">
+                          <LogInAccessJr/>
+                          </div>
                         </div>
                       </div>
                   </div>
-                  <div  class="card2">
+                  <div style={{
+                    boxShadow:'box-shadow: 0px 2px 16px 4px rgba(178,201,161,0.75)'
+                  }} class="card2">
                       <div 
                       style={{background:darkMode ? "#475E36":"#B2C9A1"}}
-                      class="circle2"><p 
+                      class="circle2"><FaCrown style={{color:darkMode ?"#050604":"#FAFBF9",marginTop:'-16px',width:'30px',transform:'rotate(-20deg)',scale:'1.2'}} /><p 
                       style={{color:darkMode ? "#E9F0E5":"#131A0F"}}
                       className="text-center font-semibold mt-1">Pro</p></div>
                       <div 
                       style={{background:darkMode ? "#475E36":"#B2C9A1"}} 
                       class="circle"></div>
                       <div class="card-inner">
-                        <div className="flex flex-col gap-4 mt-4 items-center">
-                          <h3 className='text-center font-bold text-2xl mt-4'>Free</h3>
-                          <p className='text-center'>Offers you a basic diet for beginners,including snacks and smoothies</p>
-                          <button 
-                          style={{width:"fit-content"}}
-                          className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} w-fit px-2 py-2`}>Show More</button>
+                        <div className="flex flex-col gap-4 mt-4 items-start">
+                          <h3 className='text-center font-normal text-2xl mt-5 ml-4'>Professional</h3>
+                          <h1 style={{
+                            color:darkMode ? "#475E36":"#B2C9A1"
+                          }} className='text-start font-bold text-3xl ml-4'>$49 /<b className='font-normal text-sm'>month</b></h1>
+                          <ul className='ml-4 flex flex-col gap-2'>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Email in app support</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>10 users on your account</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Unlimited access</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Choose trainer</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Unlimited Diets</li>
+                          </ul>
+                          <div className="w-full flex items-center justify-center">
+                          <LogInAccessJr/>
+                          </div>
                         </div>
                       </div>
                   </div>
@@ -203,13 +227,20 @@ const Diets = () => {
                       <div 
                       style={{background:darkMode ? "#475E36":"#B2C9A1"}} 
                       class="circle"></div>
-                      <div class="card-inner">
-                        <div className="flex flex-col gap-4 mt-4 items-center">
-                          <h3 className='text-center font-bold text-2xl mt-4'>Free</h3>
-                          <p className='text-center'>Offers you a basic diet for beginners,including snacks and smoothies</p>
-                          <button 
-                          style={{width:"fit-content"}}
-                          className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} w-fit px-2 py-2`}>Show More</button>
+                       <div class="card-inner">
+                        <div className="flex flex-col gap-4 mt-4 items-start">
+                          <h3 className='text-center font-normal text-2xl mt-5 ml-4'>Enterprise</h3>
+                          <h1 className='text-start font-bold text-3xl ml-4'>$499 /<b className='font-normal text-sm'>month</b></h1>
+                          <ul className='ml-4 flex flex-col gap-2'>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Phone support</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Unlimited account users</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Unlimited access</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Choose 2+ trainer</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>10 free suplements</li>
+                          </ul>
+                          <div className="w-full flex items-center justify-center">
+                          <LogInAccessJr/>
+                          </div>
                         </div>
                       </div>
                   </div>
@@ -221,62 +252,101 @@ const Diets = () => {
                 <motion.div
                 initial={{opacity:0}}
                 whileInView={{opacity:1,transition:{
-                  duration:1,delay:0.3
+                  duration:1,delay:0.3, staggerChildren: 0.3
                 }}}
                 exit={{opacity:0,display:"none",transition:{
                   duration:0.5
                 }}}
                 viewport={{once:true}}
-                className="healthy">
-                    <h3 className='font-semibold text-xl text-center'>Mass Diet</h3>
-                    <h5 className='text-start font-semibold mt-8 ml-2 text-lg'>Tips</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - Cheat meals</li>
-                        <li> - Eat more than the avg wheight calories</li>
-                        <li> - Heavy Workout</li>
-                        <li> - Dairy products</li>
-                      </ul>
-                    </div>
-                    <h5 className='text-start font-semibold mt-4 ml-2 text-lg'>Foods</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - Eggs</li>
-                        <li> - Whole grains</li>
-                        <li> - Protein Foods</li>
-                        <li> - High carb foods</li>
-                      </ul>
-                    </div>
-                </motion.div>
-                }
-                </AnimatePresence>
-                <AnimatePresence>
-                {fat && 
-                <motion.div
-                initial={{opacity:0}}
-                whileInView={{opacity:1}}
-                exit={{opacity:0,display:"none"}}
-                viewport={{once:true}}
-                className="healthy">
-                    <h3 className='font-semibold text-xl text-center'>Lose Fat Diet</h3>
-                    <h5 className='text-start font-semibold mt-8 ml-2 text-lg'>Tips</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - Less high carb foods</li>
-                        <li> - 2 to 3 times breakfast</li>
-                        <li> - Choose high caloric workouts</li>
-                        <li> - More frequent workouts</li>
-                      </ul>
-                    </div>
-                    <h5 className='text-start font-semibold mt-4 ml-2 text-lg'>Foods</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - Salad</li>
-                        <li> - Beef meat</li>
-                        <li> - Patatoes</li>
-                        <li> - Rice</li>
-                      </ul>
-                    </div>
+                className="healthy flex flex-col md:flex-row justify-center md:justify-between gap-20 items-center">
+                    <div class="card2">
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}}
+                      class="circle2"><p 
+                      style={{color:darkMode ? "#E9F0E5":"#131A0F"}}
+                      className="text-center font-semibold mt-1">Basic</p></div>
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}} 
+                      class="circle" Icon={MdNoFood}></div>
+                         <div class="card-inner">
+                        <div className="flex flex-col gap-4 mt-4 items-start">
+                          <h3 className='text-center font-normal text-2xl mt-5 ml-4'>Enterprise</h3>
+                          <h1 className='text-start font-bold text-3xl ml-4'>$0 /<b className='font-normal text-sm'>month</b></h1>
+                          <ul className='ml-4 flex flex-col gap-2'>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Basic in app support</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>2 users in your account</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Limited Planprograms</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>1 free suplements</li>
+                            <li className='opacity-0'><DoneIcon sx={{marginRight:'5px'}}/></li>
+                          </ul>
+                          <div className="w-full flex items-center justify-center">
+                          <button 
+                          style={{width:"fit-content"}}
+                          className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} px-2 py-2`}>Show More</button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div style={{
+                    boxShadow:'box-shadow: 0px 2px 16px 4px rgba(178,201,161,0.75)'
+                  }} class="card2">
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}}
+                      class="circle2"><p 
+                      style={{color:darkMode ? "#E9F0E5":"#131A0F"}}
+                      className="text-center font-semibold mt-1">Pro</p></div>
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}} 
+                      class="circle"></div>
+                      <div class="card-inner">
+                        <div className="flex flex-col gap-4 mt-4 items-start">
+                          <h3 className='text-center font-normal text-2xl mt-5 ml-4'>Professional</h3>
+                          <h1 style={{
+                            color:darkMode ? "#475E36":"#B2C9A1"
+                          }} className='text-start font-bold text-3xl ml-4'>$49 /<b className='font-normal text-sm'>month</b></h1>
+                          <ul className='ml-4 flex flex-col gap-2'>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Email in app support</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>10 users on your account</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Unlimited access</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Choose Food as per liking</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>2 free suplements</li>
+                          </ul>
+                          <div className="w-full flex items-center justify-center">
+                          <button 
+                          style={{width:"fit-content"}}
+                          className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} px-2 py-2`}>Show More</button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="card2">
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}}
+                      class="circle2"><p 
+                      style={{color:darkMode ? "#E9F0E5":"#131A0F"}}
+                      className="text-center font-semibold mt-1">Basic2</p></div>
+                      <div 
+                      style={{background:darkMode ? "#475E36":"#B2C9A1"}} 
+                      class="circle"></div>
+                       <div class="card-inner">
+                        <div className="flex flex-col gap-4 mt-4 items-start">
+                          <h3 className='text-center font-normal text-2xl mt-5 ml-4'>Enterprise</h3>
+                          <h1 className='text-start font-bold text-3xl ml-4'>$499 /<b className='font-normal text-sm'>month</b></h1>
+                          <ul className='ml-4 flex flex-col gap-2'>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Phone support</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Unlimited account users</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Unlimited access</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>Choose 2+ trainer</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>10 free suplements</li>
+                          </ul>
+                          <div className="w-full flex items-center justify-center">
+                          <button 
+                          style={{width:"fit-content"}}
+                          className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} px-2 py-2`}>Show More</button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
                 </motion.div>
                 }
                 </AnimatePresence>
