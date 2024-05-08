@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { useDarkMode } from "./DarkModeContext";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import {AnimatePresence, motion} from 'framer-motion'
 const Navbar = () => {
 
     ///success message ///
@@ -53,14 +54,17 @@ const Navbar = () => {
     const [state, setState] = useState({
         right: false,
       });
-      const toggleDrawer = (anchor, open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-          return;
-        }
-    
-        setState({ ...state, [anchor]: open });
-      };
+      const [drawerOpen, setDrawerOpen] = useState(false);
 
+      const toggleDrawer = (open) => (event) => {
+          if (
+              event.type === 'keydown' &&
+              (event.key === 'Tab' || event.key === 'Shift')
+          ) {
+              return;
+          }
+          setDrawerOpen(open);
+      };
       const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
       const [password, setPassword] = useState(Cookies.get('password') || '');
       const [error,setError]=useState(false)
@@ -189,7 +193,7 @@ const Navbar = () => {
                     <a href="#clients"> <p className="font-semibold">Clients</p></a>
                 </div>
                 <div className="showi2 gap-2">
-                    <button  onClick={toggleDrawer('right', true)} className="mt-4">< MenuIcon sx={{ color:darkMode ? "#131A0F": "#FAFBF9"}}/></button>
+                    <button onClick={toggleDrawer(true)} className="mt-4">< MenuIcon sx={{ color:darkMode ? "#131A0F": "#FAFBF9"}}/></button>
                     <div className="nonomi2">
                   <button style={{backgroundColor:"transparent"
               ,display:darkMode ? "none":"block"
@@ -280,15 +284,42 @@ const Navbar = () => {
       </Alert>
         </Snackbar>
       }
-            <Drawer anchor="right" open={state.right} onClose={toggleDrawer('right', false)}>
-            <div className='flex flex-col gap-4 justify-center items-center'  style={{ width: 200}}>
-               <a className="mt-4" href="#about"><p className="font-semibold text-xl">About Us</p></a>
+            <AnimatePresence>
+            <Drawer anchor="right"  open={drawerOpen} onClose={toggleDrawer(false)}
+              transitionDuration={500} // Adjust the duration as needed
+              style={{ transition: 'transform 0.5s ease' }}
+              BackdropProps={{ style: { backdropFilter: 'blur(3px)' } }}
+            >
+            <motion.div 
+            initial={{opacity:0,scale:0}}
+            animate={{opacity:1,scale:1,transition:{
+             duration:0.5,staggerChildren:0.5,delay:0.5
+            }}}
+            exit={{opacity:0,scale:0,transition:{duration:0.5}}}
+            className='flex flex-col gap-8 justify-center items-end' onClick={toggleDrawer(false)}   style={{ width: '100%', height: '100%', transform: drawerOpen ? 'scale(1)' : 'scale(0)' }}>
+               <motion.a 
+               initial={{opacity:0,scale:0}}
+               animate={{opacity:1,scale:1,transition:{
+                delay:0
+               }}}
+               className="mt-4" href="#about"><p className="font-semibold ml-12 text-5xl md:text-6xl text-slate-200 transition-colors hover:text-rose">About Us</p></motion.a>
                <button onClick={handleOpen} className="bg-transparent -mt-3">
-                    <p className="font-semibold text-xl">Log In</p>
+                    <motion.p 
+                     initial={{opacity:0,scale:0}}
+                     animate={{opacity:1,scale:1,transition:{
+                      delay:0.2
+                     }}}
+                    className="font-semibold ml-12  text-5xl md:text-6xl text-slate-200 transition-colors hover:text-rose">Log In</motion.p>
                     </button>
-               <a href="#clients"><p className="font-semibold text-xl">Clients</p></a>
-            </div>
+               <motion.a
+                initial={{opacity:0,scale:0}}
+                animate={{opacity:1,scale:1,transition:{
+                  delay:0.4
+                }}}
+               href="#clients"><p className="font-semibold   text-5xl md:text-6xl text-slate-200 transition-colors hover:text-rose">Clients</p></motion.a>
+            </motion.div>
             </Drawer>
+            </AnimatePresence>
            
         </div>
      );

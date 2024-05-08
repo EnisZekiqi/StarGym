@@ -27,29 +27,38 @@ const Diets = () => {
   };
 
     const [healthy,setHealthy]=useState(false)
+    const [isHealthyHovered, setHealthyHovered] = useState(false);
+    const [isMassHovered, setMassHovered] = useState(false);
     const [mass,setMass]=useState(false)
-    const [fat,setFat]=useState(false)
+    
     
     const toggleHealthy =()=>{  ///toggle for healthy 
         setHealthy(prevMode =>!prevMode)
         setMass(false)
-        setFat(false)
+        setHealthyHovered(prevMode =>!prevMode);
+        setMassHovered(false);
     };
 ////////////
 
         const toggleMass =()=>{   /// toggle fros mass 
             setHealthy(false)
             setMass(prevMode =>!prevMode)
-            setFat(false)
+            setMassHovered(prevMode =>!prevMode);
+            setHealthyHovered(false);
         }
 //////////////
+const handleHealthyClick = () => {
+  setHealthyHovered(true);
+  setMassHovered(false);
+  // Call your function for Healthy
+};
 
+const handleMassClick = () => {
+  setMassHovered(true);
+  setHealthyHovered(false);
+  // Call your function for Mass
+};
 
-        const toggleFat = ()=>{     /// toggle fro fat
-            setHealthy(false)
-            setMass(false)
-            setFat(prevMode =>!prevMode)
-        }
  /////////////////
  const { darkMode } = useDarkMode();
  const { toggleDarkMode } = useDarkMode();
@@ -68,29 +77,32 @@ const Diets = () => {
            subtitle="Check offers"
            Icon={MdNoFood}
            onClick={toggleHealthy}
+           isHovered={isHealthyHovered}
          />
-         <Card onClick={toggleMass} title="Mass Diet" subtitle="Check offers" href="#" Icon={FaPizzaSlice} />
+         <Card onClick={toggleMass} isHovered={isMassHovered} title="Mass Diet" subtitle="Check offers" href="#" Icon={FaPizzaSlice} />
          
        </div>
      </div>
    );
  };
  
- const Card = ({ title, subtitle, Icon, href,onClick }) => {
+ const Card = ({ title, subtitle, Icon, href,onClick, isHovered  }) => {
   const { darkMode } = useDarkMode();
   const [healthy,setHealthy]=useState(false)
   
-  const gradientClass = darkMode ? "bg-gradient-to-r from-emerald to-emerald" : "bg-gradient-to-r from-cyan to-cyan";
-  const gradientColor = darkMode ? "text-emerald group-hover:text-pink" :"text-cyan group-hover:text-rose"
+  const gradientClassV2 = isHealthyHovered ?  "bg-gradient-to-r from-emerald to-emerald" : "bg-gradient-to-r from-cyan to-cyan"
+  const gradientClass = darkMode  ? "bg-gradient-to-r from-emerald to-emerald" : "bg-gradient-to-r from-cyan to-cyan";
+  const gradientColor = darkMode  ? "text-emerald group-hover:text-pink" :"text-cyan group-hover:text-rose"
+  
    return (
      <a
      onClick={onClick}
        style={{backgroundColor:darkMode? "#FAFBF9":"#050604"}}
-       className="w-full -mt-4 mb-8 p-4 rounded border-[1px] border-slate-300 relative overflow-hidden group"
+       className="w-full -mt-4 mb-8 p-4 rounded border-[1px]  border-slate-300 relative overflow-hidden group"
      >
        <div
        style={{backgroundColor:darkMode ?"#050604":"#FAFBF9"}}
-       className={`absolute inset-0 ${gradientClass} translate-y-[100%] group-hover:translate-y-[0%] transition-transform duration-300`}/>
+       className={`absolute inset-0 ${gradientClass}  translate-y-[100%] group-hover:translate-y-[0%] transition-transform duration-300`}/>
 
        <Icon
        style={{color:darkMode? "rgba(233, 240, 229,0.25)":"rgba(5, 6, 4,0.25)"}}
@@ -173,7 +185,7 @@ const Diets = () => {
                       class="circle" Icon={MdNoFood}></div>
                          <div class="card-inner">
                         <div className="flex flex-col gap-4 mt-4 items-start">
-                          <h3 className='text-center font-normal text-2xl mt-5 ml-4'>Enterprise</h3>
+                          <h3 className='text-center font-normal text-2xl mt-5 ml-4'>Baseline</h3>
                           <h1 className='text-start font-bold text-3xl ml-4'>$0 /<b className='font-normal text-sm'>month</b></h1>
                           <ul className='ml-4 flex flex-col gap-2'>
                             <li><DoneIcon sx={{marginRight:'5px'}}/>Basic in web support</li>
@@ -280,9 +292,7 @@ const Diets = () => {
                             <li className='opacity-0'><DoneIcon sx={{marginRight:'5px'}}/></li>
                           </ul>
                           <div className="w-full flex items-center justify-center">
-                          <button 
-                          style={{width:"fit-content"}}
-                          className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} px-2 py-2`}>Show More</button>
+                          <LogInAccessJr/>
                           </div>
                         </div>
                       </div>
@@ -312,9 +322,7 @@ const Diets = () => {
                             <li><DoneIcon sx={{marginRight:'5px'}}/>2 free suplements</li>
                           </ul>
                           <div className="w-full flex items-center justify-center">
-                          <button 
-                          style={{width:"fit-content"}}
-                          className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} px-2 py-2`}>Show More</button>
+                          <LogInAccessJr/>
                           </div>
                         </div>
                       </div>
@@ -337,12 +345,10 @@ const Diets = () => {
                             <li><DoneIcon sx={{marginRight:'5px'}}/>Unlimited account users</li>
                             <li><DoneIcon sx={{marginRight:'5px'}}/>Unlimited access</li>
                             <li><DoneIcon sx={{marginRight:'5px'}}/>Choose 2+ trainer</li>
-                            <li><DoneIcon sx={{marginRight:'5px'}}/>10 free suplements</li>
+                            <li><DoneIcon sx={{marginRight:'5px'}}/>5 free suplements</li>
                           </ul>
                           <div className="w-full flex items-center justify-center">
-                          <button 
-                          style={{width:"fit-content"}}
-                          className={`btnsign2  text-lg ${darkMode ? 'btnsign2' : 'btnsign3'} px-2 py-2`}>Show More</button>
+                          <LogInAccessJr/>
                           </div>
                         </div>
                       </div>
