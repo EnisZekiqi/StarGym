@@ -152,7 +152,7 @@ const handleMassClick = () => {
             </svg>
             </div>
             <h3 style={{color:darkMode ? "#131A0F":"#E9F0E5"}} className="font-extrabold text-xl">Diets</h3>
-            <div className="text-diet w-full md:w-1/2">
+            <div className="text-diet w-full md:w-2/5">
             <p style={{color:darkMode ? "#525252":"#525252"}} className="font-normal mb-2 text-lg text-center md:text-left"> Diets are important for your health and also for your fitness achivements , our diets are classified into some categories so you can achive the best result possible</p>
             </div>
            <motion.div
@@ -165,6 +165,17 @@ const handleMassClick = () => {
                 <AnimatePresence>
                 {healthy && 
                 <motion.div
+                initial={{opacity:0}}
+                whileInView={{opacity:1,transition:{
+                  duration:1,delay:0.3, staggerChildren: 0.3
+                }}}
+                exit={{opacity:0,display:"none",transition:{
+                  duration:0.5
+                }}}
+                viewport={{once:true}}
+                >
+                  <h1 className='text-center mb-10 font-bold text-3xl'>Healthy Diets</h1>
+                  <div
                 initial={{opacity:0}}
                 whileInView={{opacity:1,transition:{
                   duration:1,delay:0.3, staggerChildren: 0.3
@@ -256,6 +267,7 @@ const handleMassClick = () => {
                         </div>
                       </div>
                   </div>
+                </div>
                 </motion.div>
                 }
                 </AnimatePresence>
@@ -270,6 +282,9 @@ const handleMassClick = () => {
                   duration:0.5
                 }}}
                 viewport={{once:true}}
+                >
+                  <h1 className='text-center text-3xl font-bold mb-10'>Mass Diet</h1>
+                  <div
                 className="healthy flex flex-col md:flex-row justify-center md:justify-between gap-20 items-center">
                     <div class="card2">
                       <div 
@@ -353,6 +368,7 @@ const handleMassClick = () => {
                         </div>
                       </div>
                   </div>
+                </div>
                 </motion.div>
                 }
                 </AnimatePresence>

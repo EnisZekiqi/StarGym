@@ -166,20 +166,20 @@ const ExampleContent = () => {
           <div className="ex flex gap-4 items-center">
             <div 
             style={{backgroundColor:'#525252'}}
-            className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-2 md:py-3">
-             <p style={{color:"#E9F0E5"}} className="text-center">+16</p>
+            className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-4 md:py-3">
+             <p style={{color:"#E9F0E5"}} className="text-center  -mt-3 md:-mt-0">+16</p>
             </div>
-            <p className="font-normal text-lg">
+            <p className="font-semibold text-sm md:text-lg">
               Years of experience
             </p>
           </div>
           <div className="wok flex gap-4 items-center">
           <div 
           style={{backgroundColor:'#525252'}}
-          className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-1 md:py-3">
-             <p style={{color:"#E9F0E5"}} className="text-center">112</p>
+          className="rounded-xl h-1/2 md:h-full bg-neutral-600 font-bold w-1/3 px-1 py-4 md:py-3">
+             <p style={{color:"#E9F0E5"}} className="text-center -mt-3 md:-mt-0">112</p>
             </div>
-            <p className="font-normal text-lg">
+            <p className="font-semibold text-sm md:text-lg">
               Employees and Workers
             </p>
           </div>

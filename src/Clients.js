@@ -11,6 +11,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { useDarkMode } from "./DarkModeContext";
+import MenuIcon from '@mui/icons-material/Menu';
 const Clients = () => {
 
     const fade = {
@@ -496,5 +497,4 @@ const trigger7 =()=>{
         </motion.div>
      );
 }
- 
 export default Clients;

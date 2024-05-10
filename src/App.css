@@ -29,7 +29,32 @@ background-color: aliceblue;
 backdrop-filter: blur(4px);
 z-index: 999;
 }
-
+.hamburger{
+  display: none;
+}
+@media (max-width:764px) {
+  .hamburger{
+    display: block;
+    margin-right: 10px;
+  }
+}
+.backdropp {
+  position: fixed;
+  top: 0;
+  left: 0;
+  
+  z-index: 9998; /* Place the backdrop behind the drawer but on top of other content */
+}
+@media (max-width:350px) {
+  .cover{
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+  }
+}
+.emptyyy{
+  height: 30px;
+}
 .f{
   display: block;
 }

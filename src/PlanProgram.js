@@ -7,6 +7,8 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import PoolIcon from '@mui/icons-material/Pool';
 import RunCircleIcon from '@mui/icons-material/RunCircle';
 import { useDarkMode } from "./DarkModeContext";
+import personal from './images/home-personal-training@2x.jpg'
+import cardio from './images/home-cardio@2x.jpg'
 const Planprogram = () => {
 
 
@@ -82,138 +84,34 @@ const Planprogram = () => {
             </div>
             <h3 style={{color:darkMode ? "#131A0F":"#E9F0E5"}} className="font-extrabold text-xl">Planprogram</h3>
             <div className="text-diet w-full md:w-1/2">
-            <p style={{color:darkMode ? "#525252":"#525252"}} className="font-normal text-lg mb-2 text-center md:text-left"> With Planprogram you can achive results as increasing muscle mass , asthetic shape of the body and much more </p>
+            <p style={{color:darkMode ? "#525252":"#525252"}} className="font-normal text-lg mb-2 text-center w-full md:w-2/3 md:text-left"> With Planprogram you can achive results as increasing muscle mass , asthetic shape of the body and much more </p>
             </div>
-           <motion.div
-            
-           className="flex gap-0 md:gap-8  mt-8 md:mt-4">
-           <motion.div
-             whileHover={{ scale: 1.1 }}
-             whileTap={{
-                scale: 0.8,
-              }}
-            
-             onClick={toggleBb}
-           className="flex cursor-pointer flex-col rounded-md items-center gap-4 justify-center h-20 w-28">
-           <FitnessCenterIcon sx={{transform:"scale(1.3)" ,color:"#475E36"
-          , color:bb === darkMode ? "#6BA884":"#B2C9A1",
-          color :darkMode ? "#475E36" :"#B2C9A1"}} />
-           <p className='font-semibold'>BodyBuilding</p>
-           </motion.div>
-           <motion.div
-           onClick={toggleWeight}
-             whileHover={{ scale: 1.1 }}
-             whileTap={{
-                scale: 0.8,
-              }}
-              
-           className="flex cursor-pointer flex-col items-center rounded-md gap-4 justify-center h-20 w-28">
-           <RunCircleIcon sx={{transform:"scale(1.3)" ,color:"#475E36"  , color:weight ? "#57946F":"#475E36", color :darkMode ? "#475E36" :"#B2C9A1"}} />
-           <p className='font-semibold'>Weight Loss</p>
-           </motion.div>
-           <motion.div
-             whileHover={{ scale: 1.1 }}
-             whileTap={{
-                scale: 0.8,
-              }}
-             onClick={toggleSport}
-            
-           className="flex cursor-pointer flex-col items-center rounded-md gap-4 justify-center  h-20 w-28">
-           <PoolIcon sx={{transform:"scale(1.3)" ,color:"#475E36"  , color:sport ? "#57946F":"#475E36",color :darkMode ? "#475E36" :"#B2C9A1"}} />
-           <p className='font-semibold'>Sports</p>
-           </motion.div>
-           </motion.div>
+              <div className="turbna flex flex-col mt-8 justify-center items-center gap-20 ">
+                <div className="personal flex flex-col-reverse  md:flex-row-reverse gap-8 items-center">
+                <div className="flex flex-col items-end">
+                      <h1 className='font-semibold text-xl md:text-2xl text-center w-full md:w-1/2'>
+                        PERSONAL TRAINING
+                      </h1>
+                      <p  className='font-light text-xl md:text-lg text-center w-full md:w-1/2 mt-4'>
+                      Reach your fitness goals faster by working with one of our expert personal trainers. Your trainer will monitor your progress by accessing your profile through Kinective Live to create a customized, highly effective training experience
+                      </p>
+                  </div>
+                  <img className='cover rounded-md -mr-60' width="400px" height="400px" src={personal} alt="" />
+                </div>  
+                <div className="personal flex flex-col-reverse md:flex-row gap-8 items-center">
+                <div className="flex flex-col items-start ">
+                      <h1 className='font-semibold text-xl md:text-2xl text-center w-full md:w-1/2'>
+                      CARDIO & WEIGHT TRAINING
+                      </h1>
+                      <p  className='font-light text-xl md:text-lg text-center w-full md:w-1/2 mt-4'>
+                      Sync your heart rate monitor to Kinective Live and do your own thing in areas designated for free weights and app-connected Technogym selectorized and cardio machines
+                      </p>
+                  </div>
+                  <img className='cover rounded-md -ml-0 md:-ml-60 ' width="400px" height="400px" src={cardio} alt="" />
+                </div>  
+              </div>
            </div>
-            <div className="obeja mt-12 md:mt-0">
-                <AnimatePresence>
-                {bb && 
-                <motion.div
-                initial={{opacity:0}}
-                whileInView={{opacity:1}}
-                exit={{opacity:0,display:"none"}}
-                viewport={{once:true}}
-                className="healthy">
-                    <h3 className='font-semibold text-xl text-center'>BodyBuilding</h3>
-                    <h5 className='text-start font-semibold mt-8 ml-2 text-lg'>Do</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - For beginner 3 to 4 days workouts</li>
-                        <li> - Start with duable weights</li>
-                        <li> - Go with 12 reps and down to 10</li>
-                        <li> - Rest 40 seconds </li>
-                      </ul>
-                    </div>
-                    <h5 className='text-start font-semibold mt-4 ml-2 text-lg'>Do Not </h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - Push yourself in the beggining</li>
-                        <li> - Rest appropriate time </li>
-                        <li> - Eat meals in time </li>
-                        <li> - Do not train in empty stomach</li>
-                      </ul>
-                    </div>
-                </motion.div>
-                }
-                </AnimatePresence>
-                <AnimatePresence>
-                {weight && 
-                <motion.div
-                initial={{opacity:0}}
-                whileInView={{opacity:1}}
-                exit={{opacity:0,display:"none"}}
-                viewport={{once:true}}
-                className="healthy">
-                    <h3 className='font-semibold text-xl text-center'>Weight Loss</h3>
-                    <h5 className='text-start font-semibold mt-8 ml-2 text-lg'>Do</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - 5 times workout in a week</li>
-                        <li> - Focus more on cardio</li>
-                        <li> - Workout with high reps</li>
-                        <li> - Rest 30 seconds</li>
-                      </ul>
-                    </div>
-                    <h5 className='text-start font-semibold mt-4 ml-2 text-lg'>Do not</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - Avoid less time on workouts</li>
-                        <li> - Use appropriate meals</li>
-                        <li> - Not pushing yourself</li>
-                      </ul>
-                    </div>
-                </motion.div>
-                }
-                </AnimatePresence>
-                <AnimatePresence>
-                {sport && 
-                <motion.div
-                initial={{opacity:0}}
-                whileInView={{opacity:1}}
-                exit={{opacity:0,display:"none"}}
-                viewport={{once:true}}
-                className="healthy">
-                    <h3 className='font-semibold text-xl text-center'>Sports</h3>
-                    <h5 className='text-start font-semibold mt-8 ml-2 text-lg'>Do</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - Choose a favourite sport</li>
-                        <li> - Choose foods that are required</li>
-                        <li> - For weight loss use heavy sports</li>
-                        <li> - For mass gainer use actractive sports</li>
-                      </ul>
-                    </div>
-                    <h5 className='text-start font-semibold mt-4 ml-2 text-lg'>Do not</h5>
-                    <div className="flex flex-col">
-                      <ul className='ml-4 mt-1'>
-                        <li> - Choose a sport you don't like</li>
-                        <li> - Eat in time and appropiate meals</li>
-                        <li> - Choose safe sports</li>
-                      </ul>
-                    </div>
-                </motion.div>
-                }
-                </AnimatePresence>
-            </div>
+            
         </motion.div>
      );
 }
