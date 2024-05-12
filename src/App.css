@@ -52,6 +52,33 @@ z-index: 999;
     object-fit: cover;
   }
 }
+.darkModevogel{
+  display: none;
+}
+@media (max-width:640px) {
+  .darkModevogel{
+    display: flex;
+  }
+  .nonomi4{
+    display: none;
+  }
+}
+.fonk{
+  display: none;
+}
+@media (max-width:764px) {
+  .fonk{
+    display: flex;
+  }
+  .fonkJr{
+    display: none;
+  }
+}
+@media (max-width:510px) {
+  .avas{
+    display: none;
+  }
+}
 .emptyyy{
   height: 30px;
 }
@@ -89,6 +116,7 @@ z-index: 999;
     display: block !important;
   }
 }
+
 .nonomi2{
   display: none;
 }
