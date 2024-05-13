@@ -14,6 +14,10 @@ import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { MdOutlineDarkMode } from "react-icons/md";
 import { MdOutlineLightMode } from "react-icons/md";
+import { useSuccessMessage } from './SuccessMessageContext';
+import { FiLogOut } from "react-icons/fi";
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import {
   FiEdit,
   FiChevronDown,
@@ -86,7 +90,6 @@ const Main = () => {
             ) : ""
             }
           </div>
-          <FadeMenu/>
           <div className="flex flex-col">
           <div className=" flex items-center justify-center bg-white">
       <motion.div animate={open ? "open" : "closed"} className="relative" ref={dropdownRef}>
@@ -103,30 +106,30 @@ const Main = () => {
         <motion.ul
           initial={wrapperVariants.closed}
           variants={wrapperVariants}
-          style={{ originY: "top", translateX: "-50%", border: darkMode ? "0.5px solid rgba(5, 6, 4,0.7)" : "0.5px solid rgba(250, 251, 249,0.7)" }}
-          className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl absolute top-[120%] left-[50%] w-46 -ml-4 overflow-hidden"
+          style={{ originY: "top", translateX: "-50%", border: darkMode ? "0.5px solid rgba(5, 6, 4,0.7)" : "0.5px solid rgba(250, 251, 249,0.7)",backgroundColor:darkMode? "rgba(250, 251, 249)":"rgba(5, 6, 4)" }}
+          className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl z-50 absolute top-[120%] left-[50%] w-46 -ml-4 overflow-hidden"
         >
          <div onClick={toggleEdit}>
          <Option setOpen={setOpen} Icon={FiEdit} text="Edit"  />
          </div>
           <Option setOpen={setOpen} Icon={FiPlusSquare} text="Duplicate" />
           <Option setOpen={setOpen} Icon={FiShare} text="Share" />
-          <Option setOpen={setOpen} Icon={FiTrash} text="Remove" />
           <motion.div
             variants={itemVariants}
           className="darkModevogel">
-          <div className="flex gap-2">
-          <button className="text-xs font-medium whitespace-nowrap" style={{ backgroundColor: "transparent", display: darkMode ? "none" : "block",marginLeft:'5px' }} onClick={handleClick}><MdOutlineLightMode  sx={{ color: "#FAFBF9" }} /></button>
+          <div onClick={handleClick} className="flex gap-2 cursor-pointer">
+          <button className="text-xs font-medium whitespace-nowrap" style={{ backgroundColor: "transparent", display: darkMode ? "none" : "block",marginLeft:'5px' }} ><MdOutlineLightMode  sx={{ color: "#FAFBF9" }} /></button>
           <p style={{ backgroundColor: "transparent", display: darkMode ? "none" : "block" }} className="text-xs font-medium whitespace-nowrap">Light Mode</p>
           </div>
             {darkMode ? (
-              <div className="flex gap-2">
+              <div onClick={handleClick} className="flex gap-2 cursor-pointer">
                 <button className="text-xs font-medium whitespace-nowrap" style={{ backgroundColor: "transparent",marginLeft:'5px' }} onClick={handleClick}><MdOutlineDarkMode  sx={{ color: "#050604" }} /></button>
                 <p style={{ backgroundColor: "transparent" }} className="text-xs font-medium whitespace-nowrap">Dark Mode</p>
               </div>
             ) : ""
             }
           </motion.div>
+          <Option setOpen={setOpen} Icon={FiLogOut} text="Log Out" />
         </motion.ul>
       </motion.div>
     </div>
@@ -282,8 +285,8 @@ const ThreeMenu = ()=>{
     <motion.ul
       initial={wrapperVariants.closed}
       variants={wrapperVariants}
-      style={{ originY: "top", translateX: "-50%", border: darkMode ? "0.5px solid rgba(5, 6, 4,0.7)" : "0.5px solid rgba(250, 251, 249,0.7)" }}
-      className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl absolute top-[120%] left-[50%] w-50 overflow-hidden"
+      style={{ originY: "top", translateX: "-50%", border: darkMode ? "0.5px solid rgba(5, 6, 4,0.7)" : "0.5px solid rgba(250, 251, 249,0.7)",backgroundColor:darkMode? "rgba(250, 251, 249)":"rgba(5, 6, 4)" }}
+      className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl z-50 absolute top-[120%] left-[50%] w-50 overflow-hidden"
     >
             <motion.li
           variants={itemVariants}
@@ -324,6 +327,7 @@ const EditProfile = () =>{
   const { darkMode } = useDarkMode()
   const avatarURL = Cookies.get('avatar');
   const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
+  const [password, setPassword] = useState(Cookies.get('password') || '');
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -362,9 +366,86 @@ const EditProfile = () =>{
       }
   }));
 
+  const [newNickname,setNewNickname]=useState(false)
+  const [newNicknameValue, setNewNicknameValue] = useState('')
+  const [description,setDescription]=useState('No description yet')
+  const [newDescription,setNewDescription]=useState('')
+
+  const ClickNickname = ()=>{
+  setNewNickname(prevMode => !prevMode)
+  }
+  const ClickDesciption =()=>{
+    setNewDescription(prevMode => !prevMode)
+  }
+  const handleDescriptionChange = (e) => {
+    setNewDescription(e.target.value);
+  };
+const handleNewNicknameChange = (e) => {
+  setNewNicknameValue(e.target.value);
+};
+
+
+const [fillMessage,setFillMessage]=useState(false)
+const [filledSuccess,setFilledSuccess]=useState(false)
+const[filledDescription,setFilledDescription]=useState(false)
+
+const saveNewNickname = () => {
+  setNickname(newNicknameValue); // Update nickname with new value 
+  if(newNicknameValue.trim() === ''){
+    setFillMessage(true)
+    setNickname(nickname)
+    setOpen1(true)
+    setTimeout(() => {
+      setFillMessage(false)
+    }, 3000);
+  }else{
+    setFilledSuccess(true)
+    setOpen1(true)
+    setTimeout(() => {
+      setFilledSuccess(false)
+    }, 3000);
+  }
+};
+
+const saveDescription = () => {
+  if (newDescription.trim() === '') {
+    setFillMessage(true); // Show fill message error
+    setTimeout(() => {
+      setFillMessage(false);
+    }, 3000);
+  } else {
+    setDescription(newDescription); // Update description
+    setFilledSuccess(true); // Show success filled message
+    setTimeout(() => {
+      setFilledSuccess(false);
+    }, 3000);
+  }
+  setNewDescription(''); // Clear new description input
+};
+
+const [open1, setOpen1] = useState(false);
+const handleClose1 = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen1(false);
+  };
+
+  const handleNicknameChange = (e) => {
+    setNickname(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const inputSwitch = darkMode ? "input-wrapper2":"input-wrapper3"
+  const buttonSwitch =darkMode ? "btnsign":"btnsign3"
+
   return(
     <div>
-      <div className="flex gap-8 items-center ml-4 justify-center ">
+      <div className="flex gap-8 items-center ml-0 md:ml-6 justify-center md:justify-start ">
      <div>
      <div id="defaultAvatar"  className="avatar flex text-center justify-center mt-4 font-semibold text-3xl">
           <Avatar sx={{scale:1.5}} style={{width:150,height:150}} src={file} />
@@ -385,17 +466,122 @@ const EditProfile = () =>{
             <div className="flex flex-col gap-2">
              <div className="flex items-center ml-4"> 
              <h3 className="font-semibold text-2xl">{nickname}</h3> 
-             <div style={{
+            <a href="#nickname">
+            <div style={{
                backgroundColor: darkMode ? 'rgba(5, 6, 4, 0.85)' : 'rgba(250, 251, 249, 0.85)',
                color: darkMode ? '#FAFBF9' : '#050604'
              }} className=" ml-4 cursor-pointer p-2 rounded-lg"><FiEdit/></div>
+            </a>
              </div>
-             <p className="font-normal text-md">No description yet</p>
+             <p className="font-normal text-md">{description}</p>
             </div>
       </div>
-      <div className="flex flex-col">
-      
+      <div className="flex flex-col mt-12 justify-center md:justify-start gap-4">
+             <h3 className="font-bold text-xl md:text-2xl text-center md:text-start">Account Information</h3>
+             <p className="font-light text-sm text-center md:text-start">Click on the information to apply changes</p>
+             <div className="flex flex-col items-center md:flex-row justify-evenly mt-8">
+             <div className="flex flex-col gap-2 items-center">
+            <div className="flex gap-1 ">
+            {newNickname && <p className="font-medium text-md md:text-lg text-center md:text-start">Old</p>}
+              <p className="font-medium text-md md:text-lg text-center md:text-start"> Nickname</p>
+            </div>
+             <div onClick={ClickNickname} id="nickname" class={` ${inputSwitch} text-center md:text-start w-fit`}>
+              <input  type="text" placeholder="Nickname" value={nickname}  name="text" class="input"/>
+            </div>
+                  {newNickname && (
+            <div className="mt-4 items-center">
+              <p className="font-medium text-md md:text-lg text-center md:text-start">New Nickname</p>
+              <div className={` ${inputSwitch} text-center md:text-start`}>
+                <input  
+                  type="text" 
+                  placeholder="Nickname" 
+                  value={newNicknameValue} // Use newNicknameValue state
+                  onChange={handleNewNicknameChange} 
+                  name="text" 
+                  className="input mt-2"
+                />
+              </div>
+             <div className="flex gap-4 mt-7 items-center justify-center md:justify-stretch">
+              <button className={`${buttonSwitch} p-2.5`} onClick={ClickNickname}>Cancle</button>
+             <button className={`${buttonSwitch} p-2.5`} onClick={saveNewNickname}>Save</button>
+              </div> {/* Add a button to save the new nickname */}
+            </div>
+          )}
+             </div>
+             <div style={{backgroundColor: darkMode ? "rgba(5, 6, 4,0.7)":"rgba(250, 251, 249, 0.75)"}} className="vizorja flex items-center"></div>
+             <div className="flex flex-col gap-2 mt-8 md:mt-0">
+             <p className="font-medium text-md md:text-lg text-center">Password</p>
+             <div id="nickname" class={` ${inputSwitch} text-center md:text-start `}>
+              <input  type="password" placeholder="Password" value={password}  name="text" class="input"/>
+            </div>
+             </div>
+             <div style={{backgroundColor: darkMode ? "rgba(5, 6, 4,0.7)":"rgba(250, 251, 249, 0.75)"}} className="vizorja2 flex items-center"></div>
+             <div className="flex flex-col gap-2 mt-8 md:mt-0 items-center">
+             <p className="font-medium text-md md:text-lg text-center">Description</p>
+             <div onClick={ClickDesciption} id="nickname" value={newDescription} 
+        onChange={handleDescriptionChange}  class={` ${inputSwitch} text-center md:text-start `}>
+              <input type="text" placeholder="Description"   name="text" class="input"/>
+             {newDescription && 
+              <div className="flex gap-4 mt-7 items-center justify-center md:justify-stretch">
+              <button className={`${buttonSwitch} p-2.5`} onClick={ClickDesciption}>Cancle</button>
+             <button className={`${buttonSwitch} p-2.5`} onClick={saveDescription}>Save</button>
+              </div> 
+             }
+            </div>
+             </div>
+             </div>
       </div>
+      {fillMessage && 
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="error"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Fill the empty field </p>
+      </Alert>
+        </Snackbar>
+      }
+      {filledSuccess && 
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="success"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>NickName changed successfully </p>
+      </Alert>
+        </Snackbar>
+      }
+      {filledDescription && 
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="success"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Description added successfully </p>
+      </Alert>
+        </Snackbar>
+      }
     </div>
   )
 }

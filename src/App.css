@@ -734,6 +734,18 @@ border-radius: 10px;
 .input-wrapper2 input:focus {
   outline-color: #475E36;
 }
+.input-wrapper3 input{
+  background-color: #050604;
+  border: none;
+  padding: 10px;
+  font-size: 1rem;
+  width: 13em;
+  border-radius: 1rem;
+  color: #B2C9A1;
+  box-shadow: 0 0.4rem #94b57d;
+  border: 1px solid #131A0F;
+  cursor: pointer;
+}
 
 .avatar{
   border-radius: 50%;
@@ -859,6 +871,29 @@ z-index: 998
 .btnsign3:hover{
   background-color: #FAFBF9;
   color: #050604;
+}
+.vizorja{
+  width: 1px;
+  height: 300px;
+  border-radius: 50%;
+
+}
+.vizorja2{
+  width: 1px;
+  height: 300px;
+  border-radius: 50%;
+}
+@media (max-width:768px) {
+  .vizorja{
+    height: 1px;
+    width: 300px;
+    margin-top: 40px;
+  }
+  .vizorja2{
+    height: 1px;
+    width: 300px;
+    margin-top: 40px;
+  }
 }
 .colli{
   background-image: url(images/Login.svg);
