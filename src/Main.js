@@ -17,6 +17,7 @@ import { MdOutlineLightMode } from "react-icons/md";
 import { useSuccessMessage } from './SuccessMessageContext';
 import { FiLogOut } from "react-icons/fi";
 import Alert from '@mui/material/Alert';
+import { useAvatarImage } from './AvatarImageContext';
 import Snackbar from '@mui/material/Snackbar';
 import {
   FiEdit,
@@ -31,7 +32,14 @@ const Main = () => {
   const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
   const avatarURL = Cookies.get('avatar');
   const { darkMode } = useDarkMode()
+const [fileURL, setFileURL] = useState('');
 
+useEffect(() => {
+  const savedFileURL = localStorage.getItem('selectedImageURL');
+  if (savedFileURL) {
+    setFileURL(savedFileURL); // Set the file URL state with the saved image URL
+  }
+}, []); 
 //////edit profile
   const [edit, setEdit] = useState(false);
   const [xs,setXs]=useState(true)
@@ -55,14 +63,13 @@ const Main = () => {
       setOpen(false);
     }
   };
-
+  const { avatarImageURL } = useAvatarImage();
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
   return (
     <div
       style={{
@@ -134,7 +141,7 @@ const Main = () => {
       </motion.div>
     </div>
           </div>
-         <div className="avas"> <Avatar sx={{ marginRight: "5px" }}> {avatarURL && <img src={avatarURL} alt="Avatar" />}</Avatar></div>
+         <div className="avas"> <Avatar sx={{ marginRight: "5px" }} src={fileURL}></Avatar></div>
         </div>
       </div>
      <div className="mt-24 container mx-auto px-4">
@@ -341,20 +348,45 @@ const EditProfile = () =>{
     width: 1,
   });
 
-  const[file,setFile]=useState(null)
-  const targetFile =(e)=>{
-    const selectedFile = e.target.files[0]; // Get the selected file
+  const [file, setFile] = useState('');
+  const [fileURL, setFileURL] = useState('');
 
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const avatarDataURL = reader.result;
-        setFile(avatarDataURL);
-        Cookies.set('avatar', avatarDataURL); // Store the avatar image URL in cookies
-      };
-      reader.readAsDataURL(selectedFile);
+  useEffect(() => {
+    const savedFileURL = localStorage.getItem('selectedImageURL');
+    if (savedFileURL) {
+      setFileURL(savedFileURL); // Set the file URL state with the saved image URL
     }
-  }
+  }, []); ///////////// localstorage for avatar 
+
+  useEffect(() => {
+    const savedDescription = Cookies.get('description');
+    if (savedDescription) {
+      setDescription(savedDescription);
+    } else {
+      setDescription('No description yet');
+    }
+  }, []);// This useEffect runs only once after the component mounts
+
+
+    const targetFile = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const imageURL = e.target.result;
+      setFileURL(imageURL); // Set the file URL state with the selected image URL
+      localStorage.setItem('selectedImageURL', imageURL); // Store the selected image URL in local storage
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const { setAvatarImageURL } = useAvatarImage();
+
+  // Set the avatar image URL
+  const handleImageChange = (imageURL) => {
+    setAvatarImageURL(imageURL);
+  };
+
+
   const ColorButton = styled(Button)(({ theme,darkMode }) => ({
     backgroundColor: darkMode ? 'rgba(5, 6, 4, 0.85)' : 'rgba(250, 251, 249, 0.85)',
     color: darkMode ? '#FAFBF9' : '#050604', // Text color
@@ -366,28 +398,30 @@ const EditProfile = () =>{
       }
   }));
 
-  const [newNickname,setNewNickname]=useState(false)
+  const [newNickname,setNewNickname]=useState(false)  
   const [newNicknameValue, setNewNicknameValue] = useState('')
-  const [description,setDescription]=useState('No description yet')
-  const [newDescription,setNewDescription]=useState('')
+  const [description,setDescription]=useState('') /// default description
+  const [newDescription,setNewDescription]=useState('')   ///// new description 
+  const [newDescriptionValue,setNewDescriptionValue]=useState(false)   /// showing input for new descriptiom
 
   const ClickNickname = ()=>{
   setNewNickname(prevMode => !prevMode)
-  }
+  }      ///// function for showing the input for new nickname 
   const ClickDesciption =()=>{
-    setNewDescription(prevMode => !prevMode)
-  }
+    setNewDescriptionValue(prevMode => !prevMode)
+  }  ///// function for showing the input for new description  
   const handleDescriptionChange = (e) => {
     setNewDescription(e.target.value);
-  };
+  };   //////////// onchange for description 
 const handleNewNicknameChange = (e) => {
   setNewNicknameValue(e.target.value);
-};
+};      //////////// onchange for nickname 
 
-
-const [fillMessage,setFillMessage]=useState(false)
-const [filledSuccess,setFilledSuccess]=useState(false)
-const[filledDescription,setFilledDescription]=useState(false)
+ 
+const [fillMessage,setFillMessage]=useState(false)   /////// fill out error message 
+const [filledSuccess,setFilledSuccess]=useState(false)   ////// filled successfully for nickname
+const[filledDescription,setFilledDescription]=useState(false)   ///////// filled successfully for description
+const [maxFilled,setMaxFilled]=useState(false)
 
 const saveNewNickname = () => {
   setNickname(newNicknameValue); // Update nickname with new value 
@@ -404,23 +438,39 @@ const saveNewNickname = () => {
     setTimeout(() => {
       setFilledSuccess(false)
     }, 3000);
+    Cookies.set('nickname', newNicknameValue, { expires: 365 });
   }
-};
+}; 
 
 const saveDescription = () => {
+  setDescription(newDescription)
   if (newDescription.trim() === '') {
+    setDescription('No description yet')
+    setOpen1(true)
+    setMaxFilled(false)
     setFillMessage(true); // Show fill message error
     setTimeout(() => {
       setFillMessage(false);
     }, 3000);
-  } else {
-    setDescription(newDescription); // Update description
-    setFilledSuccess(true); // Show success filled message
+  } else if (newDescription.length > 15){
+    setOpen1(true)
+    setDescription('No description yet'); // Update description
+    setFilledDescription(false); // Show success filled message
+    setMaxFilled(true); // Show max filled message error
     setTimeout(() => {
-      setFilledSuccess(false);
+      setMaxFilled(false);
     }, 3000);
   }
-  setNewDescription(''); // Clear new description input
+  else{
+    setOpen1(true)
+    setDescription(newDescription); // Update description
+    setFilledDescription(true); // Show success filled message
+    setTimeout(() => {
+      setFilledDescription(false);
+    }, 3000)
+    Cookies.set('description', newDescription, { expires: 365 });
+    localStorage.setItem('description', newDescription)
+  }
 };
 
 const [open1, setOpen1] = useState(false);
@@ -448,7 +498,7 @@ const handleClose1 = (event, reason) => {
       <div className="flex gap-8 items-center ml-0 md:ml-6 justify-center md:justify-start ">
      <div>
      <div id="defaultAvatar"  className="avatar flex text-center justify-center mt-4 font-semibold text-3xl">
-          <Avatar sx={{scale:1.5}} style={{width:150,height:150}} src={file} />
+          <Avatar sx={{scale:1.5}} style={{width:150,height:150}} src={fileURL} />
           </div>
             <div className="flex -ml-6 ">
                <ColorButton
@@ -501,7 +551,7 @@ const handleClose1 = (event, reason) => {
                   className="input mt-2"
                 />
               </div>
-             <div className="flex gap-4 mt-7 items-center justify-center md:justify-stretch">
+             <div className="flex gap-4 mt-7 items-center justify-center ">
               <button className={`${buttonSwitch} p-2.5`} onClick={ClickNickname}>Cancle</button>
              <button className={`${buttonSwitch} p-2.5`} onClick={saveNewNickname}>Save</button>
               </div> {/* Add a button to save the new nickname */}
@@ -518,14 +568,26 @@ const handleClose1 = (event, reason) => {
              <div style={{backgroundColor: darkMode ? "rgba(5, 6, 4,0.7)":"rgba(250, 251, 249, 0.75)"}} className="vizorja2 flex items-center"></div>
              <div className="flex flex-col gap-2 mt-8 md:mt-0 items-center">
              <p className="font-medium text-md md:text-lg text-center">Description</p>
-             <div onClick={ClickDesciption} id="nickname" value={newDescription} 
-        onChange={handleDescriptionChange}  class={` ${inputSwitch} text-center md:text-start `}>
-              <input type="text" placeholder="Description"   name="text" class="input"/>
-             {newDescription && 
-              <div className="flex gap-4 mt-7 items-center justify-center md:justify-stretch">
-              <button className={`${buttonSwitch} p-2.5`} onClick={ClickDesciption}>Cancle</button>
-             <button className={`${buttonSwitch} p-2.5`} onClick={saveDescription}>Save</button>
-              </div> 
+             <div  id="nickname" class={` ${inputSwitch} text-center md:text-start `}>
+              <input onClick={ClickDesciption}  value={description}  type="text" placeholder="Description"   name="text" class="input"/>
+             {newDescriptionValue && 
+               <div className="mt-4 items-center">
+               <p className="font-medium text-md md:text-lg text-center">New Description</p>
+               <div className={` ${inputSwitch} text-center md:text-start`}>
+                 <input  
+                   type="text" 
+                   placeholder="Description" 
+                   value={newDescription} // Use newNicknameValue state
+                   onChange={handleDescriptionChange} 
+                   name="text" 
+                   className="input mt-2"
+                 />
+               </div>
+              <div className="flex gap-4 mt-7 items-center justify-center ">
+               <button className={`${buttonSwitch} p-2.5`} onClick={ClickDesciption}>Cancle</button>
+              <button className={`${buttonSwitch} p-2.5`} onClick={saveDescription}>Save</button>
+               </div> {/* Add a button to save the new nickname */}
+             </div>
              }
             </div>
              </div>
@@ -581,6 +643,24 @@ const handleClose1 = (event, reason) => {
       <p>Description added successfully </p>
       </Alert>
         </Snackbar>
+      }
+      {maxFilled && 
+        <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="error"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Must have 15 letters max </p>
+      </Alert>
+        </Snackbar>
+        
       }
     </div>
   )
