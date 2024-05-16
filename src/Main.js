@@ -45,7 +45,7 @@ useEffect(() => {
   const [xs,setXs]=useState(true)
   const toggleEdit = () => {
     setEdit(prevMode => !prevMode);
-    setXs(false)
+    setXs(prevMode => !prevMode)
   };
 ///////////////////
 
@@ -136,12 +136,12 @@ useEffect(() => {
             ) : ""
             }
           </motion.div>
-          <Option setOpen={setOpen} Icon={FiLogOut} text="Log Out" />
+         <a href="/"> <Option setOpen={setOpen} Icon={FiLogOut} text="Log Out" /></a>
         </motion.ul>
       </motion.div>
     </div>
           </div>
-         <div className="avas"> <Avatar sx={{ marginRight: "5px" }} src={fileURL}></Avatar></div>
+         <div className="avas cursor-pointer"> <Avatar  onClick={toggleEdit} sx={{ marginRight: "5px" }} src={fileURL}></Avatar></div>
         </div>
       </div>
      <div className="mt-24 container mx-auto px-4">
@@ -155,7 +155,6 @@ useEffect(() => {
       }
       </div>
       
-      <div className="empty"></div>
       <div className="empty"></div>
       <div className="empty"></div>
     </div>
@@ -398,18 +397,41 @@ const EditProfile = () =>{
       }
   }));
 
-  const [newNickname,setNewNickname]=useState(false)  
-  const [newNicknameValue, setNewNicknameValue] = useState('')
+  const [newNickname,setNewNickname]=useState(false)  //// showing newNickname input
+  const [newNicknameValue, setNewNicknameValue] = useState('') //// newNickname input 
   const [description,setDescription]=useState('') /// default description
   const [newDescription,setNewDescription]=useState('')   ///// new description 
   const [newDescriptionValue,setNewDescriptionValue]=useState(false)   /// showing input for new descriptiom
+  const[newPassword,setNewPassword]=useState(false)  /// new password input 
+  const[newPasswordValue,setNewPasswordValue]=useState('')  //// new password input
+  const [writeOldPassword,setWriteOldPassword]=useState('')
 
   const ClickNickname = ()=>{
   setNewNickname(prevMode => !prevMode)
   }      ///// function for showing the input for new nickname 
+
+  const ClickNicknamev2 = ()=>{
+    setNewNickname(true)
+     ////// function for clicking the input to show the new nickname
+  }
   const ClickDesciption =()=>{
     setNewDescriptionValue(prevMode => !prevMode)
   }  ///// function for showing the input for new description  
+
+  const ClickDescriptionv2 =()=>{
+    setNewDescriptionValue(true)
+    ///// function for clicking the input to show the new description
+  }
+
+  const ClickPassword = ()=>{
+    setNewPassword(prevMode => !prevMode)
+    ////// function for showing the input for new password 
+  }
+  const ClickPasswordv2 = ()=>{
+    setNewPassword(true)
+     ////// function for clicking the input to show the new password
+  }
+
   const handleDescriptionChange = (e) => {
     setNewDescription(e.target.value);
   };   //////////// onchange for description 
@@ -417,11 +439,22 @@ const handleNewNicknameChange = (e) => {
   setNewNicknameValue(e.target.value);
 };      //////////// onchange for nickname 
 
+const handleNewPasswordChange = (e)=>{
+  setNewPasswordValue(e.target.value)
+  /////// onchange for password
+}
+
+const handleOldPassword= (e)=>{
+  setWriteOldPassword(e.target.value)
+}
  
 const [fillMessage,setFillMessage]=useState(false)   /////// fill out error message 
 const [filledSuccess,setFilledSuccess]=useState(false)   ////// filled successfully for nickname
 const[filledDescription,setFilledDescription]=useState(false)   ///////// filled successfully for description
-const [maxFilled,setMaxFilled]=useState(false)
+const [maxFilled,setMaxFilled]=useState(false) ///////// maximum 15 letters error
+const [maxFilled2,setMaxFilled2]=useState(false) ////// maximum 8 letters error 
+const [filledPassword,setFilledPassword]=useState(false) ////// fuilled successfully for password
+const[correctOldPassword,setCorrectOldPassword]=useState(false)
 
 const saveNewNickname = () => {
   setNickname(newNicknameValue); // Update nickname with new value 
@@ -472,6 +505,55 @@ const saveDescription = () => {
     localStorage.setItem('description', newDescription)
   }
 };
+
+const savePassword = () => {
+  // Check if the new password is empty
+  if (newPasswordValue.trim() === '') {
+    setFillMessage(true);
+    setOpen1(true);
+    setTimeout(() => {
+      setFillMessage(false);
+    }, 3000);
+    return; // Exit the function if the new password is empty
+  }
+
+  // Check if the new password has at least 8 characters
+  if (newPasswordValue.length < 8) {
+    setMaxFilled2(true);
+    setOpen1(true);
+    setFilledPassword(false);
+    setTimeout(() => {
+      setMaxFilled2(false);
+    }, 3000);
+    return; // Exit the function if the new password has less than 8 characters
+  }
+
+  // Check if the old password is correct
+  if (writeOldPassword !== password) {
+    setCorrectOldPassword(true);
+    setFillMessage(false)
+    setOpen1(true);
+    setTimeout(() => {
+      setCorrectOldPassword(false);
+    }, 3000);
+    return; // Exit the function if the old password is incorrect
+  }
+
+  // Update the password if all conditions are met
+  setPassword(newPasswordValue);
+
+  // Show success message
+  setFilledPassword(true);
+  setOpen1(true);
+  setTimeout(() => {
+    setFilledPassword(false);
+  }, 3000);
+
+  // Save the new password to cookies
+  Cookies.set('password', newPasswordValue, { expires: 365 });
+};
+
+
 
 const [open1, setOpen1] = useState(false);
 const handleClose1 = (event, reason) => {
@@ -526,21 +608,21 @@ const handleClose1 = (event, reason) => {
              <p className="font-normal text-md">{description}</p>
             </div>
       </div>
-      <div className="flex flex-col mt-12 justify-center md:justify-start gap-4">
+      <div className="flex flex-col mt-20 justify-center md:justify-start gap-4">
              <h3 className="font-bold text-xl md:text-2xl text-center md:text-start">Account Information</h3>
              <p className="font-light text-sm text-center md:text-start">Click on the information to apply changes</p>
              <div className="flex flex-col items-center md:flex-row justify-evenly mt-8">
              <div className="flex flex-col gap-2 items-center">
-            <div className="flex gap-1 ">
+            <div className="flex gap-1 items-center">
             {newNickname && <p className="font-medium text-md md:text-lg text-center md:text-start">Old</p>}
               <p className="font-medium text-md md:text-lg text-center md:text-start"> Nickname</p>
             </div>
-             <div onClick={ClickNickname} id="nickname" class={` ${inputSwitch} text-center md:text-start w-fit`}>
+             <div onClick={ClickNicknamev2} id="nickname" class={` ${inputSwitch} text-center md:text-start w-fit`}>
               <input  type="text" placeholder="Nickname" value={nickname}  name="text" class="input"/>
             </div>
                   {newNickname && (
             <div className="mt-4 items-center">
-              <p className="font-medium text-md md:text-lg text-center md:text-start">New Nickname</p>
+              <p className="font-medium text-md md:text-lg text-center ">New Nickname</p>
               <div className={` ${inputSwitch} text-center md:text-start`}>
                 <input  
                   type="text" 
@@ -559,19 +641,43 @@ const handleClose1 = (event, reason) => {
           )}
              </div>
              <div style={{backgroundColor: darkMode ? "rgba(5, 6, 4,0.7)":"rgba(250, 251, 249, 0.75)"}} className="vizorja flex items-center"></div>
-             <div className="flex flex-col gap-2 mt-8 md:mt-0">
-             <p className="font-medium text-md md:text-lg text-center">Password</p>
-             <div id="nickname" class={` ${inputSwitch} text-center md:text-start `}>
-              <input  type="password" placeholder="Password" value={password}  name="text" class="input"/>
+             <div className="flex flex-col gap-2 mt-8 md:mt-0 items-center">
+           
+             <div className="flex gap-1 items-center">
+            {newPassword && <p className="font-medium text-md md:text-lg  md:text-start ">Old</p>}
+              <p className="font-medium text-md md:text-lg text-center  md:text-start"> Password</p>
             </div>
+          
+             <div onClick={ClickPasswordv2} id="nickname" class={` ${inputSwitch} text-center md:text-start `}>
+              <input  type={newPassword ? "text" :"password"} placeholder="Password" onChange={newPassword ? handleOldPassword : null} value={newPassword ? writeOldPassword : password}  name="text" class="input"/>
+            </div>
+            {newPassword && (
+            <div className="mt-4 items-center">
+              <p className="font-medium text-md md:text-lg text-center ">New Password</p>
+              <div className={` ${inputSwitch} text-center md:text-start`}>
+                <input  
+                  type="text" 
+                  placeholder="Nickname" 
+                  value={newPasswordValue} // Use newNicknameValue state
+                  onChange={handleNewPasswordChange} 
+                  name="text" 
+                  className="input mt-2"
+                />
+              </div>
+             <div className="flex gap-4 mt-7 items-center justify-center ">
+              <button className={`${buttonSwitch} p-2.5`} onClick={ClickPassword}>Cancle</button>
+             <button className={`${buttonSwitch} p-2.5`} onClick={savePassword}>Save</button>
+              </div> {/* Add a button to save the new nickname */}
+            </div>
+          )}
              </div>
              <div style={{backgroundColor: darkMode ? "rgba(5, 6, 4,0.7)":"rgba(250, 251, 249, 0.75)"}} className="vizorja2 flex items-center"></div>
              <div className="flex flex-col gap-2 mt-8 md:mt-0 items-center">
              <p className="font-medium text-md md:text-lg text-center">Description</p>
              <div  id="nickname" class={` ${inputSwitch} text-center md:text-start `}>
-              <input onClick={ClickDesciption}  value={description}  type="text" placeholder="Description"   name="text" class="input"/>
+              <input onClick={ClickDescriptionv2}  value={description}  type="text" placeholder="Description"   name="text" class="input"/>
              {newDescriptionValue && 
-               <div className="mt-4 items-center">
+               <div className="mt-6 items-center">
                <p className="font-medium text-md md:text-lg text-center">New Description</p>
                <div className={` ${inputSwitch} text-center md:text-start`}>
                  <input  
@@ -592,6 +698,9 @@ const handleClose1 = (event, reason) => {
             </div>
              </div>
              </div>
+      </div>
+      <div className="flex flex-col mt-20 justify-center md:justify-start gap-4">
+      <h3 className="font-bold text-xl md:text-2xl text-center md:text-start">Personal Details</h3>
       </div>
       {fillMessage && 
       <Snackbar
@@ -662,6 +771,58 @@ const handleClose1 = (event, reason) => {
         </Snackbar>
         
       }
+      {maxFilled2 && 
+       <Snackbar
+       open={open1}
+       autoHideDuration={6000}
+       onClose={handleClose1}
+       message="Note archived"
+       
+     >
+         <Alert
+       severity="error"
+       variant="filled"
+       sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+       >
+       <p>Must have at least 8 letters </p>
+       </Alert>
+         </Snackbar>
+      }
+      {filledPassword && 
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="success"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Password added successfully </p>
+      </Alert>
+        </Snackbar>
+      }
+      {correctOldPassword &&
+       <Snackbar
+       open={open1}
+       autoHideDuration={6000}
+       onClose={handleClose1}
+       message="Note archived"
+       
+     >
+         <Alert
+       severity="error"
+       variant="filled"
+       sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+       >
+       <p>Old password is incorrect </p>
+       </Alert>
+         </Snackbar>
+      }
+      
     </div>
   )
 }

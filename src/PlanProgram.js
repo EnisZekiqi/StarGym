@@ -96,7 +96,7 @@ const Planprogram = () => {
                       Reach your fitness goals faster by working with one of our expert personal trainers. Your trainer will monitor your progress by accessing your profile through Kinective Live to create a customized, highly effective training experience
                       </p>
                   </div>
-                  <img className='cover rounded-md -mr-60' width="400px" height="400px" src={personal} alt="" />
+                  <img className='cover rounded-md -mr-0 md:-mr-60' width="400px" height="400px" src={personal} alt="" />
                 </div>  
                 <div className="personal flex flex-col-reverse md:flex-row gap-8 items-center">
                 <div className="flex flex-col items-start ">
