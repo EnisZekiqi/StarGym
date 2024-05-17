@@ -19,6 +19,7 @@ import { FiLogOut } from "react-icons/fi";
 import Alert from '@mui/material/Alert';
 import { useAvatarImage } from './AvatarImageContext';
 import Snackbar from '@mui/material/Snackbar';
+import CheckIcon from '@mui/icons-material/Check';
 import {
   FiEdit,
   FiChevronDown,
@@ -575,6 +576,32 @@ const handleClose1 = (event, reason) => {
   const inputSwitch = darkMode ? "input-wrapper2":"input-wrapper3"
   const buttonSwitch =darkMode ? "btnsign":"btnsign3"
 
+  const [clickFemale, setClickFemale] = useState(Cookies.get('gender') === 'female');
+  const [clickMen, setClickMen] = useState(Cookies.get('gender') === 'male');
+  const [selectedGender, setSelectedGender] = useState(Cookies.get('gender') || '')
+  const [femaleValue,setFemaleValue]=useState('')
+  const [menValue,setMenValue]=useState('')
+
+  const toggleMen =()=>{
+    setClickMen(true)
+    setClickFemale(false)
+    Cookies.set('gender', 'male', { expires: 365 });
+  }
+
+  const toggleFemale= ()=>{
+    setClickFemale(true)
+    setClickMen(false)
+    Cookies.set('gender', 'female', { expires: 365 });
+  }
+
+  const handleMenValue =(e)=>{
+    setMenValue(e.target.value)
+  }
+
+  const handleFemaleValue = (e)=>{
+    setFemaleValue(e.target.value)
+  }
+
   return(
     <div>
       <div className="flex gap-8 items-center ml-0 md:ml-6 justify-center md:justify-start ">
@@ -606,6 +633,7 @@ const handleClose1 = (event, reason) => {
             </a>
              </div>
              <p className="font-normal text-md">{description}</p>
+             <p className="font-normal text-sm">{selectedGender}</p>
             </div>
       </div>
       <div className="flex flex-col mt-20 justify-center md:justify-start gap-4">
@@ -701,6 +729,53 @@ const handleClose1 = (event, reason) => {
       </div>
       <div className="flex flex-col mt-20 justify-center md:justify-start gap-4">
       <h3 className="font-bold text-xl md:text-2xl text-center md:text-start">Personal Details</h3>
+            <div className="flex flex-col items-center md:flex-row justify-evenly mt-8">
+            <div className="flex flex-col gap-2 items-center justify-center">
+            <p className="font-medium text-md md:text-lg text-center ">Gender</p>
+              <div className="female flex gap-2 items-center mt-4">
+                <div onClick={toggleFemale} 
+                 style={{border:darkMode ? "1px solid rgba(5, 6, 4,0.7)":" 1px solid rgba(250, 251, 249, 0.75)",
+                 }} 
+                 className="femalebox cursor-pointer items-center justify-center">
+                 <AnimatePresence>
+                 {clickFemale && 
+                 <motion.div
+                 initial={{opacity:0,scale:0}}
+                 animate={{opacity:1,scale:1,transition:{
+                  duration:0.3
+                 }}}
+                 exit={{opacity:0,scale:0}}
+                 >
+                   <CheckIcon sx={{marginLeft:"-8px",marginTop:"-15px"}}/>
+                 </motion.div>
+                  }
+                  </AnimatePresence> 
+                </div>
+                <p className="text-normal text-md md:text-lg text-center">Female</p>
+              </div>
+              <div className="female flex -ml-5 gap-2 items-center  mt-4">
+                <div onClick={toggleMen} 
+                 style={{border:darkMode ? "1px solid rgba(5, 6, 4,0.7)":" 1px solid rgba(250, 251, 249, 0.75)",
+                  
+                 }} 
+                className="femalebox cursor-pointer">
+                   <AnimatePresence>
+                   {clickMen && 
+                    <motion.div
+                    initial={{opacity:0,scale:0}}
+                    animate={{opacity:1,scale:1,transition:{
+                     duration:0.3
+                    }}}
+                    exit={{opacity:0,scale:0}}
+                    ><CheckIcon sx={{marginLeft:"-8px",marginTop:"-15px"}}/>
+                    </motion.div>
+                  }
+                   </AnimatePresence>
+                </div>
+                <p className="text-normal text-md md:text-lg text-center">Male</p>
+              </div>
+            </div>
+            </div>
       </div>
       {fillMessage && 
       <Snackbar
