@@ -2,7 +2,7 @@ import { useState ,useRef,useEffect} from "react";
 import Avatar from '@mui/material/Avatar';
 import Cookies from 'js-cookie';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { motion,AnimatePresence,MotionConfig } from "framer-motion";
+import { motion,AnimatePresence,MotionConfig, color } from "framer-motion";
 import { useDarkMode } from "./DarkModeContext";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -19,16 +19,26 @@ import { FiLogOut } from "react-icons/fi";
 import Alert from '@mui/material/Alert';
 import { useAvatarImage } from './AvatarImageContext';
 import Snackbar from '@mui/material/Snackbar';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 import CheckIcon from '@mui/icons-material/Check';
+import MaleIcon from '@mui/icons-material/Male';
+import FemaleIcon from '@mui/icons-material/Female';
+import { CountryDropdown } from 'react-country-region-selector';
+
+
 import {
   FiEdit,
   FiChevronDown,
   FiTrash,
   FiShare,
-  FiPlusSquare,
+  FiInfo,
+  FiHome 
 } from "react-icons/fi";
 import { Dispatch, SetStateAction} from "react";
 import { IconType } from "react-icons";
+
+
 const Main = () => {
   const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
   const avatarURL = Cookies.get('avatar');
@@ -117,11 +127,11 @@ useEffect(() => {
           style={{ originY: "top", translateX: "-50%", border: darkMode ? "0.5px solid rgba(5, 6, 4,0.7)" : "0.5px solid rgba(250, 251, 249,0.7)",backgroundColor:darkMode? "rgba(250, 251, 249)":"rgba(5, 6, 4)" }}
           className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl z-50 absolute top-[120%] left-[50%] w-46 -ml-4 overflow-hidden"
         >
+           <a href="/main"><Option setOpen={setOpen} Icon={FiHome} text="Home" /></a>
          <div onClick={toggleEdit}>
          <Option setOpen={setOpen} Icon={FiEdit} text="Edit"  />
          </div>
-          <Option setOpen={setOpen} Icon={FiPlusSquare} text="Duplicate" />
-          <Option setOpen={setOpen} Icon={FiShare} text="Share" />
+          <Option setOpen={setOpen} Icon={FiInfo} text="Share" />
           <motion.div
             variants={itemVariants}
           className="darkModevogel">
@@ -145,9 +155,9 @@ useEffect(() => {
          <div className="avas cursor-pointer"> <Avatar  onClick={toggleEdit} sx={{ marginRight: "5px" }} src={fileURL}></Avatar></div>
         </div>
       </div>
-     <div className="mt-24 container mx-auto px-4">
+     <div className="mt-8 container mx-auto px-4">
      {xs && 
-      <p>123123123</p>
+      <MainIntro/>
      }
      </div>
       <div className="container mt-24 mx-auto px-4">
@@ -581,6 +591,10 @@ const handleClose1 = (event, reason) => {
   const [selectedGender, setSelectedGender] = useState(Cookies.get('gender') || '')
   const [femaleValue,setFemaleValue]=useState('')
   const [menValue,setMenValue]=useState('')
+  const [selectedCountry, setSelectedCountry] = useState(Cookies.get('country') || '');
+
+
+
 
   const toggleMen =()=>{
     setClickMen(true)
@@ -594,6 +608,12 @@ const handleClose1 = (event, reason) => {
     Cookies.set('gender', 'female', { expires: 365 });
   }
 
+  const handleCountryChange = (country) => {
+    setSelectedCountry(country);
+    Cookies.set('country', country, { expires: 365 });
+  };
+
+
   const handleMenValue =(e)=>{
     setMenValue(e.target.value)
   }
@@ -601,6 +621,8 @@ const handleClose1 = (event, reason) => {
   const handleFemaleValue = (e)=>{
     setFemaleValue(e.target.value)
   }
+
+const Countryv2 = darkMode ? "country" :"countryv2"
 
   return(
     <div>
@@ -632,11 +654,18 @@ const handleClose1 = (event, reason) => {
              }} className=" ml-4 cursor-pointer p-2 rounded-lg"><FiEdit/></div>
             </a>
              </div>
-             <p className="font-normal text-md">{description}</p>
-             <p className="font-normal text-sm">{selectedGender}</p>
+             <p className="font-normal text-md ml-4">{description}</p>
+            <div className="flex gap-4 items-center">
+            <p className="font-normal text-sm"> 
+             {selectedGender === 'male' && <MaleIcon />}
+        {selectedGender === 'female' && <FemaleIcon />}</p>
+        <p className="font-normal text-sm ">
+        {selectedCountry && <span> <b className="font-bold">{selectedCountry}</b></span>}
+      </p>
+            </div>
             </div>
       </div>
-      <div className="flex flex-col mt-20 justify-center md:justify-start gap-4">
+      <div className="flex flex-col mt-32 justify-center md:justify-start gap-4">
              <h3 className="font-bold text-xl md:text-2xl text-center md:text-start">Account Information</h3>
              <p className="font-light text-sm text-center md:text-start">Click on the information to apply changes</p>
              <div className="flex flex-col items-center md:flex-row justify-evenly mt-8">
@@ -727,8 +756,9 @@ const handleClose1 = (event, reason) => {
              </div>
              </div>
       </div>
-      <div className="flex flex-col mt-20 justify-center md:justify-start gap-4">
+      <div className="flex flex-col mt-32 justify-center md:justify-start gap-4">
       <h3 className="font-bold text-xl md:text-2xl text-center md:text-start">Personal Details</h3>
+      <p className="font-light text-sm text-center md:text-start">Share more information about you </p>
             <div className="flex flex-col items-center md:flex-row justify-evenly mt-8">
             <div className="flex flex-col gap-2 items-center justify-center">
             <p className="font-medium text-md md:text-lg text-center ">Gender</p>
@@ -775,6 +805,21 @@ const handleClose1 = (event, reason) => {
                 <p className="text-normal text-md md:text-lg text-center">Male</p>
               </div>
             </div>
+            <div style={{backgroundColor: darkMode ? "rgba(5, 6, 4,0.7)":"rgba(250, 251, 249, 0.75)"}} className="vizorja2 flex items-center"></div>
+            <div className="country-selection ">
+            <p className="font-medium text-md md:text-lg text-center mt-12 md:mt-0 ">Country</p>
+        <CountryDropdown
+          value={selectedCountry}
+          onChange={(val) => handleCountryChange(val)}
+          classes={`${Countryv2}`}
+          style={{
+            width: '200px',
+            marginTop:'24px',
+            padding: '10px',
+            borderRadius: '4px',
+          }}
+        />
+      </div>
             </div>
       </div>
       {fillMessage && 
@@ -899,8 +944,26 @@ const handleClose1 = (event, reason) => {
       }
       
     </div>
+    
   )
 }
+
+ const MainIntro = () =>{
+  const { darkMode } = useDarkMode()
+  const theme = darkMode ? "backgroundIntro2":"backgroundIntro"
+  const themeText = darkMode ? "opacity-85":" opacity-75"
+
+  return(
+    <div>
+      <div className={`${theme}`}>
+        <div className="empty"></div>
+        <h1 id="hioffer" className={`font-extrabold text-2xl md:text-6xl text-center ${themeText}`}>Get your Offers now</h1>
+        <div className="empty"></div>
+      </div>
+      <p>what is new</p>
+    </div>
+  )
+ }
 
 
 export default Main;
