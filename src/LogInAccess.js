@@ -118,7 +118,7 @@ const LogInAccess = () => {
           setTimeout(() => {
                 setNickname('');
                 setPassword('');
-              navigate('/main');
+              navigate('/info');
           }, 3000);
       } else {
           // Handle incorrect nickname/password

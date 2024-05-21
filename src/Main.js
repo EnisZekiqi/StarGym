@@ -25,7 +25,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import { CountryDropdown } from 'react-country-region-selector';
-
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 
 import {
   FiEdit,
@@ -54,13 +54,32 @@ useEffect(() => {
 //////edit profile
   const [edit, setEdit] = useState(false);
   const [xs,setXs]=useState(true)
+  const [ info ,setInfo]=useState(false)
+  
   const toggleEdit = () => {
     setEdit(prevMode => !prevMode);
-    setXs(prevMode => !prevMode)
+    if(setEdit !== true){
+      setXs(false)
+      setInfo(false)
+    }
+    else{
+      setEdit(false)
+    }
+    if(setEdit !== false){
+      setXs(false)
+      setInfo(false)
+      setEdit(true)
+      
+    }
   };
+  const toggleInfo =()=>{
+    setInfo(prevMode => !prevMode)
+    setXs(prevMode => !prevMode)
+  }
 ///////////////////
 
   const { toggleDarkMode } = useDarkMode();
+  const navigate = useNavigate();
 
   const handleClick = () => {
     toggleDarkMode();
@@ -125,16 +144,16 @@ useEffect(() => {
           initial={wrapperVariants.closed}
           variants={wrapperVariants}
           style={{ originY: "top", translateX: "-50%", border: darkMode ? "0.5px solid rgba(5, 6, 4,0.7)" : "0.5px solid rgba(250, 251, 249,0.7)",backgroundColor:darkMode? "rgba(250, 251, 249)":"rgba(5, 6, 4)" }}
-          className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl z-50 absolute top-[120%] left-[50%] w-46 -ml-4 overflow-hidden"
+          className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl z-50 absolute top-[120%] left-[50%] w-46 -ml-12 md:-ml-4 overflow-hidden"
         >
            <a href="/main"><Option setOpen={setOpen} Icon={FiHome} text="Home" /></a>
          <div onClick={toggleEdit}>
-         <Option setOpen={setOpen} Icon={FiEdit} text="Edit"  />
+         <Option setOpen={setOpen} Icon={FiEdit} text="Edit Profile"  />
          </div>
-          <Option setOpen={setOpen} Icon={FiInfo} text="Share" />
+         <a href="/info"> <Option setOpen={setOpen} Icon={FiInfo} text="Information" /></a>
           <motion.div
             variants={itemVariants}
-          className="darkModevogel">
+          className="darkModevogel mt-2 mb-2">
           <div onClick={handleClick} className="flex gap-2 cursor-pointer">
           <button className="text-xs font-medium whitespace-nowrap" style={{ backgroundColor: "transparent", display: darkMode ? "none" : "block",marginLeft:'5px' }} ><MdOutlineLightMode  sx={{ color: "#FAFBF9" }} /></button>
           <p style={{ backgroundColor: "transparent", display: darkMode ? "none" : "block" }} className="text-xs font-medium whitespace-nowrap">Light Mode</p>
@@ -332,13 +351,7 @@ const ThreeMenu = ()=>{
   )
 }
 
-const DefaultContent = ()=>{
-  return(
-    <div>
 
-    </div>
-  )
-}
 
 const EditProfile = () =>{
   const { darkMode } = useDarkMode()

@@ -13,6 +13,7 @@ import {
 import EditProfile from './EditProfile';
 import Main from './Main';
 import { DarkModeProvider } from "./DarkModeContext";
+import Info from './MainPage/Info';
 
  const router = createBrowserRouter([
    {
@@ -30,7 +31,12 @@ import { DarkModeProvider } from "./DarkModeContext";
     {
       path: "main",
       element: <Main/> ,
+     
     },
+    {
+       path :"info",
+       element:<Info/> 
+    }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
