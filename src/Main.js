@@ -30,14 +30,13 @@ import { Outlet, Link, useNavigate } from 'react-router-dom';
 import {
   FiEdit,
   FiChevronDown,
-  FiTrash,
   FiShare,
   FiInfo,
-  FiHome 
+  FiHome ,
+  FaFire,
+  FiPlus, FiTrash 
 } from "react-icons/fi";
-import { Dispatch, SetStateAction} from "react";
-import { IconType } from "react-icons";
-
+import SendIcon from '@mui/icons-material/Send';
 
 const Main = () => {
   const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
@@ -174,7 +173,7 @@ useEffect(() => {
          <div className="avas cursor-pointer"> <Avatar  onClick={toggleEdit} sx={{ marginRight: "5px" }} src={fileURL}></Avatar></div>
         </div>
       </div>
-     <div className="mt-8 container mx-auto px-4">
+     <div className="mt-8 container mx-auto px-4 ">
      {xs && 
       <MainIntro/>
      }
@@ -965,15 +964,186 @@ const Countryv2 = darkMode ? "country" :"countryv2"
   const { darkMode } = useDarkMode()
   const theme = darkMode ? "backgroundIntro2":"backgroundIntro"
   const themeText = darkMode ? "opacity-85":" opacity-75"
+  const borderTheme = darkMode ? "azi11" :"azi21"
+  const border = darkMode ? "border-rose" :" border-pink"
+  const bg =darkMode ? "bg-rose" :"bg-pink"
+  const inputSwitch = darkMode ? "input-wrapper2":"input-wrapper3"
+  const buttonSwitch =darkMode ? "btnsign":"btnsign3"
+  ////////// color changes for dark/light mode ///////////
+
+    const [fillMessage,setFillMessage]=useState(false)
+    const [filledNotes,setFilledNotes]=useState(false)
+    const [open1, setOpen1] = useState(false);
+const handleClose1 = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen1(false);
+  };
+  
+  const [fileURL, setFileURL] = useState('');
+
+  useEffect(() => {
+    const savedFileURL = localStorage.getItem('selectedImageURL');
+    if (savedFileURL) {
+      setFileURL(savedFileURL); // Set the file URL state with the saved image URL
+    }
+  }, []); ///////////// localstorage for avatar 
+
+
+  
+  useEffect(() => {
+    const savedNotes = Cookies.get('notes');
+    if (savedNotes) {
+      setNotes(savedNotes.split('\n')); // Split saved notes by newline character
+    }
+  }, []);
+
+  const [note, setNote] = useState('');
+  const [notes, setNotes] = useState([]);
+  const [displayedNotes, setDisplayedNotes] = useState(['']);
+ 
+
+  const handleNotesChange = (e)=>{
+    setNote(e.target.value)
+  }
+
+
+  const ToggleNotes = () => {
+    if (note.trim() === '') {
+      setFillMessage(true);
+      setOpen1(true);
+      setTimeout(() => {
+        setFillMessage(false);
+      }, 3000);
+    } else {
+      setOpen1(true);
+      const newNotes = [...notes, note];
+      setNotes(newNotes); // Update notes array
+      setFilledNotes(true); // Show success filled message
+      setTimeout(() => {
+        setFilledNotes(false);
+        setNote(''); // Clear the input field
+      }, 3000);
+      Cookies.set('notes', newNotes.join('\n'), { expires: 365 }); // Join notes array with newline character
+    }
+  };
+
+ 
 
   return(
     <div>
       <div className={`${theme}`}>
-        <div className="empty"></div>
-        <h1 id="hioffer" className={`font-extrabold text-2xl md:text-6xl text-center ${themeText}`}>Get your Offers now</h1>
-        <div className="empty"></div>
+        <div id={`${borderTheme}`} className="empty"></div>
+        <div id={`${borderTheme}`} className="empty"></div>
+        <h1 id="hioffer" className={`font-extrabold text-3xl md:text-6xl text-center mb-9 mt-4 ${themeText}`}>Get your Offers now</h1>
+        <div id={`${borderTheme}`} className="empty"></div>
+        <div id={`${borderTheme}`} className="empty"></div>
       </div>
-      <p>what is new</p>
+      <h3 className="font-semibold text-md md:text-xl mt-20 text-center md:text-start mb-4">What is new</h3>
+       <div className="flex flex-col md:flex-row gap-4 justify-between ">
+       <div className="flex flex-col  gap-6 ">
+        <motion.div
+        variants={wrapperVariants}
+        className="flex flex-col items-center md:items-start justify-start md:justify-start">
+        <div className={`flex flex-col   gap-4  rounded-xl`}>
+        <motion.div
+        variants={itemVariants}
+        className={`flex pt-2 pl-2 pb-2 pr-2  ${bg} items-center rounded-xl gap-2`}>
+        <svg
+            style={{fill : darkMode ? "#FAFBF9":"#050604"}}
+            viewBox="0 0 24 24"
+            className=""
+            fill="#FAFBF9"
+            height="25px"
+            width="35px"
+            >
+            <path d="M20 10c2 3-3 12-5 12s-2-1-3-1-1 1-3 1-7-9-5-12 5-3 7-2V5C5.38 8.07 4.11 3.78 4.11 3.78S6.77.19 11 5V3h2v5c2-1 5-1 7 2z" />
+            </svg>
+            <p style={{color :darkMode ? "#FAFBF9":"#050604"}} className="font-normal text-sm md:text-md ">New Healthy Diets added</p>
+        </motion.div>
+        <div className={`flex pt-2 pl-2 pb-2 ${bg} items-center rounded-xl gap-2`}>
+        <svg
+            style={{fill : darkMode ? "#FAFBF9":"#050604"}}
+            viewBox="0 0 512 512"
+            className=''
+            fill="#FAFBF9"
+            height="25px"
+            width="35px"
+            >
+            <path d="M480 448h-12a4 4 0 01-4-4V273.51a4 4 0 00-5.24-3.86 104.92 104.92 0 01-28.32 4.78c-1.18 0-2.3.05-3.4.05a108.22 108.22 0 01-52.85-13.64 8.23 8.23 0 00-8 0 108.18 108.18 0 01-52.84 13.64 106.11 106.11 0 01-52.46-13.79 8.21 8.21 0 00-8.09 0 108.14 108.14 0 01-53.16 13.8 106.19 106.19 0 01-52.77-14 8.25 8.25 0 00-8.16 0 106.19 106.19 0 01-52.77 14c-1.09 0-2.19 0-3.37-.05h-.06a104.91 104.91 0 01-29.28-5.09 4 4 0 00-5.23 3.8V444a4 4 0 01-4 4H32.5c-8.64 0-16.1 6.64-16.48 15.28A16 16 0 0032 480h447.5c8.64 0 16.1-6.64 16.48-15.28A16 16 0 00480 448zm-256-68a4 4 0 01-4 4h-88a4 4 0 01-4-4v-64a12 12 0 0112-12h72a12 12 0 0112 12zm156 68h-72a4 4 0 01-4-4V316a12 12 0 0112-12h56a12 12 0 0112 12v128a4 4 0 01-4 4zM492.57 170.28l-42.92-98.49C438.41 47.62 412.74 32 384.25 32H127.7c-28.49 0-54.16 15.62-65.4 39.79l-42.92 98.49c-9 19.41 2.89 39.34 2.9 39.35l.28.45c.49.78 1.36 2 1.89 2.78.05.06.09.13.14.2l5 6.05a7.45 7.45 0 00.6.65l5 4.83.42.36a69.65 69.65 0 009.39 6.78v.05a74 74 0 0036 10.67h2.47a76.08 76.08 0 0051.89-20.31l.33-.31a7.94 7.94 0 0110.89 0l.33.31a77.3 77.3 0 00104.46 0 8 8 0 0110.87 0 77.31 77.31 0 00104.21.23 7.88 7.88 0 0110.71 0 76.81 76.81 0 0052.31 20.08h2.49a71.35 71.35 0 0035-10.7c.95-.57 1.86-1.17 2.78-1.77A71.33 71.33 0 00488 212.17l1.74-2.63q.26-.4.48-.84c1.66-3.38 10.56-20.76 2.35-38.42z" />
+            </svg>
+            <p style={{color :darkMode ? "#FAFBF9":"#050604"}} className="font-normal text-sm md:text-md ">New Suplements</p>
+        </div>
+        <div className={`flex pt-2 pl-2 pb-2 ${bg} items-center rounded-xl gap-2`}>
+          <FiInfo style={{color:darkMode ? "#FAFBF9":"#050604",width:'35px',height:'25px'}}/>
+          <p style={{color :darkMode ? "#FAFBF9":"#050604"}} className="font-normal text-sm md:text-md ">Information Edited</p>
+        </div>
+        <div className="flex flex-col gap-4 ">
+          <div className="bollxi1 -ml-3 mt-8">
+            <div className="bollxi2 ml-20 -mt-8">
+
+            </div>
+          </div>
+        </div>
+      </div>
+     
+        </motion.div>
+     
+        </div>
+        <div className="flex flex-col -mt-0 md:-mt-32 items-center">
+      <h3 className="font-semibold text-md md:text-xl mt-20 text-center md:text-start mb-4">Write Notes</h3>
+      <div className="flex flex-col md:flex-row gap-5 items-center">
+     <div className="flex gap-5 items-center">
+     <Avatar  style={{width:50,height:50}} src={fileURL} />  
+      <div  id="nickname" class={` ${inputSwitch} text-center  `}>
+              <input value={note} onChange={handleNotesChange} type="text" placeholder="Keep in check your activities"   name="text" class="input2"/>
+            </div>
+     </div>
+            <div className="flex mt-2 gap-2 items-center justify-center">
+              <button onClick={ToggleNotes}  className={`${buttonSwitch} p-2.5 px-12 md:p-2.5 text-center`}> <SendIcon/> Post</button>
+            </div>
+      </div>
+      {notes.map((note, index) => (
+        <p key={index}>{note}</p>
+      ))}
+      </div>
+       </div>
+       {fillMessage && 
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="error"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Fill the empty field </p>
+      </Alert>
+        </Snackbar>
+      }
+      {filledNotes && 
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="success"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Notes added successfully </p>
+      </Alert>
+        </Snackbar>
+      }
     </div>
   )
  }
