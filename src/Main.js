@@ -26,7 +26,7 @@ import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import { CountryDropdown } from 'react-country-region-selector';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   FiEdit,
   FiChevronDown,
@@ -973,6 +973,7 @@ const Countryv2 = darkMode ? "country" :"countryv2"
 
     const [fillMessage,setFillMessage]=useState(false)
     const [filledNotes,setFilledNotes]=useState(false)
+    const [maxFilled,setMaxFilled]=useState(false)
     const [open1, setOpen1] = useState(false);
 const handleClose1 = (event, reason) => {
     if (reason === 'clickaway') {
@@ -1017,30 +1018,44 @@ const handleClose1 = (event, reason) => {
       setTimeout(() => {
         setFillMessage(false);
       }, 3000);
-    } else {
+    } else if (notes.length >= 3) {
+      setMaxFilled(true);
       setOpen1(true);
+      setTimeout(() => {
+        setMaxFilled(false);
+      }, 3000);
+    } else {
       const newNotes = [...notes, note];
       setNotes(newNotes); // Update notes array
       setFilledNotes(true); // Show success filled message
+      setOpen1(true);
+      Cookies.set('notes', newNotes.join('\n'), { expires: 365 }); // Join notes array with newline character
       setTimeout(() => {
         setFilledNotes(false);
         setNote(''); // Clear the input field
       }, 3000);
-      Cookies.set('notes', newNotes.join('\n'), { expires: 365 }); // Join notes array with newline character
     }
   };
 
+  const [selectedNoteIndex, setSelectedNoteIndex] = useState(null);
+
+  const handleSelectNote = (index) => {
+    setSelectedNoteIndex(index);
+  };
+
+  const handleClearNote = () => {
+    if (selectedNoteIndex !== null) {
+      const newNotes = notes.filter((_, index) => index !== selectedNoteIndex);
+      setNotes(newNotes);
+      setSelectedNoteIndex(null);
+      Cookies.set('notes', newNotes.join('\n'), { expires: 365 });
+    }
+  };
  
 
   return(
     <div>
-      <div className={`${theme}`}>
-        <div id={`${borderTheme}`} className="empty"></div>
-        <div id={`${borderTheme}`} className="empty"></div>
-        <h1 id="hioffer" className={`font-extrabold text-3xl md:text-6xl text-center mb-9 mt-4 ${themeText}`}>Get your Offers now</h1>
-        <div id={`${borderTheme}`} className="empty"></div>
-        <div id={`${borderTheme}`} className="empty"></div>
-      </div>
+     
       <h3 className="font-semibold text-md md:text-xl mt-20 text-center md:text-start mb-4">What is new</h3>
        <div className="flex flex-col md:flex-row gap-4 justify-between ">
        <div className="flex flex-col  gap-6 ">
@@ -1088,11 +1103,26 @@ const handleClose1 = (event, reason) => {
           </div>
         </div>
       </div>
+      <div className="flex flex-col items-center md:items-start justify-center">
+      <h3 className="font-semibold text-md md:text-xl mt-12 text-start mb-2">Notes</h3>
+      <p className="font-light text-sm mb-4">Click on notes if you want to remove them</p>
+      <div className={`flex flex-col items-center md:items-start rounded-xl gap-4`}>
+         {notes.map((note, index) => (
+        <p  style={{color :darkMode ? "#FAFBF9":"#050604", cursor: 'pointer',backgroundColor: selectedNoteIndex === index ? 'rgba(128, 128, 128,0.9)' : '',transition:'all 1s ease'}}
+         className={`pt-2 pl-2 pb-2 w-full ${bg} ${selectedNoteIndex === index ? 'bg-pink' : ''} items-center md:items-start rounded-xl`} key={index}
+        onClick={() => handleSelectNote(index)}
+        >{note}</p>
+      ))}
+      </div>
+      <div className="flex justify-center items-center w-2/3 mt-8  ">
+        <button  onClick={handleClearNote} className={`${buttonSwitch} p-2.5 px-12 text-center`}><DeleteIcon/> Clear</button>
+      </div>
+      </div>
      
         </motion.div>
      
         </div>
-        <div className="flex flex-col -mt-0 md:-mt-32 items-center">
+        <div className="flex flex-col -mt-0 md:-mt-32 ">
       <h3 className="font-semibold text-md md:text-xl mt-20 text-center md:text-start mb-4">Write Notes</h3>
       <div className="flex flex-col md:flex-row gap-5 items-center">
      <div className="flex gap-5 items-center">
@@ -1105,9 +1135,6 @@ const handleClose1 = (event, reason) => {
               <button onClick={ToggleNotes}  className={`${buttonSwitch} p-2.5 px-12 md:p-2.5 text-center`}> <SendIcon/> Post</button>
             </div>
       </div>
-      {notes.map((note, index) => (
-        <p key={index}>{note}</p>
-      ))}
       </div>
        </div>
        {fillMessage && 
@@ -1143,6 +1170,23 @@ const handleClose1 = (event, reason) => {
       <p>Notes added successfully </p>
       </Alert>
         </Snackbar>
+      }
+      {maxFilled &&
+       <Snackbar
+       open={open1}
+       autoHideDuration={6000}
+       onClose={handleClose1}
+       message="Note archived"
+       
+     >
+         <Alert
+       severity="error"
+       variant="filled"
+       sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+       >
+       <p>Maximum capacity for Notes is 3 </p>
+       </Alert>
+         </Snackbar>
       }
     </div>
   )
