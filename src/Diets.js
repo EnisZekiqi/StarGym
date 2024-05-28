@@ -184,7 +184,7 @@ const handleMassClick = () => {
                   duration:0.5
                 }}}
                 viewport={{once:true}}
-                className="healthy flex flex-col md:flex-row justify-center md:justify-between gap-20 items-center">
+                className="healthy flex flex-col lg:flex-row justify-center md:justify-between gap-20 items-center">
                     <div class="card2">
                       <div 
                       style={{background:darkMode ? "#475E36":"#B2C9A1"}}

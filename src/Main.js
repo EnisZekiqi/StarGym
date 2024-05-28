@@ -27,6 +27,10 @@ import FemaleIcon from '@mui/icons-material/Female';
 import { CountryDropdown } from 'react-country-region-selector';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
+import pre from './images/pre-removebg-preview.png'
+import creat from './images/creat.webp'
+import FeedIcon from '@mui/icons-material/Feed';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
 import {
   FiEdit,
   FiChevronDown,
@@ -37,6 +41,8 @@ import {
   FiPlus, FiTrash 
 } from "react-icons/fi";
 import SendIcon from '@mui/icons-material/Send';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 const Main = () => {
   const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
@@ -114,8 +120,8 @@ useEffect(() => {
           <a href="#about"> <p className="font-semibold">Planprogram</p></a>
           <a href="#about"> <p className="font-semibold">Suplements</p></a>
         </div>
-        <div className="fonk flex gap-6 items-center">
-        <h1 className="font-bold ml-4 text-3xl mt-4 mb-4">StarGym</h1>
+        <div className="fonk flex gap-4 items-center">
+        <h1 className="font-bold ml-4 text-xl mt-4 mb-4">StarGym</h1>
         <ThreeMenu/>
         </div>
         <div className="flex items-center gap-6">
@@ -150,6 +156,7 @@ useEffect(() => {
          <Option setOpen={setOpen} Icon={FiEdit} text="Edit Profile"  />
          </div>
          <a href="/info"> <Option setOpen={setOpen} Icon={FiInfo} text="Information" /></a>
+         
           <motion.div
             variants={itemVariants}
           className="darkModevogel mt-2 mb-2">
@@ -726,7 +733,7 @@ const Countryv2 = darkMode ? "country" :"countryv2"
               <div className={` ${inputSwitch} text-center md:text-start`}>
                 <input  
                   type="text" 
-                  placeholder="Nickname" 
+                  placeholder="New Password" 
                   value={newPasswordValue} // Use newNicknameValue state
                   onChange={handleNewPasswordChange} 
                   name="text" 
@@ -964,7 +971,11 @@ const Countryv2 = darkMode ? "country" :"countryv2"
   const { darkMode } = useDarkMode()
   const theme = darkMode ? "backgroundIntro2":"backgroundIntro"
   const themeText = darkMode ? "opacity-85":" opacity-75"
-  const borderTheme = darkMode ? "azi11" :"azi21"
+  const borderTheme = darkMode ? "image-wrapper2" :"image-wrapper"
+  const gradient = darkMode 
+  ? 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%)' 
+  : 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)' ;
+
   const border = darkMode ? "border-rose" :" border-pink"
   const bg =darkMode ? "bg-rose" :"bg-pink"
   const inputSwitch = darkMode ? "input-wrapper2":"input-wrapper3"
@@ -1053,16 +1064,58 @@ const handleClose1 = (event, reason) => {
   };
  
 
+  const [news,setNews]=useState(false)
+
+  const toggleNews=()=>{
+    setNews(prevMode =>!prevMode)
+    setArchive(false)
+    setSaved(false)
+    setShowNotes(false)
+  }
+
+  const [showNotes,setShowNotes]=useState(false)
+
+  const toggleShowingNotes =()=>{
+    setShowNotes(prevMode =>!prevMode)
+    setNews(false)
+    setArchive(false)
+    setSaved(false)
+  }
+
+  const [archive,setArchive]=useState(false)
+
+  const toggleArchive =()=>{
+    setArchive(prevMode=>!prevMode)
+    setNews(false)
+    setSaved(false)
+    setShowNotes(false)
+  }
+
+  const [saved,setSaved]=useState(false)
+
+  const toggleSaved =()=>{
+    setSaved(prevMode =>!prevMode)
+    setShowNotes(false)
+    setArchive(false)
+    setNews(false)
+  }
+
+
   return(
     <div>
      
-      <h3 className="font-semibold text-md md:text-xl mt-20 text-center md:text-start mb-4">What is new</h3>
-       <div className="flex flex-col md:flex-row gap-4 justify-between ">
+
+      <div onClick={toggleNews} className="showNews flex gap-2 items-center mt-12 pointer">
+        <FeedIcon/>
+      <h3 className=" font-semibold text-sm  mt-4 text-center md:text-start mb-4 w-fit">What is new</h3>
+      </div>
+       <div className="flex flex-col md:flex-row gap-4 justify-between mt-2">
        <div className="flex flex-col  gap-6 ">
         <motion.div
         variants={wrapperVariants}
         className="flex flex-col items-center md:items-start justify-start md:justify-start">
-        <div className={`flex flex-col   gap-4  rounded-xl`}>
+       
+       <div className={`news-content ${news ? 'show' : 'hide'} gap-4`}>
         <motion.div
         variants={itemVariants}
         className={`flex pt-2 pl-2 pb-2 pr-2  ${bg} items-center rounded-xl gap-2`}>
@@ -1095,30 +1148,60 @@ const handleClose1 = (event, reason) => {
           <FiInfo style={{color:darkMode ? "#FAFBF9":"#050604",width:'35px',height:'25px'}}/>
           <p style={{color :darkMode ? "#FAFBF9":"#050604"}} className="font-normal text-sm md:text-md ">Information Edited</p>
         </div>
-        <div className="flex flex-col gap-4 ">
-          <div className="bollxi1 -ml-3 mt-8">
-            <div className="bollxi2 ml-20 -mt-8">
 
-            </div>
-          </div>
-        </div>
+
       </div>
-      <div className="flex flex-col items-center md:items-start justify-center">
-      <h3 className="font-semibold text-md md:text-xl mt-12 text-start mb-2">Notes</h3>
+
+      <div className="flex flex-col items-center md:items-start justify-center ">
+     <div onClick={toggleShowingNotes} className="flex gap-2 pointer items-center"
+     style={{marginTop:news?"15px":"15px"}}
+     >
+      <NewspaperIcon/>
+     <h3 className="font-semibold text-sm mt-2 text-start mb-2">Notes</h3>
+     </div>
+      <div className={`news-content flex flex-col  ${showNotes ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
       <p className="font-light text-sm mb-4">Click on notes if you want to remove them</p>
-      <div className={`flex flex-col items-center md:items-start rounded-xl gap-4`}>
          {notes.map((note, index) => (
         <p  style={{color :darkMode ? "#FAFBF9":"#050604", cursor: 'pointer',backgroundColor: selectedNoteIndex === index ? 'rgba(128, 128, 128,0.9)' : '',transition:'all 1s ease'}}
-         className={`pt-2 pl-2 pb-2 w-full ${bg} ${selectedNoteIndex === index ? 'bg-pink' : ''} items-center md:items-start rounded-xl`} key={index}
+         className={`pt-2 pl-2 pb-2 pr-2 w-2/3 md:w-full ${bg} ${selectedNoteIndex === index ? 'bg-pink' : ''} items-center md:items-start rounded-xl`} key={index}
         onClick={() => handleSelectNote(index)}
         >{note}</p>
       ))}
+       <div className="flex justify-center items-center w-full mt-8  ">
+        <button  onClick={handleClearNote} className={`${buttonSwitch} p-2.5  text-center`}><DeleteIcon/> Clear</button>
       </div>
-      <div className="flex justify-center items-center w-2/3 mt-8  ">
-        <button  onClick={handleClearNote} className={`${buttonSwitch} p-2.5 px-12 text-center`}><DeleteIcon/> Clear</button>
       </div>
       </div>
      
+      <div className="flex flex-col items-center md:items-start justify-center mt-7 ">
+
+        <div onClick={toggleArchive} className="flex gap-2 pointer items-center">
+          <ArchiveIcon/>
+          <h3 className="font-semibold text-sm mt-2 text-start mb-2">Archive</h3>
+        </div>
+        <div className={`news-content flex flex-col  ${archive ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
+          <h1>
+            1
+          </h1>
+        </div>
+
+      </div>
+
+      <div className="flex flex-col items-center md:items-start justify-center mt-7 ">
+
+      <div onClick={toggleSaved} className="flex gap-2 pointer items-center">
+        <BookmarkBorderIcon/>
+        <h3 className="font-semibold text-sm mt-2 text-start mb-2">Saved</h3>
+      </div>
+      <div className={`news-content flex flex-col  ${saved ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
+        <h1>
+          1
+        </h1>
+      </div>
+
+      </div>
+
+
         </motion.div>
      
         </div>
@@ -1135,7 +1218,33 @@ const handleClose1 = (event, reason) => {
               <button onClick={ToggleNotes}  className={`${buttonSwitch} p-2.5 px-12 md:p-2.5 text-center`}> <SendIcon/> Post</button>
             </div>
       </div>
+      <div className="empty"></div>
+      <div className={`${theme} flex items-end justify-center gap-8 mt-0`}>
+       
+      <div className={`flex flex-col mt-24 ${borderTheme}`}
+      >
+     <div className="relative flex justify-center items-center">
+      <img
+        src={pre}
+       
+        className="gin absolute ml-16 sm:ml-20 rotate-12 left-0"
+        style={{ zIndex: 1 }}
+        alt=""
+      />
+      <img
+        src={creat}
+      
+        className="gin relative z-10"
+        alt=""
+      />
+    </div>
+    
+    </div>
+        <h1 id="hioffer" className={`font-extrabold text-xl w-1/2 md:text-3xl text-center mb-12  ${themeText}`}>GET THE ENERGY THAT YOU NEED !</h1>
+       
       </div>
+      </div>
+      
        </div>
        {fillMessage && 
       <Snackbar
