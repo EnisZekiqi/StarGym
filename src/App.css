@@ -60,6 +60,25 @@ z-index: 999;
   opacity: 1;
 }
 
+.lloji-supleme{
+  background: linear-gradient(334deg, #8690a6, #d5d5d6);
+	background-size: 180% 180%;
+	animation: gradient-animation 6s ease infinite;
+width: 200px;
+}
+
+@keyframes gradient-animation {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
 @media (max-width:350px) {
   .cover{
     width: 300px;
@@ -496,6 +515,141 @@ border-top-width: 2px;
   background-image: url(images/star-svgrepo-com.svg);
 }
 
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutDown {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+}
+
+.image-container {
+  position: absolute;
+  width: 100%; /* Ensure images take full width */
+}
+
+.show {
+  animation: fadeInUp 0.5s forwards;
+}
+
+.hide {
+  animation: fadeOutDown 0.5s forwards;
+}
+
+.text-container {
+  transition: opacity 0.5s ease-in-out;
+}
+
+
+.show1 {
+  opacity: 1;
+  z-index: 1;
+}
+
+.hide1 {
+  opacity: 0;
+  z-index: 0;
+}
+.lloji-supleme {
+  position: relative;
+  height: 200px; /* Adjust based on your image height */
+}
+
+@media (max-width:500px) {
+  #smallerbtn{
+    padding:8px;
+    font-size:12px;
+  }
+}
+@media (max-width:385px) {
+  #smallerbtn{
+    padding:6px;
+    font-size:12px;
+    white-space: nowrap
+  }
+  
+}
+@media (max-width:365px) {
+  #smallerbtn{
+    padding:6px;
+    font-size:10px;
+    white-space: nowrap
+  }
+  
+}
+@media (max-width:764px) {
+  .lloji-supleme2{
+    border-left: 2px solid #FAFBF9;
+    border-right: 2px solid #FAFAF9;
+    border-top: 2px solid #FAFAF9;
+    border-bottom: none !important;
+    border-top-right-radius: 20%;
+    border-top-left-radius: 20%;
+    border-bottom-left-radius:0%;
+    border-bottom-right-radius: 0%;
+  }
+  .description-supleme{
+    border-left:none !important ;
+    border-top: 2px dashed #FAFAF9;
+  }
+}
+.lloji-supleme2{
+  border-top: 2px solid #FAFAF9;
+  border-left: 2px solid #FAFAF9;
+  border-bottom: 2px solid #FAFAF9;
+  border-bottom-left-radius:20%;
+    border-bottom-right-radius: 20%;
+}
+.description-supleme2{
+  border-left:2px dashed #FAFAF9 ;
+}
+.lloji-supleme2 {
+  position: relative;
+  height: 200px; /* Adjust based on your image height */
+}
+@media (max-width:764px) {
+  .lloji-supleme{
+    border-left: 2px solid #050604;
+    border-right: 2px solid #050604;
+    border-top: 2px solid #050604;
+    border-bottom: none !important;
+    border-top-right-radius: 20% !important;
+    border-top-left-radius: 20% !important;
+    border-bottom-left-radius:0% !important;
+    border-bottom-right-radius: 0% !important;
+  }
+  .description-supleme{
+    border-left:none !important ;
+    border-top: 2px dashed #050604;
+    width: 65% !important;
+  }
+}
+.lloji-supleme{
+  border-top: 2px solid #050604;
+  border-left: 2px solid #050604;
+  border-bottom: 2px solid #050604;
+  border-top-right-radius: 0%;
+    border-top-left-radius: 20%;
+    border-bottom-left-radius:20%;
+    border-bottom-right-radius: 0%;
+}
+.description-supleme{
+  border-left:2px dashed #050604 ;
+}
 
 .client1{
 border-radius: 0px 50px 0px 0px;
@@ -1030,6 +1184,16 @@ z-index: 998
 .btnsign3:hover{
   background-color: #FAFBF9;
   color: #050604;
+}
+.btnsaved{
+  background-color:#050604 ;
+  color:'FAFBF9';
+  border-radius: 5px;
+}
+.btnsaved2{
+  background-color: #FAFBF9;
+  color: #050604;
+  border-radius: 5px;
 }
 .vizorja{
   width: 1px;

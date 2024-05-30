@@ -27,10 +27,12 @@ import FemaleIcon from '@mui/icons-material/Female';
 import { CountryDropdown } from 'react-country-region-selector';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
-import pre from './images/pre-removebg-preview.png'
-import creat from './images/creat.webp'
+import vaportixx from './images/vaportixx.webp'
+import cellmax from './images/cellmax.webp'
 import FeedIcon from '@mui/icons-material/Feed';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
+import masstechu from './images/masstech.webp'
+import pllatinumi from './images/pllatinumi.webp'
 import {
   FiEdit,
   FiChevronDown,
@@ -980,6 +982,8 @@ const Countryv2 = darkMode ? "country" :"countryv2"
   const bg =darkMode ? "bg-rose" :"bg-pink"
   const inputSwitch = darkMode ? "input-wrapper2":"input-wrapper3"
   const buttonSwitch =darkMode ? "btnsign":"btnsign3"
+  const buttonSwitch2 =darkMode ? "btnsaved":"btnsaved2"
+  const llojetsupl = darkMode ? "lloji-supleme":"lloji-supleme2"
   ////////// color changes for dark/light mode ///////////
 
     const [fillMessage,setFillMessage]=useState(false)
@@ -1073,6 +1077,7 @@ const handleClose1 = (event, reason) => {
     setShowNotes(false)
   }
 
+  //////////////// news //////////////////
   const [showNotes,setShowNotes]=useState(false)
 
   const toggleShowingNotes =()=>{
@@ -1081,6 +1086,8 @@ const handleClose1 = (event, reason) => {
     setArchive(false)
     setSaved(false)
   }
+
+  ////////////showNotes/////////////
 
   const [archive,setArchive]=useState(false)
 
@@ -1091,6 +1098,7 @@ const handleClose1 = (event, reason) => {
     setShowNotes(false)
   }
 
+  ////////////archive //////////////////
   const [saved,setSaved]=useState(false)
 
   const toggleSaved =()=>{
@@ -1099,13 +1107,54 @@ const handleClose1 = (event, reason) => {
     setArchive(false)
     setNews(false)
   }
+////////////saved///////////////
+
+const [masstech,setMasstech]=useState(true)
+
+const toggleMasstech =()=>{
+  setMasstech(true)
+  setVapor(false)
+  setPlatinum(false)
+  setCell(false)
+}
+
+///////////masstech///////////
+
+const  [vapor,setVapor]=useState(false)
+
+const toggleVaport =()=>{
+  setVapor(true)
+  setMasstech(false)
+  setPlatinum(false)
+  setCell(false)
+}
+
+const [cell,setCell]=useState(false)
+
+const toggleCell=()=>{
+  setCell(true)
+  setVapor(false)
+  setMasstech(false)
+  setPlatinum(false)
+}
+
+const [platinum,setPlatinum]=useState(false)
+
+const togglePlatinum =()=>{
+  setPlatinum(true)
+  setVapor(false)
+  setMasstech(false)
+  setCell(false)
+}
 
 
+
+  
   return(
     <div>
      
 
-      <div onClick={toggleNews} className="showNews flex gap-2 items-center mt-12 pointer">
+      <div onClick={toggleNews} className="showNews flex gap-2 items-center mt-12  cursor-pointer">
         <FeedIcon/>
       <h3 className=" font-semibold text-sm  mt-4 text-center md:text-start mb-4 w-fit">What is new</h3>
       </div>
@@ -1153,7 +1202,7 @@ const handleClose1 = (event, reason) => {
       </div>
 
       <div className="flex flex-col items-center md:items-start justify-center ">
-     <div onClick={toggleShowingNotes} className="flex gap-2 pointer items-center"
+     <div onClick={toggleShowingNotes} className="flex gap-2 cursor-pointer items-center"
      style={{marginTop:news?"15px":"15px"}}
      >
       <NewspaperIcon/>
@@ -1175,7 +1224,7 @@ const handleClose1 = (event, reason) => {
      
       <div className="flex flex-col items-center md:items-start justify-center mt-7 ">
 
-        <div onClick={toggleArchive} className="flex gap-2 pointer items-center">
+        <div onClick={toggleArchive} className="flex gap-2 cursor-pointer items-center">
           <ArchiveIcon/>
           <h3 className="font-semibold text-sm mt-2 text-start mb-2">Archive</h3>
         </div>
@@ -1189,7 +1238,7 @@ const handleClose1 = (event, reason) => {
 
       <div className="flex flex-col items-center md:items-start justify-center mt-7 ">
 
-      <div onClick={toggleSaved} className="flex gap-2 pointer items-center">
+      <div onClick={toggleSaved} className="flex gap-2 cursor-pointer items-center">
         <BookmarkBorderIcon/>
         <h3 className="font-semibold text-sm mt-2 text-start mb-2">Saved</h3>
       </div>
@@ -1205,7 +1254,7 @@ const handleClose1 = (event, reason) => {
         </motion.div>
      
         </div>
-        <div className="flex flex-col -mt-0 md:-mt-32 ">
+        <div className="flex flex-col -mt-0 md:-mt-32 items-center justify-center">
       <h3 className="font-semibold text-md md:text-xl mt-20 text-center md:text-start mb-4">Write Notes</h3>
       <div className="flex flex-col md:flex-row gap-5 items-center">
      <div className="flex gap-5 items-center">
@@ -1219,30 +1268,131 @@ const handleClose1 = (event, reason) => {
             </div>
       </div>
       <div className="empty"></div>
-      <div className={`${theme} flex items-end justify-center gap-8 mt-0`}>
-       
-      <div className={`flex flex-col mt-24 ${borderTheme}`}
-      >
-     <div className="relative flex justify-center items-center">
-      <img
-        src={pre}
-       
-        className="gin absolute ml-16 sm:ml-20 rotate-12 left-0"
-        style={{ zIndex: 1 }}
-        alt=""
-      />
-      <img
-        src={creat}
-      
-        className="gin relative z-10"
-        alt=""
-      />
-    </div>
-    
-    </div>
-        <h1 id="hioffer" className={`font-extrabold text-xl w-1/2 md:text-3xl text-center mb-12  ${themeText}`}>GET THE ENERGY THAT YOU NEED !</h1>
-       
+     <div className="flex flex-col items-center justify-center">
+     <h1 className="text-center text-xl md:text-3xl font-extrabold">See our newest arivals</h1>
+     <div className="llojet-newest flex gap-4 mt-4 overflow-x-auto whitespace-nowrap">
+     <button
+          onClick={toggleMasstech}
+          style={{
+            fontWeight: masstech ? "700" : "",
+            border: masstech ? "2px solid" : "1px solid"
+          }}
+          id="smallerbtn"
+          className={`${buttonSwitch} p-3 whitespace-nowrap`}
+        >
+          MASSTECH
+        </button>
+        <button
+          onClick={toggleVaport}
+          style={{
+            fontWeight: vapor ? "700" : "",
+            border: vapor ? "2px solid" : "1px solid"
+          }}
+          id="smallerbtn"
+          className={`${buttonSwitch} p-3 whitespace-nowrap`}
+        >
+          VAPORX5
+        </button>
+        <button
+          onClick={toggleCell}
+          style={{
+            fontWeight: cell ? "700" : "",
+            border: cell ? "2px solid" : "1px solid"
+          }}
+          id="smallerbtn"
+          className={`${buttonSwitch} p-3 whitespace-nowrap`}
+        >
+          CELLTECH
+        </button>
+        <button
+          onClick={togglePlatinum}
+          style={{
+            fontWeight: platinum ? "700" : "",
+            border: platinum ? "2px solid" : "1px solid"
+          }}
+          id="smallerbtn"
+          className={`${buttonSwitch} p-3 whitespace-nowrap`}
+        >
+          PLATINUM
+        </button>
+     </div>
+     <div className="flex mt-8 justify-center"
+     style={{borderRadius:'20%'}}
+     >
+       <div className="flex flex-col md:flex-row items-center justify-center ">
+       <div
+          style={{
+            
+            
+          }}
+          className="lloji-supleme flex items-center justify-center z-50 "
+        >
+          <div className={`image-container ${masstech ? 'show' : 'hide'} -ml-3`}>
+            {masstech && <img src={masstechu} width="300px" alt="Masstech" />}
+          </div>
+          <div className={`image-container ${vapor ? 'show' : 'hide'}`}>
+            {vapor && <img src={vaportixx} width="300px" alt="Vapor" />}
+          </div>
+          <div className={`image-container ${cell ? 'show' : 'hide'}`}>
+            {cell && <img src={cellmax} width="300px" alt="Cell" />}
+          </div>
+          <div className={`image-container ${platinum ? 'show' : 'hide'}`}>
+            {platinum && <img src={pllatinumi} width="300px" alt="Platinum" />}
+          </div>
+        </div>
+        <div
+        style={{width:"33%"}}
+        className="description-supleme flex flex-col items-center justify-center">
+          <div className="contenti0so ml-4 flex flex-col gap-2 mt-4 md:mt-0">
+          <div className={`text-container ${masstech ? 'show1' : 'hide1'}  `}>
+            {masstech && (
+                <>
+                  <h1 className="text-lg font-bold text-center md:text-start -mt-0 mb-2">Masstech</h1>
+                  <p className="text-md font-medium text-center md:text-start ">
+                    Mass gainer has creatine for enhanced muscle size & strength
+                  </p>
+                </>
+              )}
+            </div>
+            <div className={`text-container ${vapor ? 'show1' : 'hide1'} "`}>
+            {vapor && (
+                <>
+                  <h1 className="text-lg font-bold text-center md:text-start -mt-2 mb-2">VaporX5</h1>
+                  <p className="text-md font-medium text-center md:text-start">
+                  Helps increase energy,focus and endurance for toughest training
+                  </p>
+                </>
+              )}
+            </div>
+            <div className={`text-container ${cell ? 'show1' : 'hide1'}"`}>
+            {cell && (
+                <>
+                  <h1 className="text-lg font-bold text-center md:text-start -mt-3 mb-2">Celltech</h1>
+                  <p className="text-md font-medium text-center md:text-start mb-3.5">
+                  Helps increase energy,focus and endurance for toughest training
+                  </p>
+                </>
+              )}
+            </div>
+            <div className={`text-container ${platinum ? 'show1' : 'hide1'} -mt-1.5`}>
+            {platinum && (
+                <>
+                  <h1 className="text-lg font-bold text-center md:text-start -mt-4 mb-2">Platinum</h1>
+                  <p className="text-md font-medium text-center md:text-start mb-3 ">
+                  Helps increase energy,focus and endurance for toughest training
+                  </p>
+                </>
+              )}
+            </div>
+            <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
+              <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+              <button className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+            </div>
+          </div>
+        </div>
+       </div>
       </div>
+     </div>
       </div>
       
        </div>
