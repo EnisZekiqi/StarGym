@@ -33,6 +33,7 @@ import FeedIcon from '@mui/icons-material/Feed';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import masstechu from './images/masstech.webp'
 import pllatinumi from './images/pllatinumi.webp'
+import Draggable from 'react-draggable';
 import {
   FiEdit,
   FiChevronDown,
@@ -185,10 +186,10 @@ useEffect(() => {
      <div className="mt-8 container mx-auto px-4 ">
      {xs && 
      <div>
-      <div className={`hidden md:block ${bg}`}>
+      <div className={`hidden md:block`}>
       <MainIntro/>
       </div>
-      <div className={`block md:hidden${bg}`}>
+      <div className={`block md:hidden`}>
       <MainIntroSmallDisplay/>
       </div>
      </div>
@@ -1599,7 +1600,6 @@ const handleClose1 = (event, reason) => {
     setNews(false)
   }
 ////////////saved///////////////
-
 const [masstech,setMasstech]=useState(true)
 
 const toggleMasstech =()=>{
@@ -1638,62 +1638,236 @@ const togglePlatinum =()=>{
   setCell(false)
 }
 
+
 const toggleAllOff =()=>{
   setArchive(false)
   setShowNotes(false)
   setSaved(false)
   setNews(false)
+}  
+
+const [drawerOpacity, setDrawerOpacity] = useState(1);
+
+const handleDrag = (e, data) => {
+  // Calculate the opacity based on the vertical drag position
+  const opacity = Math.max(0, 1 - (data.y / window.innerHeight));
+  setDrawerOpacity(opacity);
+};
+
+
+const [savedMessage,setSavedMessage] =useState(false)///////success noteMessage//////
+const [already,setAlready]=useState(false)//////// alreadyshowed message //////
+
+
+
+const toggleSaveSuppMass = ()=>{
+  setSavedMessage(true)
+  setOpen1(true)
+  if(savedMessage){
+    setAlready(true)
+    setSavedMessage(false)
+  }
+
+  Cookies.set(masstech ,{expires:365})
 }
 
 
   return(
     <div className="relative min-h-screen">
       <div className="maincontentsmallscreen">
-        <p>12312</p>
+      <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
+     <div className="flex gap-4">
+     <Avatar  style={{width:50,height:50}} src={fileURL} />  
+      <div  id="nickname" class={` ${inputSwitch} text-center  `}>
+              <input value={note} onChange={handleNotesChange} type="text" placeholder="Keep in check your activities"   name="text" class="input2"/>
+            </div>
+     </div>
+            <div className="flex mt-2 gap-2 items-center justify-center">
+              <button onClick={ToggleNotes}  className={`${buttonSwitch} p-2.5  md:p-2.5 text-center`}> <SendIcon/> Post</button>
+            </div>
+     </div>
+     <div className="empty"/>
+     <div className="flex flex-col items-center justify-center">
+     <h1 className="text-center text-xl md:text-3xl font-extrabold">See our newest arivals</h1>
+     <div className="llojet-newest flex gap-4 mt-4 overflow-x-auto whitespace-nowrap">
+     <button
+          onClick={toggleMasstech}
+          style={{
+            fontWeight: masstech ? "700" : "",
+            border: masstech ? "2px solid" : "1px solid"
+          }}
+          id="smallerbtn"
+          className={`${buttonSwitch} p-3 whitespace-nowrap`}
+        >
+          MASSTECH
+        </button>
+        <button
+          onClick={toggleVaport}
+          style={{
+            fontWeight: vapor ? "700" : "",
+            border: vapor ? "2px solid" : "1px solid"
+          }}
+          id="smallerbtn"
+          className={`${buttonSwitch} p-3 whitespace-nowrap`}
+        >
+          VAPORX5
+        </button>
+        <button
+          onClick={toggleCell}
+          style={{
+            fontWeight: cell ? "700" : "",
+            border: cell ? "2px solid" : "1px solid"
+          }}
+          id="smallerbtn"
+          className={`${buttonSwitch} p-3 whitespace-nowrap`}
+        >
+          CELLTECH
+        </button>
+        <button
+          onClick={togglePlatinum}
+          style={{
+            fontWeight: platinum ? "700" : "",
+            border: platinum ? "2px solid" : "1px solid"
+          }}
+          id="smallerbtn"
+          className={`${buttonSwitch} p-3 whitespace-nowrap`}
+        >
+          PLATINUM
+        </button>
+     </div>
+     <div className="flex mt-8 justify-center"
+     style={{borderRadius:'20%'}}
+     >
+       <div className="flex flex-col md:flex-row items-center justify-center ">
+       <div
+          style={{
+            
+            
+          }}
+          className="lloji-supleme flex items-center justify-center  "
+        >
+          <div className={`image-container ${masstech ? 'show' : 'hide'} -ml-3`}>
+            {masstech && <img src={masstechu} width="300px" alt="Masstech" />}
+          </div>
+          <div className={`image-container ${vapor ? 'show' : 'hide'}`}>
+            {vapor && <img src={vaportixx} width="300px" alt="Vapor" />}
+          </div>
+          <div className={`image-container ${cell ? 'show' : 'hide'}`}>
+            {cell && <img src={cellmax} width="300px" alt="Cell" />}
+          </div>
+          <div className={`image-container ${platinum ? 'show' : 'hide'}`}>
+            {platinum && <img src={pllatinumi} width="300px" alt="Platinum" />}
+          </div>
+        </div>
+        <div
+        style={{width:"33%"}}
+        className="description-supleme flex flex-col items-center justify-center">
+          <div className="contenti0so ml-4 flex flex-col gap-2 mt-4 md:mt-0">
+          <div className={`text-container ${masstech ? 'show1' : 'hide1'}  `}>
+            {masstech && (
+                <>
+                  <h1 className="text-lg font-bold text-center md:text-start -mt-0 mb-2">Masstech</h1>
+                  <p className="text-md font-medium text-center md:text-start ">
+                    Mass gainer has creatine for enhanced muscle size & strength
+                  </p>
+                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
+                <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+                <button onClick={toggleSaveSuppMass} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+              </div>
+                </>
+              )}
+  
+            </div>
+            <div className={`text-container ${vapor ? 'show1' : 'hide1'} "`}>
+            {vapor && (
+                <>
+                  <h1 className="text-lg font-bold text-center md:text-start -mt-2 mb-2">VaporX5</h1>
+                  <p className="text-md font-medium text-center md:text-start">
+                  Helps increase energy,focus and endurance for toughest training
+                  </p>
+                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
+                <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+                <button className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+              </div>
+                </>
+              )}
+
+            </div>
+            <div className={`text-container ${cell ? 'show1' : 'hide1'}"`}>
+            {cell && (
+                <>
+                  <h1 className="text-lg font-bold text-center md:text-start -mt-3 mb-2">Celltech</h1>
+                  <p className="text-md font-medium text-center md:text-start mb-3.5">
+                  Helps increase energy,focus and endurance for toughest training
+                  </p>
+                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
+                <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+                <button className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+              </div>
+                </>
+              )}
+
+            </div>
+            <div className={`text-container ${platinum ? 'show1' : 'hide1'} -mt-1.5`}>
+            {platinum && (
+                <>
+                  <h1 className="text-lg font-bold text-center md:text-start -mt-4 mb-2">Platinum</h1>
+                  <p className="text-md font-medium text-center md:text-start mb-3 ">
+                  Helps increase energy,focus and endurance for toughest training
+                  </p>
+                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
+                <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+                <button className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+              </div>
+                </>
+                
+              )}
+            </div>
+          </div>
+        </div>
+       </div>
       </div>
-        <div className={`fixed bottom-0 left-0 w-full p-4 ${bg}}`}
+     </div>
+      </div>
+        <div className={`fixed bottom-0 left-0 w-full p-4 z-100 ${bg}}`}
         style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
         >
-          <div className="empty"
-          style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
-          ></div>
-           <div className="empty"
-          style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
-          ></div>
+          
       <div className="flex justify-around items-center">
         {/* News Feed */}
         <div onClick={toggleNews} className="showNews flex flex-col items-center cursor-pointer">
           <FeedIcon />
-          <h3 className="font-semibold text-sm mt-2">What is new</h3>
+          <h3 className="font-normal text-xs sm:text-sm mt-2">What is new</h3>
         </div>
 
         {/* Notes */}
         <div onClick={toggleShowingNotes} className="flex flex-col items-center cursor-pointer">
           <NewspaperIcon />
-          <h3 className="font-semibold text-sm mt-2">Notes</h3>
+          <h3 className="font-normal text-xs sm:text-sm mt-2">Notes</h3>
         </div>
 
         {/* Archive */}
         <div onClick={toggleArchive} className="flex flex-col items-center cursor-pointer">
           <ArchiveIcon />
-          <h3 className="font-semibold text-sm mt-2">Archive</h3>
+          <h3 className="font-normal text-xs sm:text-sm mt-2">Archive</h3>
         </div>
 
         {/* Saved */}
         <div onClick={toggleSaved} className="flex flex-col items-center cursor-pointer">
           <BookmarkBorderIcon />
-          <h3 className="font-semibold text-sm mt-2">Saved</h3>
+          <h3 className="font-normal text-xs sm:text-sm mt-2">Saved</h3>
         </div>
       </div>
 
       {/* Drawer Content */}
-      <div onClick={toggleAllOff} className={`drawer-content ${news ? 'show' : ''}`}
-      style={{backgroundColor:darkMode ? "#050604":"#FAFBF9"}}
+     
+      <div  className={`drawer-content ${news ? 'show' : 'hide'}`}
+      style={{backgroundColor:darkMode ? "#050604":"#FAFBF9",opacity: drawerOpacity}}
       >
          <div className="flex items-center justify-center"
          style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
          >
-       <div onClick={toggleAllOff}  className="px-2 pb-2 w-12 rounded-2xl mb-2" style={{backgroundColor:"#525252"}}/>
+       <div onClick={toggleAllOff}  className="handle mt-3 px-2 pb-2 w-12 rounded-2xl mb-2" style={{backgroundColor:"#525252"}}/>
        </div>
         <motion.div variants={wrapperVariants} className="flex flex-col items-center gap-4 "
          style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
@@ -1717,15 +1891,16 @@ const toggleAllOff =()=>{
           </div>
         </motion.div>
       </div>
+    
 
       {/* Notes Drawer */}
-      <div onClick={toggleAllOff} className={`drawer-content ${showNotes ? 'show' : ''} `}
+      <div  className={`drawer-content ${showNotes ? 'show' : ''} `}
        style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
       >
        <div className="flex items-center justify-center">
-       <div onClick={toggleAllOff}  className="px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
+       <div onClick={toggleAllOff}  className="px-2 mt-3 mb-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
        </div>
-        <p className="font-light text-center text-sm mb-2 ">Click on notes if you want to remove them</p>
+        <p className="font-light text-center text-sm mb-4  mt-2">Click on notes if you want to remove them</p>
         <div className="flex flex-col gap-4 items-center">
         {notes.map((note, index) => (
           <p style={{ color: darkMode ? "#FAFBF9" : "#050604", cursor: 'pointer', backgroundColor: selectedNoteIndex === index ? 'rgba(128, 128, 128,0.9)' : '', transition: 'all 1s ease' }} className={`pt-2 pl-2 pb-2 pr-2 w-2/3 md:w-full ${bg} ${selectedNoteIndex === index ? 'bg-pink' : ''} items-center md:items-start rounded-xl`} key={index} onClick={() => handleSelectNote(index)}>{note}</p>
@@ -1737,21 +1912,108 @@ const toggleAllOff =()=>{
       </div>
 
       {/* Archive Drawer */}
-      <div onClick={toggleAllOff} className={`drawer-content ${archive ? 'show' : ''}`}>
+      <div  className={`drawer-content ${archive ? 'show' : ''}`}>
       <div className="flex items-center justify-center">
-       <div onClick={toggleAllOff}  className="px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
+       <div onClick={toggleAllOff}  className=" mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
        </div>
         <h1>1</h1>
       </div>
 
       {/* Saved Drawer */}
-      <div onClick={toggleAllOff} className={`drawer-content ${saved ? 'show' : ''}`}>
+      <div  className={`drawer-content ${saved ? 'show' : ''}`}>
       <div className="flex items-center justify-center">
-       <div onClick={toggleAllOff}  className="px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
+       <div onClick={toggleAllOff}  className="mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
        </div>
-        <h1>1</h1>
+        <div>
+          {masstech}
+        </div>
       </div>
     </div>
+    {fillMessage && 
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="error"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Fill the empty field </p>
+      </Alert>
+        </Snackbar>
+      }
+      {filledNotes && 
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="success"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Notes added successfully </p>
+      </Alert>
+        </Snackbar>
+      }
+      {maxFilled &&
+       <Snackbar
+       open={open1}
+       autoHideDuration={6000}
+       onClose={handleClose1}
+       message="Note archived"
+       
+     >
+         <Alert
+       severity="error"
+       variant="filled"
+       sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+       >
+       <p>Maximum capacity for Notes is 3 </p>
+       </Alert>
+         </Snackbar>
+      }
+      {savedMessage &&
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="success"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Item saved successfully</p>
+      </Alert>
+        </Snackbar>
+      }
+      {already &&
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="error"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Item already saved</p>
+      </Alert>
+        </Snackbar>
+      }
     </div>
   )
 }
