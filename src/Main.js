@@ -34,6 +34,8 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import masstechu from './images/masstech.webp'
 import pllatinumi from './images/pllatinumi.webp'
 import Draggable from 'react-draggable';
+import Folder from './images/Folder.svg'
+import Folder2 from './images/Folder (1).svg'
 import {
   FiEdit,
   FiChevronDown,
@@ -1654,23 +1656,35 @@ const handleDrag = (e, data) => {
   setDrawerOpacity(opacity);
 };
 
+const [defaultShowingSaved,setDefaulTShowingSaved] =useState(true)
 
 const [savedMessage,setSavedMessage] =useState(false)///////success noteMessage//////
 const [already,setAlready]=useState(false)//////// alreadyshowed message //////
 
+const [savedSupplements, setSavedSupplements] = useState([]);
 
+const toggleSaveSuppMass = (supplementName, imageURL) => {
+  // Save the name and image URL of the clicked supplement
+  const supplement = { name: supplementName, image: imageURL };
+  const updatedSupplements = [...savedSupplements, supplement];
+  setSavedSupplements(updatedSupplements);
 
-const toggleSaveSuppMass = ()=>{
-  setSavedMessage(true)
-  setOpen1(true)
-  if(savedMessage){
-    setAlready(true)
-    setSavedMessage(false)
+  // Persist the updated supplements array in cookies
+  Cookies.set("savedSupplements", JSON.stringify(updatedSupplements), { expires: 365 });
+
+  // Show the saved message
+  setSavedMessage(true);
+  setOpen1(true);
+  setTimeout(() => {
+    setSavedMessage(false);
+  }, 3000);
+};
+useEffect(() => {
+  const savedSupplementsFromCookies = Cookies.get("savedSupplements");
+  if (savedSupplementsFromCookies) {
+    setSavedSupplements(JSON.parse(savedSupplementsFromCookies));
   }
-
-  Cookies.set(masstech ,{expires:365})
-}
-
+}, []);
 
   return(
     <div className="relative min-h-screen">
@@ -1772,7 +1786,7 @@ const toggleSaveSuppMass = ()=>{
                   </p>
                   <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
                 <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                <button onClick={toggleSaveSuppMass} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+                <button onClick={() => toggleSaveSuppMass("Masstech", masstechu)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
               </div>
                 </>
               )}
@@ -1787,7 +1801,7 @@ const toggleSaveSuppMass = ()=>{
                   </p>
                   <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
                 <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                <button className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+                <button onClick={() => toggleSaveSuppMass("Vapor", vaportixx)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
               </div>
                 </>
               )}
@@ -1920,13 +1934,18 @@ const toggleSaveSuppMass = ()=>{
       </div>
 
       {/* Saved Drawer */}
-      <div  className={`drawer-content ${saved ? 'show' : ''}`}>
+      <div  className={`drawer-content ${saved ? 'show' : ''}`}
+       style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
+      >
       <div className="flex items-center justify-center">
        <div onClick={toggleAllOff}  className="mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
        </div>
-        <div>
-          {masstech}
-        </div>
+       {savedSupplements.map((supplement, index) => (
+    <div key={index} className="flex flex-col overflow-y-auto h-36 items-center my-2">
+      <img src={supplement.image} alt={supplement.name} className="w-24 h-24 mr-2" />
+      <span>{supplement.name}</span>
+    </div>
+  ))}
       </div>
     </div>
     {fillMessage && 
