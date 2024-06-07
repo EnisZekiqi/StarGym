@@ -558,7 +558,15 @@ border-top-width: 2px;
 .show1 {
   opacity: 1;
 }
+.highlighted-light img {
+  filter: drop-shadow(0px 5px 10px #B2C9A1);
+  transition: drop-shadow 0.3s ease; /* Smooth transition */
+}
 
+.highlighted-dark img {
+  filter: drop-shadow(0px 5px 10px #475E36);
+  transition: drop-shadow 0.3s ease; /* Smooth transition */
+}
 .hide1 {
   opacity: 0;
   z-index: 0;
@@ -633,7 +641,7 @@ border-top-width: 2px;
   }
   .description-supleme{
     border-left:none !important ;
-    border-top: 2px dashed #050604;
+
     width: 65% !important;
   }
 }

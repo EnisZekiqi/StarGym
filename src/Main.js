@@ -36,6 +36,7 @@ import pllatinumi from './images/pllatinumi.webp'
 import Draggable from 'react-draggable';
 import Folder from './images/Folder.svg'
 import Folder2 from './images/Folder (1).svg'
+import Task from './images/Task list.svg'
 import {
   FiEdit,
   FiChevronDown,
@@ -1024,6 +1025,7 @@ const handleClose1 = (event, reason) => {
     if (savedNotes) {
       setNotes(savedNotes.split('\n')); // Split saved notes by newline character
     }
+    setDefaultShowingNotes(false)
   }, []);
 
   const [note, setNote] = useState('');
@@ -1074,6 +1076,11 @@ const handleClose1 = (event, reason) => {
       setNotes(newNotes);
       setSelectedNoteIndex(null);
       Cookies.set('notes', newNotes.join('\n'), { expires: 365 });
+  
+      // Check if the newNotes array is empty
+      if (newNotes.length === 0) {
+        setDefaultShowingNotes(true);
+      }
     }
   };
  
@@ -1157,6 +1164,53 @@ const togglePlatinum =()=>{
   setCell(false)
 }
 
+const [defaultShowingSaved,setDefaulTShowingSaved] =useState(true) //////// nothing saved yet content ///////////
+const [defaultShowingNotes,setDefaultShowingNotes]=useState(true) ///////// No notes yet content ////////////
+
+const [savedMessage,setSavedMessage] =useState(false)///////success noteMessage//////
+const [already,setAlready]=useState(false)//////// alreadyshowed message //////
+
+const [savedSupplements, setSavedSupplements] = useState([]);
+
+const toggleSaveSuppMass = (supplementName, imageURL) => {
+  // Check if the supplement is already in the saved list
+  const alreadySaved = savedSupplements.some(supplement => supplement.name === supplementName);
+
+  if (!alreadySaved) {
+    const supplement = { name: supplementName, image: imageURL };
+    const updatedSupplements = [...savedSupplements, supplement];
+    setSavedSupplements(updatedSupplements);
+    Cookies.set("savedSupplements", JSON.stringify(updatedSupplements), { expires: 365 });
+
+    setSavedMessage(true);
+    setOpen1(true);
+    setDefaulTShowingSaved(false);
+    setTimeout(() => {
+      setSavedMessage(false);
+    }, 3000);
+  }
+};
+
+
+useEffect(() => {
+  const savedSupplementsFromCookies = Cookies.get("savedSupplements");
+  if (savedSupplementsFromCookies) {
+    setSavedSupplements(JSON.parse(savedSupplementsFromCookies));
+    setDefaulTShowingSaved(false);
+  }
+}, []);
+
+const [selectedSupplement, setSelectedSupplement] = useState(null);
+
+const removeSavedSupplement = (supplement) => {
+  const updatedSupplements = savedSupplements.filter(s => s.name !== supplement.name);
+  setSavedSupplements(updatedSupplements);
+  Cookies.set("savedSupplements", JSON.stringify(updatedSupplements), { expires: 365 });
+  setSelectedSupplement(null); // Reset the selected supplement
+  if (updatedSupplements.length === 0) {
+    setDefaulTShowingSaved(true);
+  }
+};
 
 
   
@@ -1219,13 +1273,24 @@ const togglePlatinum =()=>{
      <h3 className="font-semibold text-sm mt-2 text-start mb-2">Notes</h3>
      </div>
       <div className={`news-content flex flex-col  ${showNotes ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
-      <p className="font-light text-sm mb-4">Click on notes if you want to remove them</p>
-         {notes.map((note, index) => (
-        <p  style={{color :darkMode ? "#FAFBF9":"#050604", cursor: 'pointer',backgroundColor: selectedNoteIndex === index ? 'rgba(128, 128, 128,0.9)' : '',transition:'all 1s ease'}}
-         className={`pt-2 pl-2 pb-2 pr-2 w-2/3 md:w-full ${bg} ${selectedNoteIndex === index ? 'bg-pink' : ''} items-center md:items-start rounded-xl`} key={index}
-        onClick={() => handleSelectNote(index)}
-        >{note}</p>
-      ))}
+      {defaultShowingNotes ? (
+          <div className="flex items-center justify-center mt-4">
+            <div>
+              <img src={Task} width="200px" className="mt-2" alt="No items yet" />
+              <p className="text-center mt-2">No Notes yet</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <p className="font-light text-sm mb-4">Click on notes if you want to remove them</p>
+            {notes.map((note, index) => (
+            <p  style={{color :darkMode ? "#FAFBF9":"#050604", cursor: 'pointer',backgroundColor: selectedNoteIndex === index ? 'rgba(128, 128, 128,0.9)' : '',transition:'all 1s ease'}}
+            className={`pt-2 pl-2 pb-2 pr-2 w-2/3 md:w-full ${bg} ${selectedNoteIndex === index ? 'bg-pink' : ''} items-center md:items-start rounded-xl`} key={index}
+            onClick={() => handleSelectNote(index)}
+            >{note}</p>
+          ))}
+          </>
+        )}
        <div className="flex justify-center items-center w-full mt-8  ">
         <button  onClick={handleClearNote} className={`${buttonSwitch} p-2.5  text-center`}><DeleteIcon/> Clear</button>
       </div>
@@ -1254,7 +1319,43 @@ const togglePlatinum =()=>{
       </div>
       <div className={`news-content flex flex-col  ${saved ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
         <h1>
-          1
+        {defaultShowingSaved ? (
+          <div className="flex items-center justify-center mt-4">
+            <div>
+              <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
+              <p className="text-center mt-2">Nothing saved yet</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
+            <div className="flex  mt-4 items-start justify-start">
+              {savedSupplements.map((supplement, index) => (
+                <div 
+                  key={index} 
+                  className={`flex flex-col h-36 items-center justify-center my-2 ${selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? 'highlighted-dark' : 'highlighted-light') : ''}`}            >
+                  <img 
+                    src={supplement.image} 
+                    alt={supplement.name} 
+                    className="w-24 h-24 mr-2 cursor-pointer"
+                    onClick={() => setSelectedSupplement(supplement)} // Set selected supplement on click
+                  />
+                  <span>{supplement.name}</span>
+                </div>
+              ))}
+            </div>
+            {selectedSupplement && (
+              <div className="flex justify-center bg-black bg-opacity-50">
+                <button 
+                  className={`${buttonSwitch} p-2.5 text-center`}
+                  onClick={() => removeSavedSupplement(selectedSupplement)}
+                >
+                  Remove {selectedSupplement.name}
+                </button>
+              </div>
+            )}
+          </>
+        )}
         </h1>
       </div>
 
@@ -1361,6 +1462,10 @@ const togglePlatinum =()=>{
                   <p className="text-md font-medium text-center md:text-start ">
                     Mass gainer has creatine for enhanced muscle size & strength
                   </p>
+                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
+                  <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+                  <button onClick={() => toggleSaveSuppMass("Masstech", masstechu)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+                </div>
                 </>
               )}
             </div>
@@ -1371,6 +1476,10 @@ const togglePlatinum =()=>{
                   <p className="text-md font-medium text-center md:text-start">
                   Helps increase energy,focus and endurance for toughest training
                   </p>
+                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
+                  <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+                  <button onClick={() => toggleSaveSuppMass("VaporX5", vaportixx)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+                </div>
                 </>
               )}
             </div>
@@ -1381,6 +1490,10 @@ const togglePlatinum =()=>{
                   <p className="text-md font-medium text-center md:text-start mb-3.5">
                   Helps increase energy,focus and endurance for toughest training
                   </p>
+                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
+                  <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+                  <button onClick={() => toggleSaveSuppMass("Celltech", cellmax)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+                </div>
                 </>
               )}
             </div>
@@ -1391,12 +1504,13 @@ const togglePlatinum =()=>{
                   <p className="text-md font-medium text-center md:text-start mb-3 ">
                   Helps increase energy,focus and endurance for toughest training
                   </p>
+                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
+                  <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+                  <button onClick={() => toggleSaveSuppMass("Platinum", pllatinumi)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+                </div>
                 </>
               )}
-            </div>
-            <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
-              <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-              <button className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+             
             </div>
           </div>
         </div>
@@ -1456,6 +1570,23 @@ const togglePlatinum =()=>{
        <p>Maximum capacity for Notes is 3 </p>
        </Alert>
          </Snackbar>
+      }
+       {savedMessage &&
+      <Snackbar
+      open={open1}
+      autoHideDuration={6000}
+      onClose={handleClose1}
+      message="Note archived"
+      
+    >
+        <Alert
+      severity="success"
+      variant="filled"
+      sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+      >
+      <p>Item saved successfully</p>
+      </Alert>
+        </Snackbar>
       }
     </div>
   )
@@ -1664,27 +1795,45 @@ const [already,setAlready]=useState(false)//////// alreadyshowed message //////
 const [savedSupplements, setSavedSupplements] = useState([]);
 
 const toggleSaveSuppMass = (supplementName, imageURL) => {
-  // Save the name and image URL of the clicked supplement
-  const supplement = { name: supplementName, image: imageURL };
-  const updatedSupplements = [...savedSupplements, supplement];
-  setSavedSupplements(updatedSupplements);
+  // Check if the supplement is already in the saved list
+  const alreadySaved = savedSupplements.some(supplement => supplement.name === supplementName);
 
-  // Persist the updated supplements array in cookies
-  Cookies.set("savedSupplements", JSON.stringify(updatedSupplements), { expires: 365 });
+  if (!alreadySaved) {
+    const supplement = { name: supplementName, image: imageURL };
+    const updatedSupplements = [...savedSupplements, supplement];
+    setSavedSupplements(updatedSupplements);
+    Cookies.set("savedSupplements", JSON.stringify(updatedSupplements), { expires: 365 });
 
-  // Show the saved message
-  setSavedMessage(true);
-  setOpen1(true);
-  setTimeout(() => {
-    setSavedMessage(false);
-  }, 3000);
+    setSavedMessage(true);
+    setOpen1(true);
+    setDefaulTShowingSaved(false);
+    setTimeout(() => {
+      setSavedMessage(false);
+    }, 3000);
+  }
 };
+
+
 useEffect(() => {
   const savedSupplementsFromCookies = Cookies.get("savedSupplements");
   if (savedSupplementsFromCookies) {
     setSavedSupplements(JSON.parse(savedSupplementsFromCookies));
+    setDefaulTShowingSaved(false);
   }
 }, []);
+
+const [selectedSupplement, setSelectedSupplement] = useState(null);
+
+const removeSavedSupplement = (supplement) => {
+  const updatedSupplements = savedSupplements.filter(s => s.name !== supplement.name);
+  setSavedSupplements(updatedSupplements);
+  Cookies.set("savedSupplements", JSON.stringify(updatedSupplements), { expires: 365 });
+  setSelectedSupplement(null); // Reset the selected supplement
+  if (updatedSupplements.length === 0) {
+    setDefaulTShowingSaved(true);
+  }
+};
+
 
   return(
     <div className="relative min-h-screen">
@@ -1801,7 +1950,7 @@ useEffect(() => {
                   </p>
                   <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
                 <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                <button onClick={() => toggleSaveSuppMass("Vapor", vaportixx)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+                <button onClick={() => toggleSaveSuppMass("VaporX5", vaportixx)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
               </div>
                 </>
               )}
@@ -1816,7 +1965,7 @@ useEffect(() => {
                   </p>
                   <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
                 <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                <button className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+                <button onClick={() => toggleSaveSuppMass("Celltech", cellmax)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
               </div>
                 </>
               )}
@@ -1831,7 +1980,7 @@ useEffect(() => {
                   </p>
                   <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
                 <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                <button className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+                <button onClick={() => toggleSaveSuppMass("Platinum", pllatinumi)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
               </div>
                 </>
                 
@@ -1934,18 +2083,49 @@ useEffect(() => {
       </div>
 
       {/* Saved Drawer */}
-      <div  className={`drawer-content ${saved ? 'show' : ''}`}
+      <div  className={`drawer-content ${saved ? 'show' : ''} `}
        style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
       >
       <div className="flex items-center justify-center">
        <div onClick={toggleAllOff}  className="mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
        </div>
-       {savedSupplements.map((supplement, index) => (
-    <div key={index} className="flex flex-col overflow-y-auto h-36 items-center my-2">
-      <img src={supplement.image} alt={supplement.name} className="w-24 h-24 mr-2" />
-      <span>{supplement.name}</span>
-    </div>
-  ))}
+       {defaultShowingSaved ? (
+          <div className="flex items-center justify-center mt-4">
+            <div>
+              <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
+              <p className="text-center mt-2">Nothing saved yet</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
+            <div className="flex mt-4 items-center justify-center">
+              {savedSupplements.map((supplement, index) => (
+                <div 
+                  key={index} 
+                  className={`flex flex-col h-36 items-center justify-center my-2 ${selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? 'highlighted-dark' : 'highlighted-light') : ''}`}            >
+                  <img 
+                    src={supplement.image} 
+                    alt={supplement.name} 
+                    className="w-24 h-24 mr-2 cursor-pointer"
+                    onClick={() => setSelectedSupplement(supplement)} // Set selected supplement on click
+                  />
+                  <span>{supplement.name}</span>
+                </div>
+              ))}
+            </div>
+            {selectedSupplement && (
+              <div className="flex justify-center bg-black bg-opacity-50">
+                <button 
+                  className={`${buttonSwitch} p-2.5 text-center`}
+                  onClick={() => removeSavedSupplement(selectedSupplement)}
+                >
+                  Remove {selectedSupplement.name}
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
     {fillMessage && 
