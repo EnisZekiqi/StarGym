@@ -9,7 +9,6 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import { IoIosNotifications } from "react-icons/io";
 import MenuIcon from '@mui/icons-material/Menu';
 import CollectionsIcon from '@mui/icons-material/Collections';
-import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { MdOutlineDarkMode } from "react-icons/md";
@@ -37,6 +36,15 @@ import Draggable from 'react-draggable';
 import Folder from './images/Folder.svg'
 import Folder2 from './images/Folder (1).svg'
 import Task from './images/Task list.svg'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Checkbox from '@mui/material/Checkbox';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { styled } from '@mui/material/styles';
+import avatar1 from './AvatarImages/images 9.jpg'
+import avatar2 from './AvatarImages/images 12.jpg'
 import {
   FiEdit,
   FiChevronDown,
@@ -48,7 +56,6 @@ import {
 } from "react-icons/fi";
 import SendIcon from '@mui/icons-material/Send';
 import ArchiveIcon from '@mui/icons-material/Archive';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 const Main = () => {
   const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
@@ -1070,19 +1077,6 @@ const handleClose1 = (event, reason) => {
     setSelectedNoteIndex(index);
   };
 
-  const handleClearNote = () => {
-    if (selectedNoteIndex !== null) {
-      const newNotes = notes.filter((_, index) => index !== selectedNoteIndex);
-      setNotes(newNotes);
-      setSelectedNoteIndex(null);
-      Cookies.set('notes', newNotes.join('\n'), { expires: 365 });
-  
-      // Check if the newNotes array is empty
-      if (newNotes.length === 0) {
-        setDefaultShowingNotes(true);
-      }
-    }
-  };
  
 
   const [news,setNews]=useState(false)
@@ -1092,6 +1086,7 @@ const handleClose1 = (event, reason) => {
     setArchive(false)
     setSaved(false)
     setShowNotes(false)
+    setShopingCart(false)
   }
 
   //////////////// news //////////////////
@@ -1102,6 +1097,7 @@ const handleClose1 = (event, reason) => {
     setNews(false)
     setArchive(false)
     setSaved(false)
+    setShopingCart(false)
   }
 
   ////////////showNotes/////////////
@@ -1113,6 +1109,7 @@ const handleClose1 = (event, reason) => {
     setNews(false)
     setSaved(false)
     setShowNotes(false)
+    setShopingCart(false)
   }
 
   ////////////archive //////////////////
@@ -1123,6 +1120,7 @@ const handleClose1 = (event, reason) => {
     setShowNotes(false)
     setArchive(false)
     setNews(false)
+    setShopingCart(false)
   }
 ////////////saved///////////////
 
@@ -1206,21 +1204,108 @@ const removeSavedSupplement = (supplement) => {
   const updatedSupplements = savedSupplements.filter(s => s.name !== supplement.name);
   setSavedSupplements(updatedSupplements);
   Cookies.set("savedSupplements", JSON.stringify(updatedSupplements), { expires: 365 });
+  const newSupplements = savedSupplements.filter(s => s.name !== supplement.name);
+    setSavedSupplements(newSupplements);
+    setSelectedSupplement(null); // 
   setSelectedSupplement(null); // Reset the selected supplement
   if (updatedSupplements.length === 0) {
     setDefaulTShowingSaved(true);
   }
 };
 
+useEffect(() => {
+  setDefaultShowingNotes(notes.length === 0);
+}, [notes]);
 
+// Function to handle adding a new note
+const addNote = (note) => {
+  setNotes([...notes, note]);
+};
+
+// Function to handle removing a note
+const removeNote = (index) => {
+  const newNotes = notes.filter((_, i) => i !== index);
+  setNotes(newNotes);
+};
+
+// Function to handle clearing all notes
+const handleClearNote = () => { 
+  if (selectedNoteIndex !== null) {
+     const newNotes = notes.filter((_, index) => index !== selectedNoteIndex); 
+     setNotes(newNotes);
+      setSelectedNoteIndex(null);
+       Cookies.set('notes', newNotes.join('\n'), { expires: 365 });
+      }}
+   // Check if the newNotes array is empty if (newNotes.length === 0) { setDefaultShowingNotes(true); } } };
   
+ 
+   useEffect(() => {
+    setDefaulTShowingSaved(savedSupplements.length === 0);
+  }, [savedSupplements]);
+
+  // Function to handle adding a new supplement
+  const addSupplement = (supplement) => {
+    setSavedSupplements([...savedSupplements, supplement]);
+  };
+
+  // Function to handle removing a saved supplement
+  
+  const supplement = {
+    name: "Supplement Name",
+    image: "path/to/image.jpg",
+    learnMoreUrl: "/learnMore"
+  };
+
+
+const [shopingCart,setShopingCart]=useState(false)
+
+const toggleShoppingCart = ()=>{
+  setShopingCart(!shopingCart)
+  setShowNotes(false)
+  setArchive(false)
+  setSaved(false)
+  setNews(false)
+}
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } }; ///// checkboxes favourite and saved
+
+const supplementsData = [
+  {
+    image: avatar1,
+    name: 'Cindy Baker',
+    description: 'Eating apples may contribute to a good night\'s sleep. I suggest making a fruit salad with a variety of fruits such as apples, grapefruit, and bananas to incorporate more vitamin C before bedtime.',
+  },
+  {
+    image: avatar2,
+    name: 'John Doe',
+    description: 'Consuming a balanced diet with a mix of proteins, fats, and carbohydrates can significantly improve your overall health and energy levels throughout the day.',
+  },
+  // Add more supplements as needed
+];
+
+const [isFavoriteChecked, setIsFavoriteChecked] = useState(false);
+const [isBookmarkChecked, setIsBookmarkChecked] = useState(false);
+
+const handleFavoriteChange = () => {
+  setIsFavoriteChecked(!isFavoriteChecked);
+};
+
+const handleBookmarkChange = () => {
+  setIsBookmarkChecked(!isBookmarkChecked);
+};
+
+const getIconStyle = (isChecked) => ({
+  color: isChecked ? (darkMode ? '#475E36' : '#B2C9A1') : '',
+});
+
+
   return(
     <div>
      
 
       <div onClick={toggleNews} className="showNews flex gap-2 items-center mt-12  cursor-pointer">
         <FeedIcon/>
-      <h3 className=" font-semibold text-sm  mt-4 text-center md:text-start mb-4 w-fit">What is new</h3>
+      <h3 className=" font-semibold text-sm  mt-4 text-center md:text-start mb-4 w-1/2">News Feed</h3>
       </div>
        <div className="flex flex-col md:flex-row gap-4 justify-between mt-2">
        <div className="flex flex-col  gap-6 ">
@@ -1244,6 +1329,7 @@ const removeSavedSupplement = (supplement) => {
             </svg>
             <p style={{color :darkMode ? "#FAFBF9":"#050604"}} className="font-normal text-sm md:text-md ">New Healthy Diets added</p>
         </motion.div>
+        <a href="#arrival">
         <div className={`flex pt-2 pl-2 pb-2 ${bg} items-center rounded-xl gap-2`}>
         <svg
             style={{fill : darkMode ? "#FAFBF9":"#050604"}}
@@ -1257,10 +1343,13 @@ const removeSavedSupplement = (supplement) => {
             </svg>
             <p style={{color :darkMode ? "#FAFBF9":"#050604"}} className="font-normal text-sm md:text-md ">New Suplements</p>
         </div>
-        <div className={`flex pt-2 pl-2 pb-2 ${bg} items-center rounded-xl gap-2`}>
+        </a>
+       <a href="#advices">
+       <div className={`flex pt-2 pl-2 pb-2 ${bg} items-center rounded-xl gap-2`}>
           <FiInfo style={{color:darkMode ? "#FAFBF9":"#050604",width:'35px',height:'25px'}}/>
-          <p style={{color :darkMode ? "#FAFBF9":"#050604"}} className="font-normal text-sm md:text-md ">Information Edited</p>
+          <p style={{color :darkMode ? "#FAFBF9":"#050604"}} className="font-normal text-sm md:text-md ">New Advices</p>
         </div>
+       </a>
 
 
       </div>
@@ -1274,26 +1363,37 @@ const removeSavedSupplement = (supplement) => {
      </div>
       <div className={`news-content flex flex-col  ${showNotes ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
       {defaultShowingNotes ? (
-          <div className="flex items-center justify-center mt-4">
-            <div>
-              <img src={Task} width="200px" className="mt-2" alt="No items yet" />
-              <p className="text-center mt-2">No Notes yet</p>
-            </div>
+        <div className="flex items-center justify-center mt-4">
+          <div>
+            <img src={Task} width="200px" className="mt-2" alt="No items yet" />
+            <p className="text-center mt-2">No Notes yet</p>
           </div>
-        ) : (
-          <>
-            <p className="font-light text-sm mb-4">Click on notes if you want to remove them</p>
-            {notes.map((note, index) => (
-            <p  style={{color :darkMode ? "#FAFBF9":"#050604", cursor: 'pointer',backgroundColor: selectedNoteIndex === index ? 'rgba(128, 128, 128,0.9)' : '',transition:'all 1s ease'}}
-            className={`pt-2 pl-2 pb-2 pr-2 w-2/3 md:w-full ${bg} ${selectedNoteIndex === index ? 'bg-pink' : ''} items-center md:items-start rounded-xl`} key={index}
-            onClick={() => handleSelectNote(index)}
-            >{note}</p>
+        </div>
+      ) : (
+        <>
+          <p className="font-light text-sm mb-4 mt-4">Click on notes if you want to remove them</p>
+          {notes.map((note, index) => (
+            <p
+              style={{
+                color: darkMode ? "#FAFBF9" : "#050604",
+                cursor: 'pointer',
+                backgroundColor: selectedNoteIndex === index ? 'rgba(128, 128, 128,0.9)' : '',
+                transition: 'all 1s ease'
+              }}
+              className={`pt-2 pl-2 pb-2 pr-2 w-2/3 md:w-full ${bg} ${selectedNoteIndex === index ? 'bg-pink' : ''} items-center md:items-start rounded-xl`}
+              key={index}
+              onClick={() => handleSelectNote(index)}
+            >
+              {note}
+            </p>
           ))}
-          </>
-        )}
-       <div className="flex justify-center items-center w-full mt-8  ">
-        <button  onClick={handleClearNote} className={`${buttonSwitch} p-2.5  text-center`}><DeleteIcon/> Clear</button>
-      </div>
+          <div className="flex justify-center items-center w-full mt-8">
+            <button onClick={handleClearNote} className={`${buttonSwitch} p-2.5 text-center`}>
+              <DeleteIcon /> Clear
+            </button>
+          </div>
+        </>
+      )}
       </div>
       </div>
      
@@ -1320,54 +1420,64 @@ const removeSavedSupplement = (supplement) => {
       <div className={`news-content flex flex-col  ${saved ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
         <h1>
         {defaultShowingSaved ? (
-          <div className="flex items-center justify-center mt-4">
-            <div>
-              <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
-              <p className="text-center mt-2">Nothing saved yet</p>
-            </div>
+        <div className="flex items-center justify-center mt-4">
+          <div>
+            <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
+            <p className="text-center mt-2">Nothing saved yet</p>
           </div>
-        ) : (
-          <>
-            <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
-            <div className="flex  mt-4 items-start justify-start">
-              {savedSupplements.map((supplement, index) => (
-                <div 
-                  key={index} 
-                  className={`flex flex-col h-36 items-center justify-center my-2 ${selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? 'highlighted-dark' : 'highlighted-light') : ''}`}            >
-                  <img 
-                    src={supplement.image} 
-                    alt={supplement.name} 
-                    className="w-24 h-24 mr-2 cursor-pointer"
-                    onClick={() => setSelectedSupplement(supplement)} // Set selected supplement on click
-                  />
-                  <span>{supplement.name}</span>
-                </div>
-              ))}
-            </div>
-            {selectedSupplement && (
-              <div className="flex justify-center bg-black bg-opacity-50">
-                <button 
-                  className={`${buttonSwitch} p-2.5 text-center`}
-                  onClick={() => removeSavedSupplement(selectedSupplement)}
-                >
-                  Remove {selectedSupplement.name}
-                </button>
+        </div>
+      ) : (
+        <>
+          <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
+          <div className="flex mt-4 items-start justify-start">
+            {savedSupplements.map((supplement, index) => (
+              <div 
+                key={index} 
+                className={`flex flex-col h-36 items-center justify-center my-2 ${selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? 'highlighted-dark' : 'highlighted-light') : ''}`}
+              >
+                <img 
+                  src={supplement.image} 
+                  alt={supplement.name} 
+                  className="w-24 h-24 mr-2 cursor-pointer"
+                  onClick={() => setSelectedSupplement(supplement)} // Set selected supplement on click
+                />
+                <span>{supplement.name}</span>
               </div>
-            )}
-          </>
-        )}
+            ))}
+          </div>
+          {selectedSupplement && (
+            <div className="flex justify-center bg-black bg-opacity-50">
+              <button 
+                className={`${buttonSwitch} p-2.5 text-center`}
+                onClick={() => removeSavedSupplement(selectedSupplement)}
+              >
+                <DeleteIcon /> Remove {selectedSupplement.name}
+              </button>
+            </div>
+          )}
+        </>
+      )}
         </h1>
       </div>
 
       </div>
-
+      <div className="flex flex-col items-center md:items-start justify-center mt-3">
+     <div onClick={toggleShoppingCart} className="flex gap-2 cursor-pointer items-center"
+     style={{marginTop:shopingCart ?"15px":"15px"}}
+     >
+      <ShoppingCartIcon/>
+     <h3 className="font-semibold text-sm mt-2 text-start mb-2">Cart</h3>
+     </div>
+      <div className={`news-content flex flex-col  ${shopingCart ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
+     Nothing added yet
+      </div>
+      </div>
 
         </motion.div>
      
         </div>
-        <div className="flex flex-col -mt-0 md:-mt-32 items-center justify-center">
-      <h3 className="font-semibold text-md md:text-xl mt-20 text-center md:text-start mb-4">Write Notes</h3>
-      <div className="flex flex-col md:flex-row gap-5 items-center">
+        <div className="flex flex-col -mt-0 md:-mt-32 items-end justify-end w-3/4">
+      <div className="flex flex-col md:flex-row gap-5 items-center mt-14">
      <div className="flex gap-5 items-center">
      <Avatar  style={{width:50,height:50}} src={fileURL} />  
       <div  id="nickname" class={` ${inputSwitch} text-center  `}>
@@ -1379,7 +1489,45 @@ const removeSavedSupplement = (supplement) => {
             </div>
       </div>
       <div className="empty"></div>
-     <div className="flex flex-col items-center justify-center">
+      <div id="advice" className="flex flex-col  items-center w-5/6  gap-2">
+      {supplementsData.map((supplement, index) => (
+        <div
+          key={index}
+          style={{ border: darkMode ? "1px solid #050604" : "1px solid #FAFBF9" }}
+          className="bg-newsfeed w-2/4 flex flex-col mb-4"
+        >
+          <div className="flex gap-2 items-center p-4">
+            <Avatar alt={supplement.name} src={supplement.image} />
+            <p className="font-medium text-sm">{supplement.name}</p>
+          </div>
+          <div className="description-newsfeed">
+            <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">
+              {supplement.description}
+            </p>
+          </div>
+          <div className="rate-newsfeed -mt-4">
+          <div className="flex gap-2">
+      <Checkbox
+      sx={{color: darkMode ? '':'rgba(250, 251, 249,0.6)'}}
+        icon={<FavoriteBorder style={getIconStyle(isFavoriteChecked)} />}
+        checkedIcon={<Favorite style={getIconStyle(isFavoriteChecked)} />}
+        checked={isFavoriteChecked}
+        onChange={handleFavoriteChange}
+      />
+      <Checkbox
+      sx={{color: darkMode ? '':'rgba(250, 251, 249,0.6)'}}
+        icon={<BookmarkBorderIcon style={getIconStyle(isBookmarkChecked)} />}
+        checkedIcon={<BookmarkIcon style={getIconStyle(isBookmarkChecked)} />}
+        checked={isBookmarkChecked}
+        onChange={handleBookmarkChange}
+      />
+    </div>
+          </div>
+        </div>
+      ))}
+      </div>
+      <div className="empty"></div>
+     <div id="arrival" className="flex flex-col items-center justify-center">
      <h1 className="text-center text-xl md:text-3xl font-extrabold">See our newest arivals</h1>
      <div className="llojet-newest flex gap-4 mt-4 overflow-x-auto whitespace-nowrap">
      <button
@@ -1605,6 +1753,7 @@ const MainIntroSmallDisplay = ()=>{
 
   const border = darkMode ? "border-rose" :" border-pink"
   const bg =darkMode ? "bg-rose" :"bg-pink"
+  const bg2 = darkMode ? "bg-rose":"bg-rose"
   const inputSwitch = darkMode ? "input-wrapper2":"input-wrapper3"
   const buttonSwitch =darkMode ? "btnsign":"btnsign3"
   const buttonSwitch2 =darkMode ? "btnsaved":"btnsaved2"
@@ -1700,6 +1849,7 @@ const handleClose1 = (event, reason) => {
     setArchive(false)
     setSaved(false)
     setShowNotes(false)
+    setShopingCart(false)
   }
 
   //////////////// news //////////////////
@@ -1710,6 +1860,7 @@ const handleClose1 = (event, reason) => {
     setNews(false)
     setArchive(false)
     setSaved(false)
+    setShopingCart(false)
   }
 
   ////////////showNotes/////////////
@@ -1721,6 +1872,7 @@ const handleClose1 = (event, reason) => {
     setNews(false)
     setSaved(false)
     setShowNotes(false)
+    setShopingCart(false)
   }
 
   ////////////archive //////////////////
@@ -1731,6 +1883,7 @@ const handleClose1 = (event, reason) => {
     setShowNotes(false)
     setArchive(false)
     setNews(false)
+    setShopingCart(false)
   }
 ////////////saved///////////////
 const [masstech,setMasstech]=useState(true)
@@ -1769,6 +1922,7 @@ const togglePlatinum =()=>{
   setVapor(false)
   setMasstech(false)
   setCell(false)
+  
 }
 
 
@@ -1777,6 +1931,7 @@ const toggleAllOff =()=>{
   setShowNotes(false)
   setSaved(false)
   setNews(false)
+  setShopingCart(false)
 }  
 
 const [drawerOpacity, setDrawerOpacity] = useState(1);
@@ -1788,6 +1943,7 @@ const handleDrag = (e, data) => {
 };
 
 const [defaultShowingSaved,setDefaulTShowingSaved] =useState(true)
+const [defaultShowingNotes,setDefaulTShowingNotes] =useState(true)
 
 const [savedMessage,setSavedMessage] =useState(false)///////success noteMessage//////
 const [already,setAlready]=useState(false)//////// alreadyshowed message //////
@@ -1834,6 +1990,25 @@ const removeSavedSupplement = (supplement) => {
   }
 };
 
+useEffect(() => {
+  setDefaulTShowingSaved(savedSupplements.length === 0);
+}, [savedSupplements])
+
+useEffect(() => {
+  setDefaulTShowingNotes(notes.length === 0);
+}, [notes])
+
+
+
+const [shopingCart,setShopingCart]=useState(false)
+
+const toggleShoppingCart = ()=>{
+  setShopingCart(!shopingCart)
+  setShowNotes(false)
+  setArchive(false)
+  setSaved(false)
+  setNews(false)
+}
 
   return(
     <div className="relative min-h-screen">
@@ -1850,7 +2025,7 @@ const removeSavedSupplement = (supplement) => {
             </div>
      </div>
      <div className="empty"/>
-     <div className="flex flex-col items-center justify-center">
+     <div id="arrival" className="flex flex-col items-center justify-center">
      <h1 className="text-center text-xl md:text-3xl font-extrabold">See our newest arivals</h1>
      <div className="llojet-newest flex gap-4 mt-4 overflow-x-auto whitespace-nowrap">
      <button
@@ -1992,16 +2167,21 @@ const removeSavedSupplement = (supplement) => {
       </div>
      </div>
       </div>
+
+      {(shopingCart || showNotes || archive || saved) && (
+      <div
+        className={`fixed inset-0 opacity-50  ${bg2}`}
+        onClick={toggleAllOff}
+      />
+    )}
+
         <div className={`fixed bottom-0 left-0 w-full p-4 z-100 ${bg}}`}
         style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
         >
           
-      <div className="flex justify-around items-center">
-        {/* News Feed */}
-        <div onClick={toggleNews} className="showNews flex flex-col items-center cursor-pointer">
-          <FeedIcon />
-          <h3 className="font-normal text-xs sm:text-sm mt-2">What is new</h3>
-        </div>
+      <div className="flex justify-around items-center ">
+        {/* News Feed  Not in the smaller Screen !!*/}
+       
 
         {/* Notes */}
         <div onClick={toggleShowingNotes} className="flex flex-col items-center cursor-pointer">
@@ -2020,11 +2200,15 @@ const removeSavedSupplement = (supplement) => {
           <BookmarkBorderIcon />
           <h3 className="font-normal text-xs sm:text-sm mt-2">Saved</h3>
         </div>
+        <div onClick={toggleShoppingCart} className="flex flex-col items-center cursor-pointer">
+          <ShoppingCartIcon />
+          <h3 className="font-normal text-xs sm:text-sm mt-2">Cart</h3>
+        </div>
       </div>
 
       {/* Drawer Content */}
      
-      <div  className={`drawer-content ${news ? 'show' : 'hide'}`}
+      <div  className={`drawer-content ${shopingCart ? 'show' : 'hide'} z-100`}
       style={{backgroundColor:darkMode ? "#050604":"#FAFBF9",opacity: drawerOpacity}}
       >
          <div className="flex items-center justify-center"
@@ -2057,25 +2241,48 @@ const removeSavedSupplement = (supplement) => {
     
 
       {/* Notes Drawer */}
-      <div  className={`drawer-content ${showNotes ? 'show' : ''} `}
+      <div  className={`drawer-content ${showNotes ? 'show' : ''} z-100`}
        style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
       >
        <div className="flex items-center justify-center">
        <div onClick={toggleAllOff}  className="px-2 mt-3 mb-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
        </div>
-        <p className="font-light text-center text-sm mb-4  mt-2">Click on notes if you want to remove them</p>
-        <div className="flex flex-col gap-4 items-center">
-        {notes.map((note, index) => (
-          <p style={{ color: darkMode ? "#FAFBF9" : "#050604", cursor: 'pointer', backgroundColor: selectedNoteIndex === index ? 'rgba(128, 128, 128,0.9)' : '', transition: 'all 1s ease' }} className={`pt-2 pl-2 pb-2 pr-2 w-2/3 md:w-full ${bg} ${selectedNoteIndex === index ? 'bg-pink' : ''} items-center md:items-start rounded-xl`} key={index} onClick={() => handleSelectNote(index)}>{note}</p>
-        ))}
+       {defaultShowingNotes ? (
+        <div className="flex items-center justify-center mt-4">
+          <div>
+            <img src={Task} width="200px" className="mt-2" alt="No items yet" />
+            <p className="text-center mt-2">No Notes yet</p>
+          </div>
         </div>
-        <div  className="flex justify-center items-center w-full mt-8">
-          <button onClick={handleClearNote} className={`${buttonSwitch} p-2.5 text-center`}><DeleteIcon /> Clear</button>
+      ) : (
+        <div className="flex flex-col items-center justify-center">
+          <p className="font-light text-sm mb-4 mt-4 text-center">Click on notes if you want to remove them</p>
+          {notes.map((note, index) => (
+            <p
+              style={{
+                color: darkMode ? "#FAFBF9" : "#050604",
+                cursor: 'pointer',
+                backgroundColor: selectedNoteIndex === index ? 'rgba(128, 128, 128,0.9)' : '',
+                transition: 'all 1s ease'
+              }}
+              className={`pt-2 pl-2 pb-2 pr-2 w-2/3 md:w-full text-center ${bg} ${selectedNoteIndex === index ? 'bg-pink' : ''} items-center md:items-start rounded-xl`}
+              key={index}
+              onClick={() => handleSelectNote(index)}
+            >
+              {note}
+            </p>
+          ))}
+          <div className="flex justify-center items-center w-full mt-8">
+            <button onClick={handleClearNote} className={`${buttonSwitch} p-2.5 text-center`}>
+              <DeleteIcon /> Clear
+            </button>
+          </div>
         </div>
+      )}
       </div>
 
       {/* Archive Drawer */}
-      <div  className={`drawer-content ${archive ? 'show' : ''}`}>
+      <div  className={`drawer-content ${archive ? 'show' : ''} z-100`}>
       <div className="flex items-center justify-center">
        <div onClick={toggleAllOff}  className=" mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
        </div>
@@ -2083,7 +2290,7 @@ const removeSavedSupplement = (supplement) => {
       </div>
 
       {/* Saved Drawer */}
-      <div  className={`drawer-content ${saved ? 'show' : ''} `}
+      <div  className={`drawer-content ${saved ? 'show' : ''} z-100`}
        style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
       >
       <div className="flex items-center justify-center">
