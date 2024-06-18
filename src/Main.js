@@ -32,7 +32,7 @@ import FeedIcon from '@mui/icons-material/Feed';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import masstechu from './images/masstech.webp'
 import pllatinumi from './images/pllatinumi.webp'
-import Draggable from 'react-draggable';
+import PeopleIcon from '@mui/icons-material/People';
 import Folder from './images/Folder.svg'
 import Folder2 from './images/Folder (1).svg'
 import Task from './images/Task list.svg'
@@ -43,8 +43,12 @@ import Favorite from '@mui/icons-material/Favorite';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { styled } from '@mui/material/styles';
+import Modal from '@mui/material/Modal';
 import avatar1 from './AvatarImages/images 9.jpg'
 import avatar2 from './AvatarImages/images 12.jpg'
+import avatar3 from './AvatarImages/images 3.jpg'
+import avatar4 from './AvatarImages/images 5.jpg'
+import avatar5 from './AvatarImages/images8.jpg'
 import {
   FiEdit,
   FiChevronDown,
@@ -55,8 +59,8 @@ import {
   FiPlus, FiTrash 
 } from "react-icons/fi";
 import SendIcon from '@mui/icons-material/Send';
-import ArchiveIcon from '@mui/icons-material/Archive';
-
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import Nofriends from './images/World travel.svg'
 const Main = () => {
   const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
   const avatarURL = Cookies.get('avatar');
@@ -126,7 +130,7 @@ useEffect(() => {
       }}
       className="main"
     >
-     <div className="fixed  top-0 left-0 right-0"
+     <div className="fixed h-fit top-0 left-0 right-0"
      style={{zIndex:101}}
      >
      <div className="flex justify-between"
@@ -991,6 +995,9 @@ const Countryv2 = darkMode ? "country" :"countryv2"
   )
 }
 
+
+
+
  const MainIntro = () =>{
   const { darkMode } = useDarkMode()
   const theme = darkMode ? "backgroundIntro2":"backgroundIntro"
@@ -1005,6 +1012,7 @@ const Countryv2 = darkMode ? "country" :"countryv2"
   const inputSwitch = darkMode ? "input-wrapper2":"input-wrapper3"
   const buttonSwitch =darkMode ? "btnsign":"btnsign3"
   const buttonSwitch2 =darkMode ? "btnsaved":"btnsaved2"
+  const buttonSwitchSm = darkMode ? "btnsm":"btnsm2"
   const llojetsupl = darkMode ? "lloji-supleme":"lloji-supleme2"
   ////////// color changes for dark/light mode ///////////
 
@@ -1273,6 +1281,9 @@ const toggleShoppingCart = ()=>{
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } }; ///// checkboxes favourite and saved
 
+
+
+
 const supplementsData = [
   {
     image: avatar1,
@@ -1284,19 +1295,101 @@ const supplementsData = [
     name: 'John Doe',
     description: 'Consuming a balanced diet with a mix of proteins, fats, and carbohydrates can significantly improve your overall health and energy levels throughout the day.',
   },
+  {
+    image: avatar3,
+    name: 'Jimmy Josh',
+    description: 'So while your diet plays a major role in dropping pounds, exercise can help too. In general, try to exercise at least 4 or 5 days a week if you want to see weight loss results in both the short and long term',
+  },
+  {
+    image: avatar4,
+    name: 'Baily Hendreson',
+    description: 'Supplements that may help reduce body fat mass include protein, caffeine and green tea extract',
+  },
+  {
+    image: avatar5,
+    name: 'Angela Hollow',
+    description: 'Vitamin D has several important functions. Perhaps the most vital are regulating the absorption of calcium and phosphorus and facilitating healthy immune system function',
+  },
   // Add more supplements as needed
 ];
+
+
+const [favorites, setFavorites] = useState({});
+  const [bookmarks, setBookmarks] = useState({});
+
+  useEffect(() => {
+    const storedFavorites = Cookies.get('favorites') ? JSON.parse(Cookies.get('favorites')) : {};
+    const storedBookmarks = Cookies.get('bookmarks') ? JSON.parse(Cookies.get('bookmarks')) : {};
+    const storedSavedSupplements = Cookies.get('savedSupplements') ? JSON.parse(Cookies.get('savedSupplements')) : [];
+
+    setFavorites(storedFavorites);
+    setBookmarks(storedBookmarks);
+    setSavedSupplements(storedSavedSupplements);
+    setDefaulTShowingSaved(storedSavedSupplements.length === 0);
+  }, []);
+
+
+  const handleFavoriteChange = (index) => {
+    const updatedFavorites = { ...favorites, [index]: !favorites[index] };
+    setFavorites(updatedFavorites);
+    Cookies.set("favorites", JSON.stringify(updatedFavorites), { expires: 365 });
+  };
+  
+
+  const handleBookmarkChange = (index) => {
+    const updatedBookmarks = { ...bookmarks, [index]: !bookmarks[index] };
+    setBookmarks(updatedBookmarks);
+    Cookies.set('bookmarks', JSON.stringify(updatedBookmarks));
+
+    const saved = supplementsData.filter((_, i) => updatedBookmarks[i]);
+    setSavedSupplements(saved);
+    Cookies.set('savedSupplements', JSON.stringify(saved), { expires: 365 });
+  };
 
 const [isFavoriteChecked, setIsFavoriteChecked] = useState(false);
 const [isBookmarkChecked, setIsBookmarkChecked] = useState(false);
 
-const handleFavoriteChange = () => {
-  setIsFavoriteChecked(!isFavoriteChecked);
+useEffect(() => {
+  const storedFavorites = Cookies.get('favorites') ? JSON.parse(Cookies.get('favorites')) : {};
+  const storedBookmarks = Cookies.get('bookmarks') ? JSON.parse(Cookies.get('bookmarks')) : {};
+  setFavorites(storedFavorites);
+  setBookmarks(storedBookmarks);
+
+  const saved = supplementsData.filter((_, index) => storedBookmarks[index]);
+  setSavedSupplements(saved);
+}, []);
+
+
+const [modalOpen, setModalOpen] = useState(false);
+
+const openModal = (supplement,index) => {
+  setSelectedSupplement(supplement);
+  setSelectedIndex(index);
+  setTimeout(() => {
+    setModalOpen(true);
+  }, 1000);
+  setSaved(false)
 };
 
-const handleBookmarkChange = () => {
-  setIsBookmarkChecked(!isBookmarkChecked);
+const closeModal = () => {
+  setModalOpen(false);
+  setSelectedSupplement(null);
 };
+
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '55%',
+  backgroundColor: darkMode ? '#FAFBF9' : '#050604',
+  boxShadow: 24,
+  padding: '16px',
+  border: darkMode ? "#050604":"#FAFBF9",
+  borderRadius: '20px',
+};
+
+const [selectedIndex,setSelectedIndex]=useState(null)
 
 const getIconStyle = (isChecked) => ({
   color: isChecked ? (darkMode ? '#475E36' : '#B2C9A1') : '',
@@ -1306,7 +1399,9 @@ const getIconStyle = (isChecked) => ({
   return(
    <div>
       <div className="flex">
-      <div className="fixed w-1/4 h-full mt-16 container mx-auto px-4">
+      <div className="fixed w-1/4 h-full mt-16 container mx-auto px-4 "
+      style={{zIndex:200}}
+      >
         <div onClick={toggleNews} className="showNews flex gap-2 items-center mt-20  -mb-4 cursor-pointer">
           <FeedIcon />
           <h3 className="font-medium text-sm mt-4 text-center md:text-start mb-5 w-1/2">News Feed</h3>
@@ -1314,7 +1409,7 @@ const getIconStyle = (isChecked) => ({
         <div className={`news-content ${news ? 'show' : 'hide'} gap-4`}>
           <motion.div
             variants={{}}
-            className={`flex pt-2 pl-2 pb-2 pr-2 ${bg} items-center rounded-xl gap-2`}
+            className={`flex pt-2 pl-2 pb-2 pr-2 ${bg} items-center rounded-xl gap-2 mt-4`}
           >
             <svg
               style={{ fill: darkMode ? "#FAFBF9" : "#050604" }}
@@ -1391,55 +1486,101 @@ const getIconStyle = (isChecked) => ({
           )}
         </div>
         <div onClick={toggleArchive} className="flex gap-2 cursor-pointer items-center mt-4">
-          <ArchiveIcon />
-          <h3 className="font-medium text-sm mt-2 text-start mb-2">Archive</h3>
+          <PeopleIcon />
+          <h3 className="font-medium text-sm mt-2 text-start mb-2">Friends</h3>
         </div>
         <div className={`news-content flex flex-col ${archive ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
           <h1>1</h1>
         </div>
         <div onClick={toggleSaved} className="flex gap-2 cursor-pointer items-center mt-4">
-          <BookmarkBorderIcon />
+          <BookmarkIcon />
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Saved</h3>
         </div>
         <div className={`news-content flex flex-col ${saved ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
-          {defaultShowingSaved ? (
-            <div className="flex items-center justify-center mt-4">
-              <div>
-                <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
-                <p className="text-center mt-2">Nothing saved yet</p>
-              </div>
-            </div>
-          ) : (
-            <>
-              <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
-              <div className="flex mt-4 items-start justify-start">
-                {savedSupplements.map((supplement, index) => (
-                  <div
-                    key={index}
-                    className={`flex flex-col h-36 items-center justify-center my-2 ${selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? 'highlighted-dark' : 'highlighted-light') : ''}`}
-                  >
-                    <img
-                      src={supplement.image}
-                      alt={supplement.name}
-                      className="w-24 h-24 mr-2 cursor-pointer"
-                      onClick={() => setSelectedSupplement(supplement)}
-                    />
-                    <span>{supplement.name}</span>
-                  </div>
-                ))}
-              </div>
-              {selectedSupplement && (
-                <div className="flex justify-center bg-black bg-opacity-50">
+        {savedSupplements.length === 0 ? (
+        <div className="flex items-center justify-center mt-4">
+          <div>
+            <img src={Folder2} width="200px" className="mt-2" alt="No items yet" /> {/* Update with your actual image path */}
+            <p className="text-center mt-2">Nothing saved yet</p>
+          </div>
+        </div>
+      ) : (
+        <>
+          <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
+          <div className="flex mt-4 items-start justify-start">
+            {savedSupplements.map((supplement, index) => (
+              <div
+                key={index}
+                className={`flex flex-col h-36 items-center justify-center my-2 ${
+                  selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? 'highlighted-dark' : 'highlighted-light') : ''
+                }`}
+              >
+                <img
+                  src={supplement.image}
+                  alt={supplement.name}
+                  className="w-16 h-16 rounded-full mr-2 cursor-pointer"
+                  onClick={() => setSelectedSupplement(supplement)}
+                />
+                <span>{supplement.name}</span>
+                <div className="flex flex-col gap-2 mt-2">
                   <button
-                    className={`${buttonSwitch} p-2.5 text-center`}
-                    onClick={() => removeSavedSupplement(selectedSupplement)}
+                    className={`${buttonSwitchSm} p-0.5 text-center`}
+                    onClick={() => removeSavedSupplement(supplement)}
                   >
-                    <DeleteIcon /> Remove {selectedSupplement.name}
+                   Remove Advice
                   </button>
+
+                  <button
+                    className={`${buttonSwitchSm} p-0.5 text-center  mb-8`}
+                    onClick={() => openModal(supplement)}
+                  >
+                    Show Advice
+                  </button>
+                  </div>
+              </div>
+            ))}
+          </div>
+         
+        </>
+      )}
+      <Modal
+        open={modalOpen}
+        onClose={closeModal}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div style={modalStyle} className={`modal-content  ${darkMode ? 'dark-modal' : 'light-modal'}`}>
+        {selectedSupplement  && selectedIndex !== null &&  (
+            <>
+              <div className="flex gap-2 items-center p-4">
+                <Avatar alt={selectedSupplement.name} src={selectedSupplement.image} />
+                <p className="font-medium text-sm">{selectedSupplement.name}</p>
+              </div>
+              <div className="description-newsfeed">
+                <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">{selectedSupplement.description}</p>
+              </div>
+              <div className="rate-newsfeed -mt-4">
+                <div className="flex gap-2">
+                  <Checkbox
+                    sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                    icon={<FavoriteBorder style={getIconStyle(favorites[selectedIndex])} />}
+                    checkedIcon={<Favorite style={getIconStyle(favorites[selectedIndex])} />}
+                    checked={favorites[selectedIndex] || false}
+                    onChange={() => handleFavoriteChange(selectedIndex)}
+                  />
+                  <Checkbox
+                    sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                    icon={<BookmarkBorderIcon style={getIconStyle(bookmarks[selectedIndex])} />}
+                    checkedIcon={<BookmarkIcon style={getIconStyle(bookmarks[selectedIndex])} />}
+                    checked={bookmarks[selectedIndex] || false}
+                    onChange={() => handleBookmarkChange(selectedIndex)}
+                  />
                 </div>
-              )}
+              </div>
             </>
           )}
+        </div>
+      </Modal>
         </div>
         <div onClick={toggleShoppingCart} className="flex gap-2 cursor-pointer items-center mt-4" style={{ marginTop: shopingCart ? "15px" : "15px" }}>
           <ShoppingCartIcon />
@@ -1459,7 +1600,7 @@ const getIconStyle = (isChecked) => ({
             >
             <path d="M20 10c2 3-3 12-5 12s-2-1-3-1-1 1-3 1-7-9-5-12 5-3 7-2V5C5.38 8.07 4.11 3.78 4.11 3.78S6.77.19 11 5V3h2v5c2-1 5-1 7 2z" />
             </svg>
-       <a href="#about"> <p className="font-medium mt-2">Diets</p></a>
+       <a href="#about"> <p className="font-medium text-sm mt-2">Diets</p></a>
        </div>
        <div className="flex gap-2 mt-4 cursor-pointer items-center">
        <svg
@@ -1472,7 +1613,7 @@ const getIconStyle = (isChecked) => ({
                 >
                 <path d="M12 5c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2m10-4v5h-2V4H4v2H2V1h2v2h16V1h2m-7 10.26V23h-2v-5h-2v5H9V11.26C6.93 10.17 5.5 8 5.5 5.5V5h2v.5C7.5 8 9.5 10 12 10s4.5-2 4.5-4.5V5h2v.5c0 2.5-1.43 4.67-3.5 5.76z" />
                 </svg>
-                <a href="#about"> <p className="font-medium mt-2">Planprogram</p></a>
+                <a href="#about"> <p className="font-medium text-sm mt-2">Planprogram</p></a>
        </div>
        <div className="flex mt-4 cursor-pointer items-center gap-2">
                 <svg
@@ -1485,7 +1626,7 @@ const getIconStyle = (isChecked) => ({
             >
             <path d="M480 448h-12a4 4 0 01-4-4V273.51a4 4 0 00-5.24-3.86 104.92 104.92 0 01-28.32 4.78c-1.18 0-2.3.05-3.4.05a108.22 108.22 0 01-52.85-13.64 8.23 8.23 0 00-8 0 108.18 108.18 0 01-52.84 13.64 106.11 106.11 0 01-52.46-13.79 8.21 8.21 0 00-8.09 0 108.14 108.14 0 01-53.16 13.8 106.19 106.19 0 01-52.77-14 8.25 8.25 0 00-8.16 0 106.19 106.19 0 01-52.77 14c-1.09 0-2.19 0-3.37-.05h-.06a104.91 104.91 0 01-29.28-5.09 4 4 0 00-5.23 3.8V444a4 4 0 01-4 4H32.5c-8.64 0-16.1 6.64-16.48 15.28A16 16 0 0032 480h447.5c8.64 0 16.1-6.64 16.48-15.28A16 16 0 00480 448zm-256-68a4 4 0 01-4 4h-88a4 4 0 01-4-4v-64a12 12 0 0112-12h72a12 12 0 0112 12zm156 68h-72a4 4 0 01-4-4V316a12 12 0 0112-12h56a12 12 0 0112 12v128a4 4 0 01-4 4zM492.57 170.28l-42.92-98.49C438.41 47.62 412.74 32 384.25 32H127.7c-28.49 0-54.16 15.62-65.4 39.79l-42.92 98.49c-9 19.41 2.89 39.34 2.9 39.35l.28.45c.49.78 1.36 2 1.89 2.78.05.06.09.13.14.2l5 6.05a7.45 7.45 0 00.6.65l5 4.83.42.36a69.65 69.65 0 009.39 6.78v.05a74 74 0 0036 10.67h2.47a76.08 76.08 0 0051.89-20.31l.33-.31a7.94 7.94 0 0110.89 0l.33.31a77.3 77.3 0 00104.46 0 8 8 0 0110.87 0 77.31 77.31 0 00104.21.23 7.88 7.88 0 0110.71 0 76.81 76.81 0 0052.31 20.08h2.49a71.35 71.35 0 0035-10.7c.95-.57 1.86-1.17 2.78-1.77A71.33 71.33 0 00488 212.17l1.74-2.63q.26-.4.48-.84c1.66-3.38 10.56-20.76 2.35-38.42z" />
             </svg>
-            <a href="#about"> <p className="font-medium mt-2">Suplements</p></a>
+            <a href="#about"> <p className="font-medium text-sm mt-2">Suplements</p></a>
                 </div>
       </div>
       <div className="empty"></div>
@@ -1505,38 +1646,36 @@ const getIconStyle = (isChecked) => ({
         <div id="advice" className="flex flex-col items-center justify-center  gap-2"
         style={{width:'55%'}}
         >
-      {supplementsData.map((supplement, index) => (
+       {supplementsData.map((supplement, index) => (
         <div
           key={index}
-          style={{ border: darkMode ? "1px solid #050604" : "1px solid #FAFBF9" }}
-          className="bg-newsfeed w-2/3 flex flex-col mb-4 "
+          style={{ border: darkMode ? '1px solid #050604' : '1px solid #FAFBF9' }}
+          className="bg-newsfeed w-2/3 flex flex-col mb-4"
         >
           <div className="flex gap-2 items-center p-4">
             <Avatar alt={supplement.name} src={supplement.image} />
             <p className="font-medium text-sm">{supplement.name}</p>
           </div>
           <div className="description-newsfeed">
-            <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">
-              {supplement.description}
-            </p>
+            <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">{supplement.description}</p>
           </div>
           <div className="rate-newsfeed -mt-4">
-          <div className="flex gap-2">
-      <Checkbox
-      sx={{color: darkMode ? '':'rgba(250, 251, 249,0.6)'}}
-        icon={<FavoriteBorder style={getIconStyle(isFavoriteChecked)} />}
-        checkedIcon={<Favorite style={getIconStyle(isFavoriteChecked)} />}
-        checked={isFavoriteChecked}
-        onChange={handleFavoriteChange}
-      />
-      <Checkbox
-      sx={{color: darkMode ? '':'rgba(250, 251, 249,0.6)'}}
-        icon={<BookmarkBorderIcon style={getIconStyle(isBookmarkChecked)} />}
-        checkedIcon={<BookmarkIcon style={getIconStyle(isBookmarkChecked)} />}
-        checked={isBookmarkChecked}
-        onChange={handleBookmarkChange}
-      />
-    </div>
+            <div className="flex gap-2">
+              <Checkbox
+                sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                icon={<FavoriteBorder style={getIconStyle(favorites[index])} />}
+                checkedIcon={<Favorite style={getIconStyle(favorites[index])} />}
+                checked={favorites[index] || false}
+                onChange={() => handleFavoriteChange(index)}
+              />
+              <Checkbox
+                sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                icon={<BookmarkBorderIcon style={getIconStyle(bookmarks[index])} />}
+                checkedIcon={<BookmarkIcon style={getIconStyle(bookmarks[index])} />}
+                checked={bookmarks[index] || false}
+                onChange={() => handleBookmarkChange(index)}
+              />
+            </div>
           </div>
         </div>
       ))}
@@ -1771,6 +1910,7 @@ const MainIntroSmallDisplay = ()=>{
   const bg2 = darkMode ? "bg-rose":"bg-rose"
   const inputSwitch = darkMode ? "input-wrapper2":"input-wrapper3"
   const buttonSwitch =darkMode ? "btnsign":"btnsign3"
+  const buttonSwitchSm = darkMode ? "btnsm":"btnsm2"
   const buttonSwitch2 =darkMode ? "btnsaved":"btnsaved2"
   const llojetsupl = darkMode ? "lloji-supleme":"lloji-supleme2"
   ////////// color changes for dark/light mode ///////////
@@ -1951,11 +2091,7 @@ const toggleAllOff =()=>{
 
 const [drawerOpacity, setDrawerOpacity] = useState(1);
 
-const handleDrag = (e, data) => {
-  // Calculate the opacity based on the vertical drag position
-  const opacity = Math.max(0, 1 - (data.y / window.innerHeight));
-  setDrawerOpacity(opacity);
-};
+
 
 const [defaultShowingSaved,setDefaulTShowingSaved] =useState(true)
 const [defaultShowingNotes,setDefaulTShowingNotes] =useState(true)
@@ -1993,7 +2129,8 @@ useEffect(() => {
   }
 }, []);
 
-const [selectedSupplement, setSelectedSupplement] = useState(null);
+const [selectedSupplement, setSelectedSupplement] = useState(null); //////// toggle  to remove the supplement in the saved drawer
+const [showMore,setShowMore]=useState(null) ////////toggle for more advice in the saved drawer
 
 const removeSavedSupplement = (supplement) => {
   const updatedSupplements = savedSupplements.filter(s => s.name !== supplement.name);
@@ -2013,7 +2150,27 @@ useEffect(() => {
   setDefaulTShowingNotes(notes.length === 0);
 }, [notes])
 
+const toggleShowMoreAdvice = ()=>{
+setShowMore(true)
+if(setShowMore === true){
+  setShowNotes(false)
+}
+}
+const [modalOpen, setModalOpen] = useState(false);
 
+const openModal = (supplement,index) => {
+  setSelectedSupplement(supplement);
+  setSelectedIndex(index);
+  setTimeout(() => {
+    setModalOpen(true);
+  }, 1000);
+  setSaved(false)
+};
+
+const closeModal = () => {
+  setModalOpen(false);
+  setSelectedSupplement(null);
+};
 
 const [shopingCart,setShopingCart]=useState(false)
 
@@ -2038,24 +2195,89 @@ const supplementsData = [
     name: 'John Doe',
     description: 'Consuming a balanced diet with a mix of proteins, fats, and carbohydrates can significantly improve your overall health and energy levels throughout the day.',
   },
+  {
+    image: avatar3,
+    name: 'Jimmy Josh',
+    description: 'So while your diet plays a major role in dropping pounds, exercise can help too. In general, try to exercise at least 4 or 5 days a week if you want to see weight loss results in both the short and long term',
+  },
+  {
+    image: avatar4,
+    name: 'Baily Hendreson',
+    description: 'Supplements that may help reduce body fat mass include protein, caffeine and green tea extract',
+  },
+  {
+    image: avatar5,
+    name: 'Angela Hollow',
+    description: 'Vitamin D has several important functions. Perhaps the most vital are regulating the absorption of calcium and phosphorus and facilitating healthy immune system function',
+  },
   // Add more supplements as needed
 ];
+
+
+const [favorites, setFavorites] = useState({});
+  const [bookmarks, setBookmarks] = useState({});
+
+  useEffect(() => {
+    const storedFavorites = Cookies.get('favorites') ? JSON.parse(Cookies.get('favorites')) : {};
+    const storedBookmarks = Cookies.get('bookmarks') ? JSON.parse(Cookies.get('bookmarks')) : {};
+    const storedSavedSupplements = Cookies.get('savedSupplements') ? JSON.parse(Cookies.get('savedSupplements')) : [];
+
+    setFavorites(storedFavorites);
+    setBookmarks(storedBookmarks);
+    setSavedSupplements(storedSavedSupplements);
+    setDefaulTShowingSaved(storedSavedSupplements.length === 0);
+  }, []);
+
+
+  const handleFavoriteChange = (index) => {
+    const updatedFavorites = { ...favorites, [index]: !favorites[index] };
+    setFavorites(updatedFavorites);
+    Cookies.set("favorites", JSON.stringify(updatedFavorites), { expires: 365 });
+  };
+  
+
+  const handleBookmarkChange = (index) => {
+    const updatedBookmarks = { ...bookmarks, [index]: !bookmarks[index] };
+    setBookmarks(updatedBookmarks);
+    Cookies.set('bookmarks', JSON.stringify(updatedBookmarks));
+
+    const saved = supplementsData.filter((_, i) => updatedBookmarks[i]);
+    setSavedSupplements(saved);
+    Cookies.set('savedSupplements', JSON.stringify(saved), { expires: 365 });
+  };
 
 const [isFavoriteChecked, setIsFavoriteChecked] = useState(false);
 const [isBookmarkChecked, setIsBookmarkChecked] = useState(false);
 
-const handleFavoriteChange = () => {
-  setIsFavoriteChecked(!isFavoriteChecked);
-};
+useEffect(() => {
+  const storedFavorites = Cookies.get('favorites') ? JSON.parse(Cookies.get('favorites')) : {};
+  const storedBookmarks = Cookies.get('bookmarks') ? JSON.parse(Cookies.get('bookmarks')) : {};
+  setFavorites(storedFavorites);
+  setBookmarks(storedBookmarks);
 
-const handleBookmarkChange = () => {
-  setIsBookmarkChecked(!isBookmarkChecked);
-};
+  const saved = supplementsData.filter((_, index) => storedBookmarks[index]);
+  setSavedSupplements(saved);
+}, []);
+
+
 
 const getIconStyle = (isChecked) => ({
   color: isChecked ? (darkMode ? '#475E36' : '#B2C9A1') : '',
 });
 
+
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '80%',
+  backgroundColor: darkMode ? '#FAFBF9' : '#050604',
+  boxShadow: 24,
+  padding: '16px',
+  border: darkMode ? "#050604":"#FAFBF9",
+  borderRadius: '20px',
+};
 
 const [ableToggle,setAbleToggle]=useState(true)
 
@@ -2064,6 +2286,7 @@ const ToggleAble = ()=>{
   setAbleToggle(false)
  }
 }
+const [selectedIndex, setSelectedIndex] = useState(null);
 
   return(
     <div className="relative min-h-screen">
@@ -2085,35 +2308,33 @@ const ToggleAble = ()=>{
       {supplementsData.map((supplement, index) => (
         <div
           key={index}
-          style={{ border: darkMode ? "1px solid #050604" : "1px solid #FAFBF9" }}
-          className="bg-newsfeed w-full sm:w-2/3 flex flex-col mb-4 "
+          style={{ border: darkMode ? '1px solid #050604' : '1px solid #FAFBF9' }}
+          className="bg-newsfeed w-2/3 flex flex-col mb-4"
         >
           <div className="flex gap-2 items-center p-4">
             <Avatar alt={supplement.name} src={supplement.image} />
             <p className="font-medium text-sm">{supplement.name}</p>
           </div>
           <div className="description-newsfeed">
-            <p className="font-normal text-sm sm:text-md pl-2 pb-4 pt-1 pr-2">
-              {supplement.description}
-            </p>
+            <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">{supplement.description}</p>
           </div>
           <div className="rate-newsfeed -mt-4">
-          <div className="flex gap-2">
-      <Checkbox
-      sx={{color: darkMode ? '':'rgba(250, 251, 249,0.6)',cursor:'pointer',zIndex:ableToggle ? "200":""}}
-        icon={<FavoriteBorder style={getIconStyle(isFavoriteChecked)} />}
-        checkedIcon={<Favorite style={getIconStyle(isFavoriteChecked)} />}
-        checked={isFavoriteChecked}
-        onChange={handleFavoriteChange}
-      />
-      <Checkbox
-      sx={{color: darkMode ? '':'rgba(250, 251, 249,0.6)',cursor:'pointer',zIndex:ableToggle ? "200":""}}
-        icon={<BookmarkBorderIcon style={getIconStyle(isBookmarkChecked)} />}
-        checkedIcon={<BookmarkIcon style={getIconStyle(isBookmarkChecked)} />}
-        checked={isBookmarkChecked}
-        onChange={handleBookmarkChange}
-      />
-    </div>
+            <div className="flex gap-2">
+              <Checkbox
+                sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                icon={<FavoriteBorder style={getIconStyle(favorites[index])} />}
+                checkedIcon={<Favorite style={getIconStyle(favorites[index])} />}
+                checked={favorites[index] || false}
+                onChange={() => handleFavoriteChange(index)}
+              />
+              <Checkbox
+                sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                icon={<BookmarkBorderIcon style={getIconStyle(bookmarks[index])} />}
+                checkedIcon={<BookmarkIcon style={getIconStyle(bookmarks[index])} />}
+                checked={bookmarks[index] || false}
+                onChange={() => handleBookmarkChange(index)}
+              />
+            </div>
           </div>
         </div>
       ))}
@@ -2286,13 +2507,13 @@ const ToggleAble = ()=>{
 
         {/* Archive */}
         <div onClick={toggleArchive} className="flex flex-col items-center cursor-pointer">
-          <ArchiveIcon />
-          <h3 className="font-normal text-xs sm:text-sm mt-2">Archive</h3>
+        <PeopleIcon/>
+          <h3 className="font-normal text-xs sm:text-sm mt-2">Friends</h3>
         </div>
 
         {/* Saved */}
         <div onClick={toggleSaved} className="flex flex-col items-center cursor-pointer">
-          <BookmarkBorderIcon />
+          <BookmarkIcon/>
           <h3 className="font-normal text-xs sm:text-sm mt-2">Saved</h3>
         </div>
         <div onClick={toggleShoppingCart} className="flex flex-col items-center cursor-pointer">
@@ -2377,11 +2598,17 @@ const ToggleAble = ()=>{
       </div>
 
       {/* Archive Drawer */}
-      <div  className={`drawer-content ${archive ? 'show' : ''} z-100`}>
+      <div  className={`drawer-content ${archive ? 'show' : ''} z-100`}
+       style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
+      >
       <div className="flex items-center justify-center">
        <div onClick={toggleAllOff}  className=" mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
        </div>
-        <h1>1</h1>
+      <div className="flex flex-col items-center justify-center mt-4">
+      <img src={Nofriends} width="200px" className="mt-2" alt="" />
+      <p className="text-center mt-2">No Friends yet</p>
+
+      </div>
       </div>
 
       {/* Saved Drawer */}
@@ -2391,45 +2618,92 @@ const ToggleAble = ()=>{
       <div className="flex items-center justify-center">
        <div onClick={toggleAllOff}  className="mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
        </div>
-       {defaultShowingSaved ? (
+       {savedSupplements.length === 0 ? (
           <div className="flex items-center justify-center mt-4">
             <div>
-              <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
+              <img src={Folder2} width="200px" className="mt-2" alt="No items yet" /> {/* Update with your actual image path */}
               <p className="text-center mt-2">Nothing saved yet</p>
             </div>
           </div>
         ) : (
           <>
             <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
-            <div className="flex mt-4 items-center justify-center">
+            <div className="flex mt-12 items-start justify-start gap-4">
               {savedSupplements.map((supplement, index) => (
-                <div 
-                  key={index} 
-                  className={`flex flex-col h-36 items-center justify-center my-2 ${selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? 'highlighted-dark' : 'highlighted-light') : ''}`}            >
-                  <img 
-                    src={supplement.image} 
-                    alt={supplement.name} 
-                    className="w-24 h-24 mr-2 cursor-pointer"
-                    onClick={() => setSelectedSupplement(supplement)} // Set selected supplement on click
+                <div
+                  key={index}
+                  className={`flex flex-col h-36 items-center justify-center my-2 mt-4 ${
+                    selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? 'highlighted-dark' : 'highlighted-light') : ''
+                  }`}
+                >
+                  <img
+                    src={supplement.image}
+                    alt={supplement.name}
+                    className="w-16 h-16 mr-2 rounded-full cursor-pointer"
+                    onClick={() => setSelectedSupplement(supplement)}
                   />
-                  <span>{supplement.name}</span>
+                  <span>{supplement.name}'s advice</span>
+                  <div className="flex flex-col gap-2 mt-2">
+                  <button
+                    className={`${buttonSwitchSm} p-0.5 text-center`}
+                    onClick={() => removeSavedSupplement(supplement)}
+                  >
+                   Remove Advice
+                  </button>
+
+                  <button
+                    className={`${buttonSwitchSm} p-0.5 text-center  mb-8`}
+                    onClick={() => openModal(supplement)}
+                  >
+                    Show Advice
+                  </button>
+                  </div>
                 </div>
               ))}
             </div>
-            {selectedSupplement && (
-              <div className="flex justify-center bg-black bg-opacity-50">
-                <button 
-                  className={`${buttonSwitch} p-2.5 text-center`}
-                  onClick={() => removeSavedSupplement(selectedSupplement)}
-                >
-                  Remove {selectedSupplement.name}
-                </button>
-              </div>
-            )}
           </>
         )}
       </div>
+      <Modal
+        open={modalOpen}
+        onClose={closeModal}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div style={modalStyle} className={`modal-content ${darkMode ? 'dark-modal' : 'light-modal'}`}>
+        {selectedSupplement  && selectedIndex !== null &&  (
+            <>
+              <div className="flex gap-2 items-center p-4">
+                <Avatar alt={selectedSupplement.name} src={selectedSupplement.image} />
+                <p className="font-medium text-sm">{selectedSupplement.name}</p>
+              </div>
+              <div className="description-newsfeed">
+                <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">{selectedSupplement.description}</p>
+              </div>
+              <div className="rate-newsfeed -mt-4">
+                <div className="flex gap-2">
+                  <Checkbox
+                    sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                    icon={<FavoriteBorder style={getIconStyle(favorites[selectedIndex])} />}
+                    checkedIcon={<Favorite style={getIconStyle(favorites[selectedIndex])} />}
+                    checked={favorites[selectedIndex] || false}
+                    onChange={() => handleFavoriteChange(selectedIndex)}
+                  />
+                  <Checkbox
+                    sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                    icon={<BookmarkBorderIcon style={getIconStyle(bookmarks[selectedIndex])} />}
+                    checkedIcon={<BookmarkIcon style={getIconStyle(bookmarks[selectedIndex])} />}
+                    checked={bookmarks[selectedIndex] || false}
+                    onChange={() => handleBookmarkChange(selectedIndex)}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
     </div>
+  
     {fillMessage && 
       <Snackbar
       open={open1}

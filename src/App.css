@@ -1278,6 +1278,28 @@ z-index: 998
   color: #FAFBF9;
 }
 
+.btnsm{
+  border-radius: 5px;
+  border: 1px solid #131A0F;
+  background:transparent;
+  padding: 4px;
+  transition: all 0.3s ease-in-out
+}
+.btnsm:hover{
+  background-color: #131A0F;
+  color: #FAFBF9;
+}
+.btnsm2{
+  border-radius: 5px;
+  border: 1px solid #131A0F;
+  background:transparent;
+  transition: all 0.3s ease-in-out
+}
+.btnsm2:hover{
+  background-color: #050604;
+  color: #FAFBF9;
+}
+
 .btnsign3{
   border-radius: 5px;
   border: 1px solid #E9F0E5;
