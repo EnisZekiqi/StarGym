@@ -1182,15 +1182,14 @@ const [already,setAlready]=useState(false)//////// alreadyshowed message //////
 
 const [savedSupplements, setSavedSupplements] = useState([]);
 
-const toggleSaveSuppMass = (supplementName, imageURL) => {
+const toggleSaveSuppMass = (name, image) => {
   // Check if the supplement is already in the saved list
-  const alreadySaved = savedSupplements.some(supplement => supplement.name === supplementName);
+  const alreadySaved = savedSupplements.some(supplement => supplement.name === supplement);
 
   if (!alreadySaved) {
-    const supplement = { name: supplementName, image: imageURL };
-    const updatedSupplements = [...savedSupplements, supplement];
-    setSavedSupplements(updatedSupplements);
-    Cookies.set("savedSupplements", JSON.stringify(updatedSupplements), { expires: 365 });
+    const newSupplement = { name, image, type: 'supplement' };
+    setSavedSupplements((prev) => [...prev, newSupplement]);
+    Cookies.set('savedSupplements', JSON.stringify([...savedSupplements, newSupplement]), { expires: 365 });
 
     setSavedMessage(true);
     setOpen1(true);
@@ -1318,9 +1317,19 @@ const [favorites, setFavorites] = useState({});
   const [bookmarks, setBookmarks] = useState({});
 
   useEffect(() => {
-    const storedFavorites = Cookies.get('favorites') ? JSON.parse(Cookies.get('favorites')) : {};
-    const storedBookmarks = Cookies.get('bookmarks') ? JSON.parse(Cookies.get('bookmarks')) : {};
-    const storedSavedSupplements = Cookies.get('savedSupplements') ? JSON.parse(Cookies.get('savedSupplements')) : [];
+    const storedFavorites = Cookies.get("favorites")
+      ? JSON.parse(Cookies.get("favorites"))
+      : {};
+    const storedBookmarks = Cookies.get("bookmarks")
+      ? JSON.parse(Cookies.get("bookmarks"))
+      : {};
+    const storedSavedSupplements = Cookies.get("savedSupplements")
+      ? JSON.parse(Cookies.get("savedSupplements"))
+      : [];
+
+    console.log("Loaded favorites from cookies:", storedFavorites);
+    console.log("Loaded bookmarks from cookies:", storedBookmarks);
+    console.log("Loaded saved supplements from cookies:", storedSavedSupplements);
 
     setFavorites(storedFavorites);
     setBookmarks(storedBookmarks);
@@ -1328,36 +1337,25 @@ const [favorites, setFavorites] = useState({});
     setDefaulTShowingSaved(storedSavedSupplements.length === 0);
   }, []);
 
-
   const handleFavoriteChange = (index) => {
     const updatedFavorites = { ...favorites, [index]: !favorites[index] };
     setFavorites(updatedFavorites);
     Cookies.set("favorites", JSON.stringify(updatedFavorites), { expires: 365 });
+    console.log("Updated favorites:", updatedFavorites);
   };
-  
 
   const handleBookmarkChange = (index) => {
     const updatedBookmarks = { ...bookmarks, [index]: !bookmarks[index] };
     setBookmarks(updatedBookmarks);
-    Cookies.set('bookmarks', JSON.stringify(updatedBookmarks));
+    Cookies.set("bookmarks", JSON.stringify(updatedBookmarks), { expires: 365 });
+    console.log("Updated bookmarks:", updatedBookmarks);
 
     const saved = supplementsData.filter((_, i) => updatedBookmarks[i]);
     setSavedSupplements(saved);
-    Cookies.set('savedSupplements', JSON.stringify(saved), { expires: 365 });
+    Cookies.set("savedSupplements", JSON.stringify(saved), { expires: 365 });
+    console.log("Updated saved supplements:", saved);
   };
 
-const [isFavoriteChecked, setIsFavoriteChecked] = useState(false);
-const [isBookmarkChecked, setIsBookmarkChecked] = useState(false);
-
-useEffect(() => {
-  const storedFavorites = Cookies.get('favorites') ? JSON.parse(Cookies.get('favorites')) : {};
-  const storedBookmarks = Cookies.get('bookmarks') ? JSON.parse(Cookies.get('bookmarks')) : {};
-  setFavorites(storedFavorites);
-  setBookmarks(storedBookmarks);
-
-  const saved = supplementsData.filter((_, index) => storedBookmarks[index]);
-  setSavedSupplements(saved);
-}, []);
 
 
 const [modalOpen, setModalOpen] = useState(false);
@@ -1385,7 +1383,6 @@ const modalStyle = {
   backgroundColor: darkMode ? '#FAFBF9' : '#050604',
   boxShadow: 24,
   padding: '16px',
-  border: darkMode ? "#050604":"#FAFBF9",
   borderRadius: '20px',
 };
 
@@ -1395,6 +1392,11 @@ const getIconStyle = (isChecked) => ({
   color: isChecked ? (darkMode ? '#475E36' : '#B2C9A1') : '',
 });
 
+ const navigate = useNavigate();
+
+ const handleRedirect = (supplement) => {
+    navigate(`/main/${supplement.id}`);
+  };
 
   return(
    <div>
@@ -1496,7 +1498,7 @@ const getIconStyle = (isChecked) => ({
           <BookmarkIcon />
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Saved</h3>
         </div>
-        <div className={`news-content flex flex-col ${saved ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
+        <div className={`news-content flex flex-col ${saved ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4 overflow-x-auto`}>
         {savedSupplements.length === 0 ? (
         <div className="flex items-center justify-center mt-4">
           <div>
@@ -1506,37 +1508,33 @@ const getIconStyle = (isChecked) => ({
         </div>
       ) : (
         <>
-          <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
-          <div className="flex mt-4 items-start justify-start">
+          <p className="font-light text-center text-sm mb-4 mt-4">Check what you saved here</p>
+          <div className="flex mt-4 items-start justify-start ">
             {savedSupplements.map((supplement, index) => (
               <div
                 key={index}
                 className={`flex flex-col h-36 items-center justify-center my-2 ${
-                  selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? 'highlighted-dark' : 'highlighted-light') : ''
+                  selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? '' : '') : ''
                 }`}
               >
+                <div
+               onClick={() => {
+                if (supplement.type === 'supplement') {
+                  handleRedirect(supplement);
+                } else {
+                openModal(supplement, index);
+                }
+                }}
+                >
                 <img
                   src={supplement.image}
                   alt={supplement.name}
                   className="w-16 h-16 rounded-full mr-2 cursor-pointer"
                   onClick={() => setSelectedSupplement(supplement)}
                 />
-                <span>{supplement.name}</span>
-                <div className="flex flex-col gap-2 mt-2">
-                  <button
-                    className={`${buttonSwitchSm} p-0.5 text-center`}
-                    onClick={() => removeSavedSupplement(supplement)}
-                  >
-                   Remove Advice
-                  </button>
-
-                  <button
-                    className={`${buttonSwitchSm} p-0.5 text-center  mb-8`}
-                    onClick={() => openModal(supplement)}
-                  >
-                    Show Advice
-                  </button>
-                  </div>
+                <span className="text-center text-sm w-1/2">{supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}'s advice` }</span>
+                </div>
+              
               </div>
             ))}
           </div>

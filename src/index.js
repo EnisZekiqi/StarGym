@@ -15,6 +15,7 @@ import Main from './Main';
 import { DarkModeProvider } from "./DarkModeContext";
 import Info from './MainPage/Info';
 
+
  const router = createBrowserRouter([
    {
      path: "/",
@@ -33,6 +34,7 @@ import Info from './MainPage/Info';
       element: <Main/> ,
      
     },
+ 
     {
        path :"info",
        element:<Info/> 
