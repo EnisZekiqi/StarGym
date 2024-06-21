@@ -1117,7 +1117,7 @@ const handleClose1 = (event, reason) => {
   const [archive,setArchive]=useState(false)
 
   const toggleArchive =()=>{
-    setArchive(prevMode=>!prevMode)
+      setArchive(prevMode => !prevMode);
     setNews(false)
     setSaved(false)
     setShowNotes(false)
@@ -1288,28 +1288,75 @@ const supplementsData = [
     image: avatar1,
     name: 'Cindy Baker',
     description: 'Eating apples may contribute to a good night\'s sleep. I suggest making a fruit salad with a variety of fruits such as apples, grapefruit, and bananas to incorporate more vitamin C before bedtime.',
+    gender: 'Male',
+    information: 'Just Studying Biology',
+    location:'Nebraska'
   },
+  
   {
     image: avatar2,
     name: 'John Doe',
     description: 'Consuming a balanced diet with a mix of proteins, fats, and carbohydrates can significantly improve your overall health and energy levels throughout the day.',
+    gender: 'Male',
+    information: 'Fitness Trainer',
+    location:'Germany'
   },
   {
     image: avatar3,
     name: 'Jimmy Josh',
     description: 'So while your diet plays a major role in dropping pounds, exercise can help too. In general, try to exercise at least 4 or 5 days a week if you want to see weight loss results in both the short and long term',
+    gender: 'Male',
+    information: 'Helping everyone lol',
+    location:'Albania'
   },
   {
     image: avatar4,
     name: 'Baily Hendreson',
     description: 'Supplements that may help reduce body fat mass include protein, caffeine and green tea extract',
+    gender: 'Male',
+    information: 'Supplement Master',
+    location:'Macedonia'
   },
   {
     image: avatar5,
     name: 'Angela Hollow',
     description: 'Vitamin D has several important functions. Perhaps the most vital are regulating the absorption of calcium and phosphorus and facilitating healthy immune system function',
+    gender: 'Female',
+    information: 'Sometimes im a doctor, sometimes a teacher',
+     location:'Italy'
   },
   // Add more supplements as needed
+];
+
+const supplementInfo = [
+  {
+    id: 'Masstech',
+    name: 'Masstech',
+    description: 'Mass gainer has creatine for enhanced muscle size & strength',
+    image: masstechu,
+    show: masstech,
+  },
+  {
+    id: 'VaporX5',
+    name: 'VaporX5',
+    description: 'Helps increase energy, focus, and endurance for toughest training',
+    image: vaportixx,
+    show: vapor,
+  },
+  {
+    id: 'Celltech',
+    name: 'Celltech',
+    description: 'Helps increase energy, focus, and endurance for toughest training',
+    image: cellmax,
+    show: cell,
+  },
+  {
+    id: 'Platinum',
+    name: 'Platinum',
+    description: 'Helps increase energy, focus, and endurance for toughest training',
+    image: pllatinumi,
+    show: platinum,
+  }
 ];
 
 
@@ -1356,7 +1403,7 @@ const [favorites, setFavorites] = useState({});
     console.log("Updated saved supplements:", saved);
   };
 
-
+/////////////////////////Modal for user Advices ////////////////
 
 const [modalOpen, setModalOpen] = useState(false);
 
@@ -1374,6 +1421,7 @@ const closeModal = () => {
   setSelectedSupplement(null);
 };
 
+
 const modalStyle = {
   position: 'absolute',
   top: '50%',
@@ -1385,6 +1433,56 @@ const modalStyle = {
   padding: '16px',
   borderRadius: '20px',
 };
+const modalStyle2 = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '65%',
+  height:'75%',
+  backgroundColor: darkMode ? '#FAFBF9' : '#050604',
+  boxShadow: 24,
+  padding: '16px',
+  borderRadius: '20px',
+};
+const modalStyleJr = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '40%',
+  backgroundColor:  '#FAFBF9' ,
+  boxShadow: 24,
+  padding: '16px',
+  borderRadius: '20px',
+};
+
+/////////////////////////Modal for user Advices ////////////////
+
+
+
+/////////////////////////Modal for Supplements ////////////////
+
+const [modalSupp,setModalSupp]=useState(false)
+
+const openModalSupp = (supplement)=>{
+  setSelectedSupplementInfo(supplement);
+  setTimeout(() => {
+    setModalSupp(true);
+  }, 1000);
+  setSaved(false)
+}
+
+const closeModalSupp = () => {
+  setModalSupp(false);
+  setSelectedSupplementInfo(null);
+};
+
+
+const [selectedSupplementInfo,setSelectedSupplementInfo]=useState(null)
+
+/////////////////////////Modal for Supplements ////////////////
+
 
 const [selectedIndex,setSelectedIndex]=useState(null)
 
@@ -1397,6 +1495,83 @@ const getIconStyle = (isChecked) => ({
  const handleRedirect = (supplement) => {
     navigate(`/main/${supplement.id}`);
   };
+
+
+  const [modalProfileOpen, setModalProfileOpen] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState(null);
+
+  const openModalProfileHandler = (supplement) => {
+    setSelectedFriend(supplement);
+    setIsFriendView(false); // This is the original view
+    setModalProfileOpen(true);
+  };
+
+  const closeModalProfileHandler = () => {
+    setSelectedFriend(null);
+    setModalProfileOpen(false);
+  };
+
+  const handleAddFriend = () => {
+    if (selectedFriend) {
+      console.log(`Adding ${selectedFriend.name} as a friend`);
+  
+      // Retrieve existing friends from cookies
+      const friendsCookie = document.cookie.split('; ').find(row => row.startsWith('friends='));
+      const friends = friendsCookie ? JSON.parse(decodeURIComponent(friendsCookie.split('=')[1])) : [];
+  
+      // Check if the friend is already added
+      const isFriendAlreadyAdded = friends.some(friend => friend.name === selectedFriend.name);
+  
+      if (isFriendAlreadyAdded) {
+        setMessageAlreadyFriend(true);
+      } else {
+        // Add new friend to the list
+        const updatedFriends = [...friends, selectedFriend];
+  
+        // Save updated friends list to cookies
+        document.cookie = `friends=${encodeURIComponent(JSON.stringify(updatedFriends))}; max-age=${365 * 24 * 60 * 60};`;
+  
+        // Update local state
+        setFriends(updatedFriends);
+        setMessageAddingFriend(true);
+      }
+    }
+  };
+
+  const [friends, setFriends] = useState([]);
+
+  useEffect(() => {
+    // Retrieve friends from cookies when component mounts
+    const friendsCookie = document.cookie.split('; ').find(row => row.startsWith('friends='));
+    if (friendsCookie) {
+      const savedFriends = JSON.parse(decodeURIComponent(friendsCookie.split('=')[1]));
+      setFriends(savedFriends);
+    }
+  }, []);
+
+
+const [messageAddingFriend,setMessageAddingFriend]=useState(false) ///// added friend changes
+const [messageRemovingFriend,setMessageRemovingFriend]=useState(false) //// removing friend changes
+const [messageAlreadyFriend,setMessageAlreadyFriend]=useState(false) 
+const [isFriendView, setIsFriendView] = useState(false);
+
+const openFriendProfileHandler = (friend) => {
+  setSelectedFriend(friend);
+  setIsFriendView(true); // This is the friends view
+  setModalProfileOpen(true);
+};
+
+const handleRemoveFriend = (friendToRemove) => {
+  const updatedFriends = friends.filter(friend => friend.name !== friendToRemove.name);
+
+  // Save updated friends list to cookies
+  document.cookie = `friends=${encodeURIComponent(JSON.stringify(updatedFriends))}; max-age=${365 * 24 * 60 * 60};`;
+
+  // Update local state
+  setFriends(updatedFriends);
+  setMessageRemovingFriend(true)
+};
+
 
   return(
    <div>
@@ -1492,7 +1667,26 @@ const getIconStyle = (isChecked) => ({
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Friends</h3>
         </div>
         <div className={`news-content flex flex-col ${archive ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
-          <h1>1</h1>
+        {friends.length > 0 ? (
+          friends.map((friend, index) => (
+            <div
+              onClick={() => openFriendProfileHandler(friend)}
+              key={index}
+              className="flex gap-2 items-center p-4 cursor-pointer"
+            >
+              <Avatar alt={friend.name} src={friend.image} />
+              <div>
+                <p className="font-bold text-xl">{friend.name}</p>
+                <p className="font-normal text-md">{friend.information}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+         <div className="flex flex-col">
+            <img src={Nofriends} width="200px" className="mt-2" alt="" />
+          <p className="text-center mt-2">No friends added yet</p>
+         </div>
+        )}
         </div>
         <div onClick={toggleSaved} className="flex gap-2 cursor-pointer items-center mt-4">
           <BookmarkIcon />
@@ -1509,7 +1703,7 @@ const getIconStyle = (isChecked) => ({
       ) : (
         <>
           <p className="font-light text-center text-sm mb-4 mt-4">Check what you saved here</p>
-          <div className="flex mt-4 items-start justify-start ">
+          <div className="flex  mt-4 items-start justify-start overflow-x-auto whitespace-nowrap">
             {savedSupplements.map((supplement, index) => (
               <div
                 key={index}
@@ -1520,7 +1714,7 @@ const getIconStyle = (isChecked) => ({
                 <div
                onClick={() => {
                 if (supplement.type === 'supplement') {
-                  handleRedirect(supplement);
+                  openModalSupp(supplement,index);
                 } else {
                 openModal(supplement, index);
                 }
@@ -1573,6 +1767,73 @@ const getIconStyle = (isChecked) => ({
                     checked={bookmarks[selectedIndex] || false}
                     onChange={() => handleBookmarkChange(selectedIndex)}
                   />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
+      <Modal
+        open={modalSupp}
+        onClose={closeModalSupp}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div style={modalStyle2} className={`modal-content ${darkMode ? 'dark-modal' : 'light-modal'}`}>
+        {selectedSupplementInfo && (
+            <>
+              <div className="flex gap-2 items-center p-4">
+                <p className="font-bold text-xl">{selectedSupplementInfo.name}</p>
+              </div>
+              <Avatar sx={{ width: '300px',height:'300px' }} alt={selectedSupplementInfo.name} src={selectedSupplementInfo.image} />
+              <div className="description-newsfeed">
+                <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">{selectedSupplementInfo.description}</p>
+              </div>
+              <div className="rate-newsfeed -mt-4">
+                <div className="flex gap-2">
+                  <button onClick={() => {
+                    if(toggleSaveSuppMass(selectedSupplementInfo)){
+                      setSavedMessage(false)
+                    }
+                  }}>
+                    <BookmarkIcon />
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
+      <Modal
+        open={modalProfileOpen}
+        onClose={closeModalProfileHandler}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div style={modalStyleJr} className={`modal-content ${darkMode ? 'dark-modal' : 'light-modal'}`}>
+          {selectedFriend && (
+            <>
+              <div className="flex gap-2 items-center p-4">
+                <Avatar sx={{width:'80px',height:'80px'}} alt={selectedFriend.name} src={selectedFriend.image} />
+                <p className="font-bold text-xl">{selectedFriend.name}</p>
+              </div>
+              <div className="description-newsfeed -mt-3">
+                <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">
+                {selectedFriend.information}<br/>
+                  <div className="flex gap-2 items-center mt-2">
+                  {selectedFriend.gender === 'Male' ? <MaleIcon /> : <FemaleIcon />}<br />
+                  <p className="font-bold">{selectedFriend.location}</p>
+                  </div>
+                </p>
+              </div>
+              <div className="rate-newsfeed -mt-5">
+              <div className="flex gap-2 justify-end items-end">
+                  {!isFriendView && (
+                    <button onClick={handleAddFriend}>{messageAddingFriend ? "Added Friend":"Add Friend"}</button>
+                  )}
+                  {isFriendView && (
+                    <button onClick={() => handleRemoveFriend(selectedFriend)}>{messageRemovingFriend ? "Friend Removed":"Remove Friend"}</button>
+                  )}
                 </div>
               </div>
             </>
@@ -1650,7 +1911,9 @@ const getIconStyle = (isChecked) => ({
           style={{ border: darkMode ? '1px solid #050604' : '1px solid #FAFBF9' }}
           className="bg-newsfeed w-2/3 flex flex-col mb-4"
         >
-          <div className="flex gap-2 items-center p-4">
+          <div className="flex gap-2 items-center p-4 cursor-pointer"
+         onClick={() => openModalProfileHandler(supplement)}
+          >
             <Avatar alt={supplement.name} src={supplement.image} />
             <p className="font-medium text-sm">{supplement.name}</p>
           </div>
@@ -1737,80 +2000,37 @@ const getIconStyle = (isChecked) => ({
           }}
           className="lloji-supleme flex items-center justify-center z-50 "
         >
-          <div className={`image-container ${masstech ? 'show' : 'hide'} -ml-3`}>
-            {masstech && <img src={masstechu} width="300px" alt="Masstech" />}
-          </div>
-          <div className={`image-container ${vapor ? 'show' : 'hide'}`}>
-            {vapor && <img src={vaportixx} width="300px" alt="Vapor" />}
-          </div>
-          <div className={`image-container ${cell ? 'show' : 'hide'}`}>
-            {cell && <img src={cellmax} width="300px" alt="Cell" />}
-          </div>
-          <div className={`image-container ${platinum ? 'show' : 'hide'}`}>
-            {platinum && <img src={pllatinumi} width="300px" alt="Platinum" />}
-          </div>
+          {supplementInfo.map((supplement) => (
+            <div key={supplement.id} className={`image-container ${supplement.show ? 'show' : 'hide'} -ml-3`}>
+              {supplement.show && (
+                <img src={supplement.image} width="300px" alt={supplement.name} onClick={() => openModal(supplement)} />
+              )}
+            </div>
+          ))}
         </div>
-        <div
-        style={{width:"33%"}}
-        className="description-supleme flex flex-col items-center justify-center">
+        <div style={{ width: "33%" }} className="description-supleme flex flex-col items-center justify-center">
           <div className="contenti0so ml-4 flex flex-col gap-2 mt-4 md:mt-0">
-          <div className={`text-container ${masstech ? 'show1' : 'hide1'}  `}>
-            {masstech && (
-                <>
-                  <h1 className="text-lg font-bold text-center md:text-start -mt-0 mb-2">Masstech</h1>
-                  <p className="text-md font-medium text-center md:text-start ">
-                    Mass gainer has creatine for enhanced muscle size & strength
-                  </p>
-                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
-                  <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                  <button onClick={() => toggleSaveSuppMass("Masstech", masstechu)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
-                </div>
-                </>
-              )}
-            </div>
-            <div className={`text-container ${vapor ? 'show1' : 'hide1'} "`}>
-            {vapor && (
-                <>
-                  <h1 className="text-lg font-bold text-center md:text-start -mt-2 mb-2">VaporX5</h1>
-                  <p className="text-md font-medium text-center md:text-start">
-                  Helps increase energy,focus and endurance for toughest training
-                  </p>
-                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
-                  <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                  <button onClick={() => toggleSaveSuppMass("VaporX5", vaportixx)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
-                </div>
-                </>
-              )}
-            </div>
-            <div className={`text-container ${cell ? 'show1' : 'hide1'}"`}>
-            {cell && (
-                <>
-                  <h1 className="text-lg font-bold text-center md:text-start -mt-3 mb-2">Celltech</h1>
-                  <p className="text-md font-medium text-center md:text-start mb-3.5">
-                  Helps increase energy,focus and endurance for toughest training
-                  </p>
-                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
-                  <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                  <button onClick={() => toggleSaveSuppMass("Celltech", cellmax)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
-                </div>
-                </>
-              )}
-            </div>
-            <div className={`text-container ${platinum ? 'show1' : 'hide1'} -mt-1.5`}>
-            {platinum && (
-                <>
-                  <h1 className="text-lg font-bold text-center md:text-start -mt-4 mb-2">Platinum</h1>
-                  <p className="text-md font-medium text-center md:text-start mb-3 ">
-                  Helps increase energy,focus and endurance for toughest training
-                  </p>
-                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
-                  <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                  <button onClick={() => toggleSaveSuppMass("Platinum", pllatinumi)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
-                </div>
-                </>
-              )}
-             
-            </div>
+            {supplementInfo.map((supplement) => (
+              <div key={supplement.id} className={`text-container ${supplement.show ? 'show1' : 'hide1'}`}>
+                {supplement.show && (
+                  <>
+                    <h1 className="text-lg font-bold text-center md:text-start -mt-0 mb-2">{supplement.name}</h1>
+                    <p className="text-md font-medium text-center md:text-start">
+                      {supplement.description}
+                    </p>
+                    <div className="flex gap-2 mt-4 justify-center md:justify-stretch">
+                      <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+                      <button
+                        onClick={() => toggleSaveSuppMass(supplement.id, supplement.image)}
+                        className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}
+                      >
+                        <BookmarkBorderIcon sx={{ color: darkMode ? "#FAFBF9" : "#050604" }} />
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
           </div>
         </div>
         </div>
@@ -1886,6 +2106,24 @@ const getIconStyle = (isChecked) => ({
       </Alert>
         </Snackbar>
       }
+      {messageAlreadyFriend && selectedFriend &&(
+        <Snackbar
+       open={open1}
+       autoHideDuration={6000}
+       onClose={handleClose1}
+       message="Note archived"
+       
+     >
+         <Alert
+       severity="error"
+       variant="filled"
+       sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+       >
+       <p> {selectedFriend.name} is already your friend</p>
+       </Alert>
+         </Snackbar>
+      )
+      }
 
    </div>
    
@@ -1893,7 +2131,7 @@ const getIconStyle = (isChecked) => ({
  }
 
 
-const MainIntroSmallDisplay = ()=>{
+const MainIntroSmallDisplay = () => {
   
   const { darkMode } = useDarkMode()
   const theme = darkMode ? "backgroundIntro2":"backgroundIntro"
@@ -2154,6 +2392,10 @@ if(setShowMore === true){
   setShowNotes(false)
 }
 }
+
+
+/////////////////////////Modal for user Advice ////////////////
+
 const [modalOpen, setModalOpen] = useState(false);
 
 const openModal = (supplement,index) => {
@@ -2169,6 +2411,31 @@ const closeModal = () => {
   setModalOpen(false);
   setSelectedSupplement(null);
 };
+
+/////////////////////////Modal for user Advice ////////////////
+
+
+
+/////////////////////////Modal for Supplements ////////////////
+
+
+const [modalSupp,setModalSupp]=useState(false)
+
+const openModalSupp = (supplement)=>{
+  setSelectedSupplementInfo(supplement);
+  setTimeout(() => {
+    setModalSupp(true);
+  }, 1000);
+  setSaved(false)
+}
+
+const closeModalSupp = () => {
+  setModalSupp(false);
+  setSelectedSupplementInfo(null);
+};
+
+
+/////////////////////////Modal for Supplements ////////////////
 
 const [shopingCart,setShopingCart]=useState(false)
 
@@ -2187,38 +2454,96 @@ const supplementsData = [
     image: avatar1,
     name: 'Cindy Baker',
     description: 'Eating apples may contribute to a good night\'s sleep. I suggest making a fruit salad with a variety of fruits such as apples, grapefruit, and bananas to incorporate more vitamin C before bedtime.',
+    gender: 'Male',
+    information: 'Just Studying Biology',
+    location:'Nebraska'
   },
+  
   {
     image: avatar2,
     name: 'John Doe',
     description: 'Consuming a balanced diet with a mix of proteins, fats, and carbohydrates can significantly improve your overall health and energy levels throughout the day.',
+    gender: 'Male',
+    information: 'Fitness Trainer',
+    location:'Germany'
   },
   {
     image: avatar3,
     name: 'Jimmy Josh',
     description: 'So while your diet plays a major role in dropping pounds, exercise can help too. In general, try to exercise at least 4 or 5 days a week if you want to see weight loss results in both the short and long term',
+    gender: 'Male',
+    information: 'Helping everyone lol',
+    location:'Albania'
   },
   {
     image: avatar4,
     name: 'Baily Hendreson',
     description: 'Supplements that may help reduce body fat mass include protein, caffeine and green tea extract',
+    gender: 'Male',
+    information: 'Supplement Master',
+    location:'Macedonia'
   },
   {
     image: avatar5,
     name: 'Angela Hollow',
     description: 'Vitamin D has several important functions. Perhaps the most vital are regulating the absorption of calcium and phosphorus and facilitating healthy immune system function',
+    gender: 'Female',
+    information: 'Sometimes im a doctor, sometimes a teacher',
+     location:'Italy'
   },
   // Add more supplements as needed
 ];
+
+const supplementInfo = [
+  {
+    id: 'Masstech',
+    name: 'Masstech',
+    description: 'Mass gainer has creatine for enhanced muscle size & strength',
+    image: masstechu,
+    show: masstech,
+  },
+  {
+    id: 'VaporX5',
+    name: 'VaporX5',
+    description: 'Helps increase energy, focus, and endurance for toughest training',
+    image: vaportixx,
+    show: vapor,
+  },
+  {
+    id: 'Celltech',
+    name: 'Celltech',
+    description: 'Helps increase energy, focus, and endurance for toughest training',
+    image: cellmax,
+    show: cell,
+  },
+  {
+    id: 'Platinum',
+    name: 'Platinum',
+    description: 'Helps increase energy, focus, and endurance for toughest training',
+    image: pllatinumi,
+    show: platinum,
+  }
+];
+
 
 
 const [favorites, setFavorites] = useState({});
   const [bookmarks, setBookmarks] = useState({});
 
   useEffect(() => {
-    const storedFavorites = Cookies.get('favorites') ? JSON.parse(Cookies.get('favorites')) : {};
-    const storedBookmarks = Cookies.get('bookmarks') ? JSON.parse(Cookies.get('bookmarks')) : {};
-    const storedSavedSupplements = Cookies.get('savedSupplements') ? JSON.parse(Cookies.get('savedSupplements')) : [];
+    const storedFavorites = Cookies.get("favorites")
+      ? JSON.parse(Cookies.get("favorites"))
+      : {};
+    const storedBookmarks = Cookies.get("bookmarks")
+      ? JSON.parse(Cookies.get("bookmarks"))
+      : {};
+    const storedSavedSupplements = Cookies.get("savedSupplements")
+      ? JSON.parse(Cookies.get("savedSupplements"))
+      : [];
+
+    console.log("Loaded favorites from cookies:", storedFavorites);
+    console.log("Loaded bookmarks from cookies:", storedBookmarks);
+    console.log("Loaded saved supplements from cookies:", storedSavedSupplements);
 
     setFavorites(storedFavorites);
     setBookmarks(storedBookmarks);
@@ -2226,22 +2551,23 @@ const [favorites, setFavorites] = useState({});
     setDefaulTShowingSaved(storedSavedSupplements.length === 0);
   }, []);
 
-
   const handleFavoriteChange = (index) => {
     const updatedFavorites = { ...favorites, [index]: !favorites[index] };
     setFavorites(updatedFavorites);
     Cookies.set("favorites", JSON.stringify(updatedFavorites), { expires: 365 });
+    console.log("Updated favorites:", updatedFavorites);
   };
-  
 
   const handleBookmarkChange = (index) => {
     const updatedBookmarks = { ...bookmarks, [index]: !bookmarks[index] };
     setBookmarks(updatedBookmarks);
-    Cookies.set('bookmarks', JSON.stringify(updatedBookmarks));
+    Cookies.set("bookmarks", JSON.stringify(updatedBookmarks), { expires: 365 });
+    console.log("Updated bookmarks:", updatedBookmarks);
 
     const saved = supplementsData.filter((_, i) => updatedBookmarks[i]);
     setSavedSupplements(saved);
-    Cookies.set('savedSupplements', JSON.stringify(saved), { expires: 365 });
+    Cookies.set("savedSupplements", JSON.stringify(saved), { expires: 365 });
+    console.log("Updated saved supplements:", saved);
   };
 
 const [isFavoriteChecked, setIsFavoriteChecked] = useState(false);
@@ -2270,7 +2596,22 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '80%',
-  backgroundColor: darkMode ? '#FAFBF9' : '#050604',
+  color:darkMode ? "#050604":"FAFBF9" ,
+  backgroundColor:'#FAFBF9' ,
+  boxShadow: 24,
+  padding: '16px',
+  border: darkMode ? "#050604":"#FAFBF9",
+  borderRadius: '20px',
+};
+
+const modalStyleJr = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '40%',
+  color:darkMode ? "#050604":"FAFBF9" ,
+  backgroundColor:'#FAFBF9' ,
   boxShadow: 24,
   padding: '16px',
   border: darkMode ? "#050604":"#FAFBF9",
@@ -2285,6 +2626,84 @@ const ToggleAble = ()=>{
  }
 }
 const [selectedIndex, setSelectedIndex] = useState(null);
+const [selectedSupplementInfo, setSelectedSupplementInfo] = useState(null);
+
+
+const [modalProfileOpen, setModalProfileOpen] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState(null);
+
+  const openModalProfileHandler = (supplement) => {
+    setSelectedFriend(supplement);
+    setIsFriendView(false); // This is the original view
+    setModalProfileOpen(true);
+  };
+
+  const closeModalProfileHandler = () => {
+    setSelectedFriend(null);
+    setModalProfileOpen(false);
+  };
+
+  const handleAddFriend = () => {
+    if (selectedFriend) {
+      console.log(`Adding ${selectedFriend.name} as a friend`);
+
+      // Retrieve existing friends from cookies
+      const friendsCookie = document.cookie.split('; ').find(row => row.startsWith('friends='));
+      const friends = friendsCookie ? JSON.parse(decodeURIComponent(friendsCookie.split('=')[1])) : [];
+
+      // Check if the friend is already added
+      const isFriendAlreadyAdded = friends.some(friend => friend.name === selectedFriend.name);
+
+      if (isFriendAlreadyAdded) {
+        setMessageAlreadyFriend(true);
+      } else {
+        // Add new friend to the list
+        friends.push(selectedFriend);
+
+        // Save updated friends list to cookies
+        document.cookie = `friends=${encodeURIComponent(JSON.stringify(friends))}; max-age=${365 * 24 * 60 * 60};`;
+
+        // Update local state
+        setFriends(friends);
+        setMessageAddingFriend(true);
+      }
+    }
+  };
+
+  const [friends, setFriends] = useState([]);
+
+  useEffect(() => {
+    // Retrieve friends from cookies when component mounts
+    const friendsCookie = document.cookie.split('; ').find(row => row.startsWith('friends='));
+    if (friendsCookie) {
+      const savedFriends = JSON.parse(decodeURIComponent(friendsCookie.split('=')[1]));
+      setFriends(savedFriends);
+    }
+  }, []);
+
+
+const [messageAddingFriend,setMessageAddingFriend]=useState(false) ///// added friend changes
+const [messageRemovingFriend,setMessageRemovingFriend]=useState(false) //// removing friend changes
+const [messageAlreadyFriend,setMessageAlreadyFriend]=useState(false) 
+const [isFriendView, setIsFriendView] = useState(false);
+
+const openFriendProfileHandler = (friend) => {
+  setSelectedFriend(friend);
+  setIsFriendView(true); // This is the friends view
+  setModalProfileOpen(true);
+  setArchive(false)
+};
+
+const handleRemoveFriend = (friendToRemove) => {
+  const updatedFriends = friends.filter(friend => friend.name !== friendToRemove.name);
+
+  // Save updated friends list to cookies
+  document.cookie = `friends=${encodeURIComponent(JSON.stringify(updatedFriends))}; max-age=${365 * 24 * 60 * 60};`;
+
+  // Update local state
+  setFriends(updatedFriends);
+  setMessageRemovingFriend(true)
+};
 
   return(
     <div className="relative min-h-screen">
@@ -2309,7 +2728,9 @@ const [selectedIndex, setSelectedIndex] = useState(null);
           style={{ border: darkMode ? '1px solid #050604' : '1px solid #FAFBF9' }}
           className="bg-newsfeed w-2/3 flex flex-col mb-4"
         >
-          <div className="flex gap-2 items-center p-4">
+          <div className="flex gap-2 items-center p-4 cursor-pointer"
+           onClick={() => openModalProfileHandler(supplement)}
+          >
             <Avatar alt={supplement.name} src={supplement.image} />
             <p className="font-medium text-sm">{supplement.name}</p>
           </div>
@@ -2391,89 +2812,39 @@ const [selectedIndex, setSelectedIndex] = useState(null);
      >
        <div className="flex flex-col md:flex-row items-center justify-center ">
        <div
-          style={{
-            
-            
-          }}
           className="lloji-supleme flex items-center justify-center  "
         >
-          <div className={`image-container ${masstech ? 'show' : 'hide'} -ml-3`}>
-            {masstech && <img src={masstechu} width="300px" alt="Masstech" />}
-          </div>
-          <div className={`image-container ${vapor ? 'show' : 'hide'}`}>
-            {vapor && <img src={vaportixx} width="300px" alt="Vapor" />}
-          </div>
-          <div className={`image-container ${cell ? 'show' : 'hide'}`}>
-            {cell && <img src={cellmax} width="300px" alt="Cell" />}
-          </div>
-          <div className={`image-container ${platinum ? 'show' : 'hide'}`}>
-            {platinum && <img src={pllatinumi} width="300px" alt="Platinum" />}
-          </div>
+           {supplementInfo.map((supplement) => (
+            <div key={supplement.id} className={`image-container ${supplement.show ? 'show' : 'hide'} -ml-3`}>
+              {supplement.show && (
+                <img src={supplement.image} width="300px" alt={supplement.name} onClick={() => openModal(supplement)} />
+              )}
+            </div>
+          ))}
         </div>
-        <div
-        style={{width:"33%"}}
-        className="description-supleme flex flex-col items-center justify-center">
+        <div style={{ width: "33%" }} className="description-supleme flex flex-col items-center justify-center">
           <div className="contenti0so ml-4 flex flex-col gap-2 mt-4 md:mt-0">
-          <div className={`text-container ${masstech ? 'show1' : 'hide1'}  `}>
-            {masstech && (
-                <>
-                  <h1 className="text-lg font-bold text-center md:text-start -mt-0 mb-2">Masstech</h1>
-                  <p className="text-md font-medium text-center md:text-start ">
-                    Mass gainer has creatine for enhanced muscle size & strength
-                  </p>
-                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
-                <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                <button onClick={() => toggleSaveSuppMass("Masstech", masstechu)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
+            {supplementInfo.map((supplement) => (
+              <div key={supplement.id} className={`text-container ${supplement.show ? 'show1' : 'hide1'}`}>
+                {supplement.show && (
+                  <>
+                    <h1 className="text-lg font-bold text-center md:text-start -mt-0 mb-2">{supplement.name}</h1>
+                    <p className="text-md font-medium text-center md:text-start">
+                      {supplement.description}
+                    </p>
+                    <div className="flex gap-2 mt-4 justify-center md:justify-stretch">
+                      <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
+                      <button
+                        onClick={() => toggleSaveSuppMass(supplement.id, supplement.image)}
+                        className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}
+                      >
+                        <BookmarkBorderIcon sx={{ color: darkMode ? "#FAFBF9" : "#050604" }} />
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
-                </>
-              )}
-  
-            </div>
-            <div className={`text-container ${vapor ? 'show1' : 'hide1'} "`}>
-            {vapor && (
-                <>
-                  <h1 className="text-lg font-bold text-center md:text-start -mt-2 mb-2">VaporX5</h1>
-                  <p className="text-md font-medium text-center md:text-start">
-                  Helps increase energy,focus and endurance for toughest training
-                  </p>
-                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
-                <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                <button onClick={() => toggleSaveSuppMass("VaporX5", vaportixx)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
-              </div>
-                </>
-              )}
-
-            </div>
-            <div className={`text-container ${cell ? 'show1' : 'hide1'}"`}>
-            {cell && (
-                <>
-                  <h1 className="text-lg font-bold text-center md:text-start -mt-3 mb-2">Celltech</h1>
-                  <p className="text-md font-medium text-center md:text-start mb-3.5">
-                  Helps increase energy,focus and endurance for toughest training
-                  </p>
-                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
-                <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                <button onClick={() => toggleSaveSuppMass("Celltech", cellmax)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
-              </div>
-                </>
-              )}
-
-            </div>
-            <div className={`text-container ${platinum ? 'show1' : 'hide1'} -mt-1.5`}>
-            {platinum && (
-                <>
-                  <h1 className="text-lg font-bold text-center md:text-start -mt-4 mb-2">Platinum</h1>
-                  <p className="text-md font-medium text-center md:text-start mb-3 ">
-                  Helps increase energy,focus and endurance for toughest training
-                  </p>
-                  <div className="flex gap-2 mt-4  justify-center md:justify-stretch">
-                <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                <button onClick={() => toggleSaveSuppMass("Platinum", pllatinumi)} className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}><BookmarkBorderIcon sx={{color:darkMode?"#FAFBF9":"#050604"}}/></button>
-              </div>
-                </>
-                
-              )}
-            </div>
+            ))}
           </div>
         </div>
        </div>
@@ -2596,72 +2967,87 @@ const [selectedIndex, setSelectedIndex] = useState(null);
       </div>
 
       {/* Archive Drawer */}
-      <div  className={`drawer-content ${archive ? 'show' : ''} z-100`}
+      <div  className={`drawer-content ${archive ? 'show' : ''} z-100 `}
        style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
       >
       <div className="flex items-center justify-center">
        <div onClick={toggleAllOff}  className=" mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
        </div>
-      <div className="flex flex-col items-center justify-center mt-4">
-      <img src={Nofriends} width="200px" className="mt-2" alt="" />
-      <p className="text-center mt-2">No Friends yet</p>
-
-      </div>
+       {friends.length > 0 ? (
+          friends.map((friend, index) => (
+           <div className="flex justify-between mt-4">
+             <div
+              onClick={() => openFriendProfileHandler(friend)}
+              key={index}
+              className="flex gap-2 items-center p-4 cursor-pointer"
+            >
+              <Avatar sx={{width:"55px",height:"55px"}} alt={friend.name} src={friend.image} />
+              <div>
+                <p className="font-bold text-xl">{friend.name}</p>
+                <p className="font-normal text-md">{friend.information}</p>
+              </div>
+            </div>
+            <button className=" pr-4" onClick={() => handleRemoveFriend(friend)}>
+                {messageRemovingFriend === friend.name ? "Friend Removed" : "Remove Friend"}
+              </button>
+           </div>
+          ))
+        ) : (
+         <div className="flex flex-col items-center justify-center">
+            <img src={Nofriends} width="200px" className="mt-2" alt="" />
+          <p className="text-center mt-2">No friends added yet</p>
+         </div>
+        )}
       </div>
 
       {/* Saved Drawer */}
-      <div  className={`drawer-content ${saved ? 'show' : ''} z-100`}
-       style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
-      >
-      <div className="flex items-center justify-center">
-       <div onClick={toggleAllOff}  className="mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
-       </div>
-       {savedSupplements.length === 0 ? (
-          <div className="flex items-center justify-center mt-4">
-            <div>
-              <img src={Folder2} width="200px" className="mt-2" alt="No items yet" /> {/* Update with your actual image path */}
-              <p className="text-center mt-2">Nothing saved yet</p>
+      <div className={`drawer-content ${saved ? 'show' : ''} z-100`} style={{backgroundColor: darkMode ? "#FAFBF9" : "#050604"}}>
+  <div className="flex items-center justify-center">
+    <div onClick={toggleAllOff} className="mt-3 px-2 pb-2 w-12 rounded-2xl" style={{backgroundColor: "#525252"}} />
+  </div>
+  {savedSupplements.length === 0 ? (
+    <div className="flex items-center justify-center mt-4">
+      <div>
+        <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
+        <p className="text-center mt-2">Nothing saved yet</p>
+      </div>
+    </div>
+  ) : (
+    <>
+      <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
+      <div className="saved-items-container flex items-center justify-start gap-4 mt-12 overflow-x-auto whitespace-nowrap">
+        {savedSupplements.map((supplement, index) => (
+          <div
+            key={index}
+            className={`flex flex-col h-36 items-center justify-center my-2 mt-4 ${
+              selectedSupplement && selectedSupplement.name === supplement.name
+                ? darkMode ? 'highlighted-dark' : 'highlighted-light'
+                : ''
+            }`}
+          >
+            <div className="items-center flex flex-col"
+             onClick={() => {
+              if (supplement.type === 'supplement') {
+                openModalSupp(supplement);
+              } else {
+              openModal(supplement, index);
+              }
+              }}
+            >
+              <img
+                src={supplement.image}
+                alt={supplement.name}
+                className="w-16 h-16 mr-2 rounded-full cursor-pointer"
+                onClick={() => setSelectedSupplement(supplement)}
+              />
+                <span className="text-center text-sm ">{supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}'s advice` }</span>
             </div>
           </div>
-        ) : (
-          <>
-            <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
-            <div className="flex mt-12 items-start justify-start gap-4">
-              {savedSupplements.map((supplement, index) => (
-                <div
-                  key={index}
-                  className={`flex flex-col h-36 items-center justify-center my-2 mt-4 ${
-                    selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? 'highlighted-dark' : 'highlighted-light') : ''
-                  }`}
-                >
-                  <img
-                    src={supplement.image}
-                    alt={supplement.name}
-                    className="w-16 h-16 mr-2 rounded-full cursor-pointer"
-                    onClick={() => setSelectedSupplement(supplement)}
-                  />
-                  <span>{supplement.name}'s advice</span>
-                  <div className="flex flex-col gap-2 mt-2">
-                  <button
-                    className={`${buttonSwitchSm} p-0.5 text-center`}
-                    onClick={() => removeSavedSupplement(supplement)}
-                  >
-                   Remove Advice
-                  </button>
-
-                  <button
-                    className={`${buttonSwitchSm} p-0.5 text-center  mb-8`}
-                    onClick={() => openModal(supplement)}
-                  >
-                    Show Advice
-                  </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+        ))}
       </div>
+    </>
+  )}
+</div>
       <Modal
         open={modalOpen}
         onClose={closeModal}
@@ -2673,27 +3059,94 @@ const [selectedIndex, setSelectedIndex] = useState(null);
             <>
               <div className="flex gap-2 items-center p-4">
                 <Avatar alt={selectedSupplement.name} src={selectedSupplement.image} />
-                <p className="font-medium text-sm">{selectedSupplement.name}</p>
+                <p
+                
+                className="font-medium text-sm">{selectedSupplement.name}</p>
               </div>
               <div className="description-newsfeed">
-                <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">{selectedSupplement.description}</p>
+                <p
+               
+                className="font-normal text-md pl-2 pb-4 pt-1 pr-2">{selectedSupplement.description}</p>
               </div>
               <div className="rate-newsfeed -mt-4">
                 <div className="flex gap-2">
                   <Checkbox
-                    sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                    sx={{ color: darkMode ? '' : '#475E36' }}
                     icon={<FavoriteBorder style={getIconStyle(favorites[selectedIndex])} />}
                     checkedIcon={<Favorite style={getIconStyle(favorites[selectedIndex])} />}
                     checked={favorites[selectedIndex] || false}
                     onChange={() => handleFavoriteChange(selectedIndex)}
                   />
                   <Checkbox
-                    sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                    sx={{ color: darkMode ? '' : '' }}
                     icon={<BookmarkBorderIcon style={getIconStyle(bookmarks[selectedIndex])} />}
                     checkedIcon={<BookmarkIcon style={getIconStyle(bookmarks[selectedIndex])} />}
                     checked={bookmarks[selectedIndex] || false}
                     onChange={() => handleBookmarkChange(selectedIndex)}
                   />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
+      <Modal
+        open={modalSupp}
+        onClose={closeModalSupp}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div style={modalStyle} className={`modal-content ${darkMode ? 'dark-modal' : 'light-modal'}`}>
+        {selectedSupplementInfo && (
+            <>
+              <div className="flex gap-2 items-center p-4">
+                <p className="font-medium text-sm">{selectedSupplementInfo.name}</p>
+              </div>
+              <Avatar sx={{ width: '300px' }} alt={selectedSupplementInfo.name} src={selectedSupplementInfo.image} />
+              <div className="description-newsfeed">
+                <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">{selectedSupplementInfo.description}</p>
+              </div>
+              <div className="rate-newsfeed -mt-4">
+                <div className="flex gap-2">
+                  <button onClick={() => toggleSaveSuppMass(selectedSupplementInfo)}>
+                    <BookmarkIcon />
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
+      <Modal
+        open={modalProfileOpen}
+        onClose={closeModalProfileHandler}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div style={modalStyleJr} className={`modal-content ${darkMode ? 'dark-modal' : 'light-modal'}`}>
+          {selectedFriend && (
+            <>
+              <div className="flex gap-2 items-center p-4">
+                <Avatar sx={{width:'80px',height:'80px'}} alt={selectedFriend.name} src={selectedFriend.image} />
+                <p className="font-bold text-xl">{selectedFriend.name}</p>
+              </div>
+              <div className="description-newsfeed -mt-3">
+                <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">
+                {selectedFriend.information}<br/>
+                  <div className="flex gap-2 items-center mt-2">
+                  {selectedFriend.gender === 'Male' ? <MaleIcon /> : <FemaleIcon />}<br />
+                  <p className="font-bold">{selectedFriend.location}</p>
+                  </div>
+                </p>
+              </div>
+              <div className="rate-newsfeed -mt-5">
+              <div className="flex gap-2 justify-end items-end">
+                  {!isFriendView && (
+                    <button onClick={handleAddFriend}>{messageAddingFriend ? "Added Friend":"Add Friend"}</button>
+                  )}
+                  {isFriendView && (
+                    <button onClick={() => handleRemoveFriend(selectedFriend)}>{messageRemovingFriend ? "Friend Removed":"Remove Friend"}</button>
+                  )}
                 </div>
               </div>
             </>
