@@ -1182,32 +1182,8 @@ const [already,setAlready]=useState(false)//////// alreadyshowed message //////
 
 const [savedSupplements, setSavedSupplements] = useState([]);
 
-const toggleSaveSuppMass = (name, image) => {
-  // Check if the supplement is already in the saved list
-  const alreadySaved = savedSupplements.some(supplement => supplement.name === supplement);
-
-  if (!alreadySaved) {
-    const newSupplement = { name, image, type: 'supplement' };
-    setSavedSupplements((prev) => [...prev, newSupplement]);
-    Cookies.set('savedSupplements', JSON.stringify([...savedSupplements, newSupplement]), { expires: 365 });
-
-    setSavedMessage(true);
-    setOpen1(true);
-    setDefaulTShowingSaved(false);
-    setTimeout(() => {
-      setSavedMessage(false);
-    }, 3000);
-  }
-};
 
 
-useEffect(() => {
-  const savedSupplementsFromCookies = Cookies.get("savedSupplements");
-  if (savedSupplementsFromCookies) {
-    setSavedSupplements(JSON.parse(savedSupplementsFromCookies));
-    setDefaulTShowingSaved(false);
-  }
-}, []);
 
 const [selectedSupplement, setSelectedSupplement] = useState(null);
 
@@ -1250,10 +1226,7 @@ const handleClearNote = () => {
    // Check if the newNotes array is empty if (newNotes.length === 0) { setDefaultShowingNotes(true); } } };
   
  
-   useEffect(() => {
-    setDefaulTShowingSaved(savedSupplements.length === 0);
-  }, [savedSupplements]);
-
+   
   // Function to handle adding a new supplement
   const addSupplement = (supplement) => {
     setSavedSupplements([...savedSupplements, supplement]);
@@ -1335,6 +1308,7 @@ const supplementInfo = [
     description: 'Mass gainer has creatine for enhanced muscle size & strength',
     image: masstechu,
     show: masstech,
+    route: '/masstech', // Route for Masstech supplement
   },
   {
     id: 'VaporX5',
@@ -1342,6 +1316,7 @@ const supplementInfo = [
     description: 'Helps increase energy, focus, and endurance for toughest training',
     image: vaportixx,
     show: vapor,
+    route: '/vaporx5', // Route for VaporX5 supplement
   },
   {
     id: 'Celltech',
@@ -1349,6 +1324,7 @@ const supplementInfo = [
     description: 'Helps increase energy, focus, and endurance for toughest training',
     image: cellmax,
     show: cell,
+    route: '/celltech', // Route for Celltech supplement
   },
   {
     id: 'Platinum',
@@ -1356,6 +1332,7 @@ const supplementInfo = [
     description: 'Helps increase energy, focus, and endurance for toughest training',
     image: pllatinumi,
     show: platinum,
+    route: '/platinum', // Route for Platinum supplement
   }
 ];
 
@@ -1370,18 +1347,12 @@ const [favorites, setFavorites] = useState({});
     const storedBookmarks = Cookies.get("bookmarks")
       ? JSON.parse(Cookies.get("bookmarks"))
       : {};
-    const storedSavedSupplements = Cookies.get("savedSupplements")
-      ? JSON.parse(Cookies.get("savedSupplements"))
-      : [];
 
     console.log("Loaded favorites from cookies:", storedFavorites);
     console.log("Loaded bookmarks from cookies:", storedBookmarks);
-    console.log("Loaded saved supplements from cookies:", storedSavedSupplements);
 
     setFavorites(storedFavorites);
     setBookmarks(storedBookmarks);
-    setSavedSupplements(storedSavedSupplements);
-    setDefaulTShowingSaved(storedSavedSupplements.length === 0);
   }, []);
 
   const handleFavoriteChange = (index) => {
@@ -1428,7 +1399,7 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '55%',
-  backgroundColor: darkMode ? '#FAFBF9' : '#050604',
+  backgroundColor:  '#FAFBF9' ,
   boxShadow: 24,
   padding: '16px',
   borderRadius: '20px',
@@ -1537,6 +1508,9 @@ const getIconStyle = (isChecked) => ({
       }
     }
   };
+
+  
+  
 
   const [friends, setFriends] = useState([]);
 
@@ -1703,7 +1677,7 @@ const handleRemoveFriend = (friendToRemove) => {
       ) : (
         <>
           <p className="font-light text-center text-sm mb-4 mt-4">Check what you saved here</p>
-          <div className="flex  mt-4 items-start justify-start overflow-x-auto whitespace-nowrap">
+          <div className="flex flex-col gap-4 mt-4 items-start justify-start overflow-x-auto whitespace-nowrap">
             {savedSupplements.map((supplement, index) => (
               <div
                 key={index}
@@ -1726,7 +1700,7 @@ const handleRemoveFriend = (friendToRemove) => {
                   className="w-16 h-16 rounded-full mr-2 cursor-pointer"
                   onClick={() => setSelectedSupplement(supplement)}
                 />
-                <span className="text-center text-sm w-1/2">{supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}'s advice` }</span>
+                <span className="text-center text-bold text-sm w-1/2">{supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}'s advice` }</span>
                 </div>
               
               </div>
@@ -1754,14 +1728,14 @@ const handleRemoveFriend = (friendToRemove) => {
               <div className="rate-newsfeed -mt-4">
                 <div className="flex gap-2">
                   <Checkbox
-                    sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                    sx={{ color: darkMode ? '' : 'rgba(5, 6, 4,0.6)' }}
                     icon={<FavoriteBorder style={getIconStyle(favorites[selectedIndex])} />}
                     checkedIcon={<Favorite style={getIconStyle(favorites[selectedIndex])} />}
                     checked={favorites[selectedIndex] || false}
                     onChange={() => handleFavoriteChange(selectedIndex)}
                   />
                   <Checkbox
-                    sx={{ color: darkMode ? '' : 'rgba(250, 251, 249,0.6)' }}
+                    sx={{ color: darkMode ? '' : 'rgba(5, 6, 4,0.6)' }}
                     icon={<BookmarkBorderIcon style={getIconStyle(bookmarks[selectedIndex])} />}
                     checkedIcon={<BookmarkIcon style={getIconStyle(bookmarks[selectedIndex])} />}
                     checked={bookmarks[selectedIndex] || false}
@@ -1773,37 +1747,7 @@ const handleRemoveFriend = (friendToRemove) => {
           )}
         </div>
       </Modal>
-      <Modal
-        open={modalSupp}
-        onClose={closeModalSupp}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <div style={modalStyle2} className={`modal-content ${darkMode ? 'dark-modal' : 'light-modal'}`}>
-        {selectedSupplementInfo && (
-            <>
-              <div className="flex gap-2 items-center p-4">
-                <p className="font-bold text-xl">{selectedSupplementInfo.name}</p>
-              </div>
-              <Avatar sx={{ width: '300px',height:'300px' }} alt={selectedSupplementInfo.name} src={selectedSupplementInfo.image} />
-              <div className="description-newsfeed">
-                <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">{selectedSupplementInfo.description}</p>
-              </div>
-              <div className="rate-newsfeed -mt-4">
-                <div className="flex gap-2">
-                  <button onClick={() => {
-                    if(toggleSaveSuppMass(selectedSupplementInfo)){
-                      setSavedMessage(false)
-                    }
-                  }}>
-                    <BookmarkIcon />
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </Modal>
+      
       <Modal
         open={modalProfileOpen}
         onClose={closeModalProfileHandler}
@@ -2018,15 +1962,10 @@ const handleRemoveFriend = (friendToRemove) => {
                     <p className="text-md font-medium text-center md:text-start">
                       {supplement.description}
                     </p>
-                    <div className="flex gap-2 mt-4 justify-center md:justify-stretch">
+                    <a href={supplement.route} className="flex gap-2 mt-4 justify-center md:justify-stretch">
                       <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                      <button
-                        onClick={() => toggleSaveSuppMass(supplement.id, supplement.image)}
-                        className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}
-                      >
-                        <BookmarkBorderIcon sx={{ color: darkMode ? "#FAFBF9" : "#050604" }} />
-                      </button>
-                    </div>
+                      
+                    </a>
                   </>
                 )}
               </div>
@@ -2337,33 +2276,9 @@ const [already,setAlready]=useState(false)//////// alreadyshowed message //////
 
 const [savedSupplements, setSavedSupplements] = useState([]);
 
-const toggleSaveSuppMass = (supplementName, imageURL) => {
-  // Check if the supplement is already in the saved list
-  const alreadySaved = savedSupplements.some(supplement => supplement.name === supplementName);
-
-  if (!alreadySaved) {
-    const supplement = { name: supplementName, image: imageURL };
-    const updatedSupplements = [...savedSupplements, supplement];
-    setSavedSupplements(updatedSupplements);
-    Cookies.set("savedSupplements", JSON.stringify(updatedSupplements), { expires: 365 });
-
-    setSavedMessage(true);
-    setOpen1(true);
-    setDefaulTShowingSaved(false);
-    setTimeout(() => {
-      setSavedMessage(false);
-    }, 3000);
-  }
-};
 
 
-useEffect(() => {
-  const savedSupplementsFromCookies = Cookies.get("savedSupplements");
-  if (savedSupplementsFromCookies) {
-    setSavedSupplements(JSON.parse(savedSupplementsFromCookies));
-    setDefaulTShowingSaved(false);
-  }
-}, []);
+
 
 const [selectedSupplement, setSelectedSupplement] = useState(null); //////// toggle  to remove the supplement in the saved drawer
 const [showMore,setShowMore]=useState(null) ////////toggle for more advice in the saved drawer
@@ -2501,6 +2416,7 @@ const supplementInfo = [
     description: 'Mass gainer has creatine for enhanced muscle size & strength',
     image: masstechu,
     show: masstech,
+    route: '/masstech', // Route for Masstech supplement
   },
   {
     id: 'VaporX5',
@@ -2508,6 +2424,7 @@ const supplementInfo = [
     description: 'Helps increase energy, focus, and endurance for toughest training',
     image: vaportixx,
     show: vapor,
+    route: '/vaporx5', // Route for VaporX5 supplement
   },
   {
     id: 'Celltech',
@@ -2515,6 +2432,7 @@ const supplementInfo = [
     description: 'Helps increase energy, focus, and endurance for toughest training',
     image: cellmax,
     show: cell,
+    route: '/celltech', // Route for Celltech supplement
   },
   {
     id: 'Platinum',
@@ -2522,6 +2440,7 @@ const supplementInfo = [
     description: 'Helps increase energy, focus, and endurance for toughest training',
     image: pllatinumi,
     show: platinum,
+    route: '/platinum', // Route for Platinum supplement
   }
 ];
 
@@ -2832,15 +2751,10 @@ const handleRemoveFriend = (friendToRemove) => {
                     <p className="text-md font-medium text-center md:text-start">
                       {supplement.description}
                     </p>
-                    <div className="flex gap-2 mt-4 justify-center md:justify-stretch">
+                    <a href={supplement.route} className="flex gap-2 mt-4 justify-center md:justify-stretch">
                       <button className={`${buttonSwitch} p-2.5 whitespace-nowrap`}>Learn More</button>
-                      <button
-                        onClick={() => toggleSaveSuppMass(supplement.id, supplement.image)}
-                        className={`${buttonSwitch2} p-1 whitespace-nowrap transition-colors`}
-                      >
-                        <BookmarkBorderIcon sx={{ color: darkMode ? "#FAFBF9" : "#050604" }} />
-                      </button>
-                    </div>
+                    
+                    </a>
                   </>
                 )}
               </div>
@@ -3090,33 +3004,7 @@ const handleRemoveFriend = (friendToRemove) => {
           )}
         </div>
       </Modal>
-      <Modal
-        open={modalSupp}
-        onClose={closeModalSupp}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <div style={modalStyle} className={`modal-content ${darkMode ? 'dark-modal' : 'light-modal'}`}>
-        {selectedSupplementInfo && (
-            <>
-              <div className="flex gap-2 items-center p-4">
-                <p className="font-medium text-sm">{selectedSupplementInfo.name}</p>
-              </div>
-              <Avatar sx={{ width: '300px' }} alt={selectedSupplementInfo.name} src={selectedSupplementInfo.image} />
-              <div className="description-newsfeed">
-                <p className="font-normal text-md pl-2 pb-4 pt-1 pr-2">{selectedSupplementInfo.description}</p>
-              </div>
-              <div className="rate-newsfeed -mt-4">
-                <div className="flex gap-2">
-                  <button onClick={() => toggleSaveSuppMass(selectedSupplementInfo)}>
-                    <BookmarkIcon />
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </Modal>
+      
       <Modal
         open={modalProfileOpen}
         onClose={closeModalProfileHandler}

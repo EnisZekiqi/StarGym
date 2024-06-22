@@ -14,7 +14,10 @@ import EditProfile from './EditProfile';
 import Main from './Main';
 import { DarkModeProvider } from "./DarkModeContext";
 import Info from './MainPage/Info';
-
+import Masstech from '../src/MainPage/Masstech'
+import VaportX from './MainPage/VaportX';
+import Celltech from './MainPage/Celltech';
+import Platinum from './MainPage/Platinum';
 
  const router = createBrowserRouter([
    {
@@ -34,7 +37,22 @@ import Info from './MainPage/Info';
       element: <Main/> ,
      
     },
- 
+    ,{
+      path:"masstech",
+      element:<Masstech/>
+    },
+    {
+      path:"Vaporx5",
+      element:<VaportX/>
+    },
+    {
+      path:"celltech",
+      element:<Celltech/>
+    },
+    {
+      path:"platinum",
+      element:<Platinum/>
+    },
     {
        path :"info",
        element:<Info/> 
