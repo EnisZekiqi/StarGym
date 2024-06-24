@@ -1249,6 +1249,11 @@ const toggleShoppingCart = ()=>{
   setArchive(false)
   setSaved(false)
   setNews(false)
+  if(setShopingCart === true){
+    setNotificationCart(false)
+  }else{
+    setNotificationCart(true)
+  }
 }
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } }; ///// checkboxes favourite and saved
@@ -1547,6 +1552,30 @@ const handleRemoveFriend = (friendToRemove) => {
 };
 
 
+/////// Saved Product into cart ///////////
+
+const [cartItem, setCartItem] = useState(null);
+const [notificationCart,setNotificationCart]=useState(false)
+
+useEffect(() => {
+  const cartItemFromStorage = JSON.parse(localStorage.getItem('cartItem'));
+  const cartItemFromCookies = JSON.parse(Cookies.get('cartItem') || '{}');
+
+  if (cartItemFromStorage) {
+    setCartItem(cartItemFromStorage);
+    setNotificationCart(true);
+  } else if (cartItemFromCookies) {
+    setCartItem(cartItemFromCookies);
+  }
+}, []);
+
+const handleClearCart = () => {
+  localStorage.removeItem('cartItem');
+  Cookies.remove('cartItem');
+  setCartItem(null);
+  setNotificationCart(false);
+};
+
   return(
    <div>
       <div className="flex">
@@ -1786,11 +1815,40 @@ const handleRemoveFriend = (friendToRemove) => {
       </Modal>
         </div>
         <div onClick={toggleShoppingCart} className="flex gap-2 cursor-pointer items-center mt-4" style={{ marginTop: shopingCart ? "15px" : "15px" }}>
+          <div>
+          {notificationCart && <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-emerald opacity-75"></span>}
           <ShoppingCartIcon />
+          </div>
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Cart</h3>
         </div>
         <div className={`news-content flex flex-col ${shopingCart ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
-          Nothing added yet
+        {cartItem ? (
+        <>
+          <div
+      className="flex gap-2 items-center p-4 cursor-pointer"
+        >
+       <Avatar sx={{width:'50px',height:'50px',marginTop:-3}} src={cartItem.image} alt={cartItem.name} />
+         <div className="flex flex-col items-center">
+         <div>
+         <p className="font-bold text-xl">{cartItem.name}</p>
+         <div className="font-normal text-md flex gap-4">
+         <p> {cartItem.flavor}</p>/
+         <p>{cartItem.weight}</p>
+         </div>
+         </div>
+         <p className="font-semibold text-center" >{cartItem.price}</p>
+          </div>
+      </div>
+      <button className="btnsign" onClick={handleClearCart}>Clear Cart</button>
+        </>
+      ) : (
+        <div className="flex items-center justify-center mt-4">
+          <div>
+            <img src={Task} width="200px" className="mt-2" alt="No items yet" />
+            <p className="text-center mt-2">No items in the cart yet</p>
+          </div>
+        </div>
+      )}
         </div>
        <div className="flex gap-2 cursor-pointer mt-4 items-center">
        <svg
