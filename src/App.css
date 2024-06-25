@@ -1273,6 +1273,13 @@ z-index: 998
   padding: 10px;
   color:#fafbf9
 }
+
+.btnThjesht2{
+  border-radius: 5px;
+  background-color: #FAFBF9;
+  padding: 10px;
+  color:#050604;
+}
 .btnsign{
   border-radius: 5px;
   border: 1px solid #131A0F;

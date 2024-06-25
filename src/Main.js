@@ -49,6 +49,8 @@ import avatar2 from './AvatarImages/images 12.jpg'
 import avatar3 from './AvatarImages/images 3.jpg'
 import avatar4 from './AvatarImages/images 5.jpg'
 import avatar5 from './AvatarImages/images8.jpg'
+import ShopCart from './images/Shopping.svg'
+import ClearIcon from '@mui/icons-material/Clear';
 import {
   FiEdit,
   FiChevronDown,
@@ -1816,7 +1818,7 @@ const handleClearCart = () => {
         </div>
         <div onClick={toggleShoppingCart} className="flex gap-2 cursor-pointer items-center mt-4" style={{ marginTop: shopingCart ? "15px" : "15px" }}>
           <div>
-          {notificationCart && <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-emerald opacity-75"></span>}
+          {notificationCart && <span class=" absolute inline-flex h-2 w-2 rounded-full bg-emerald opacity-100"></span>}
           <ShoppingCartIcon />
           </div>
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Cart</h3>
@@ -1844,7 +1846,7 @@ const handleClearCart = () => {
       ) : (
         <div className="flex items-center justify-center mt-4">
           <div>
-            <img src={Task} width="200px" className="mt-2" alt="No items yet" />
+            <img src={ShopCart} width="200px" className="mt-2" alt="No items yet" />
             <p className="text-center mt-2">No items in the cart yet</p>
           </div>
         </div>
@@ -2682,6 +2684,28 @@ const handleRemoveFriend = (friendToRemove) => {
   setMessageRemovingFriend(true)
 };
 
+const [cartItem, setCartItem] = useState(null);
+const [notificationCart,setNotificationCart]=useState(false)
+
+useEffect(() => {
+  const cartItemFromStorage = JSON.parse(localStorage.getItem('cartItem'));
+  const cartItemFromCookies = JSON.parse(Cookies.get('cartItem') || '{}');
+
+  if (cartItemFromStorage) {
+    setCartItem(cartItemFromStorage);
+    setNotificationCart(true);
+  } else if (cartItemFromCookies) {
+    setCartItem(cartItemFromCookies);
+  }
+}, []);
+
+const handleClearCart = () => {
+  localStorage.removeItem('cartItem');
+  Cookies.remove('cartItem');
+  setCartItem(null);
+  setNotificationCart(false);
+};
+
   return(
     <div className="relative min-h-screen">
       <div className="maincontentsmallscreen">
@@ -2873,27 +2897,38 @@ const handleRemoveFriend = (friendToRemove) => {
          >
        <div onClick={toggleAllOff}  className="handle mt-3 px-2 pb-2 w-12 rounded-2xl mb-2" style={{backgroundColor:"#525252"}}/>
        </div>
-        <motion.div variants={wrapperVariants} className="flex flex-col items-center gap-4 "
-         style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
+       {cartItem ? (
+        <>
+          <div
+      className="flex gap-2 items-center justify-between p-4 cursor-pointer"
+      style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
         >
-          <p className="font-light text-center text-sm mb-2 mt-2">Check news from our platform</p>
-          <motion.div variants={itemVariants} className={`flex pt-2 pl-2  pb-2 pr-2 ${bg} items-center rounded-xl gap-2`}>
-            <svg style={{ fill: darkMode ? "#FAFBF9" : "#050604" }} viewBox="0 0 24 24" fill="#FAFBF9" height="25px" width="35px">
-              <path d="M20 10c2 3-3 12-5 12s-2-1-3-1-1 1-3 1-7-9-5-12 5-3 7-2V5C5.38 8.07 4.11 3.78 4.11 3.78S6.77.19 11 5V3h2v5c2-1 5-1 7 2z" />
-            </svg>
-            <p style={{ color: darkMode ? "#FAFBF9" : "#050604" }} className="font-normal text-sm md:text-md text-start">New Healthy Diets added</p>
-          </motion.div>
-          <div className={`flex pt-2 pl-2 pr-2 pb-2 ${bg} items-center rounded-xl gap-2`}>
-            <svg style={{ fill: darkMode ? "#FAFBF9" : "#050604" }} viewBox="0 0 512 512" fill="#FAFBF9" height="25px" width="35px">
-              <path d="M480 448h-12a4 4 0 01-4-4V273.51a4 4 0 00-5.24-3.86 104.92 104.92 0 01-28.32 4.78c-1.18 0-2.3.05-3.4.05a108.22 108.22 0 01-52.85-13.64 8.23 8.23 0 00-8 0 108.18 108.18 0 01-52.84 13.64 106.11 106.11 0 01-52.46-13.79 8.21 8.21 0 00-8.09 0 108.14 108.14 0 01-53.16 13.8 106.19 106.19 0 01-52.77-14 8.25 8.25 0 00-8.16 0 106.19 106.19 0 01-52.77 14c-1.09 0-2.19 0-3.37-.05h-.06a104.91 104.91 0 01-29.28-5.09 4 4 0 00-5.23 3.8V444a4 4 0 01-4 4H32.5c-8.64 0-16.1 6.64-16.48 15.28A16 16 0 0032 480h447.5c8.64 0 16.1-6.64 16.48-15.28A16 16 0 00480 448zm-256-68a4 4 0 01-4 4h-88a4 4 0 01-4-4v-64a12 12 0 0112-12h72a12 12 0 0112 12zm156 68h-72a4 4 0 01-4-4V316a12 12 0 0112-12h56a12 12 0 0112 12v128a4 4 0 01-4 4zM492.57 170.28l-42.92-98.49C438.41 47.62 412.74 32 384.25 32H127.7c-28.49 0-54.16 15.62-65.4 39.79l-42.92 98.49c-9 19.41 2.89 39.34 2.9 39.35l.28.45c.49.78 1.36 2 1.89 2.78.05.06.09.13.14.2l5 6.05a7.45 7.45 0 00.6.65l5 4.83.42.36a69.65 69.65 0 009.39 6.78v.05a74 74 0 0036 10.67h2.47a76.08 76.08 0 0051.89-20.31l.33-.31a7.94 7.94 0 0110.89 0l.33.31a77.3 77.3 0 00104.46 0 8 8 0 0110.87 0 77.31 77.31 0 00104.21.23 7.88 7.88 0 0110.71 0 76.81 76.81 0 0052.31 20.08h2.49a71.35 71.35 0 0035-10.7c.95-.57 1.86-1.17 2.78-1.77A71.33 71.33 0 00488 212.17l1.74-2.63q.26-.4.48-.84c1.66-3.38 10.56-20.76 2.35-38.42z" />
-            </svg>
-            <p style={{ color: darkMode ? "#FAFBF9" : "#050604" }} className="font-normal text-sm md:text-md text-start">New Supplements</p>
+       <div className="flex items-center">
+       <Avatar sx={{width:'55px',height:'55px',marginTop:-3}} src={cartItem.image} alt={cartItem.name} />
+         <div className="flex flex-col items-center">
+         <div>
+         <p className="font-bold text-xl">{cartItem.name}</p>
+         <div className="font-normal text-md flex gap-4">
+         <p> {cartItem.flavor}</p>/
+         <p>{cartItem.weight}</p>
+         </div>
+         </div>
+         <p className="font-semibold text-center" >{cartItem.price}</p>
+       </div>
           </div>
-          <div className={`flex pt-2 pl-2 pr-2 pb-2 ${bg} items-center rounded-xl gap-2`}>
-            <FiInfo style={{ color: darkMode ? "#FAFBF9" : "#050604", width: '35px', height: '25px' }} />
-            <p style={{ color: darkMode ? "#FAFBF9" : "#050604" }} className="font-normal text-sm md:text-md">Information Edited</p>
+          <button className={` ${buttonSwitch} ml-2`}
+          style={{padding:'5px'}}
+          onClick={handleClearCart}><ClearIcon/></button>
+      </div>
+        </>
+      ) : (
+        <div className="flex items-center justify-center mt-4">
+          <div>
+            <img src={ShopCart} width="200px" className="mt-2" alt="No items yet" />
+            <p className="text-center mt-2">No items in the cart yet</p>
           </div>
-        </motion.div>
+        </div>
+      )}
       </div>
     
 

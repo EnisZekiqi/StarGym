@@ -8,8 +8,11 @@ import Cookies from 'js-cookie';
 import { Snackbar } from "@mui/material";
 import Alert from '@mui/material/Alert';
 import { useEffect } from "react";
+import NavbarGeneral from "./NavbarGeneral";
+import { useDarkMode } from "../DarkModeContext";
 const Masstech = () => {
 
+  const { darkMode } = useDarkMode()
 
     const MasstechInfo = [
        {
@@ -85,15 +88,22 @@ const Masstech = () => {
         setOpen(false)
       }
 
+      const btnBuy = darkMode ? "btnThjesht":"btnThjesht2"
+
     return ( 
-        <div className="">
+        <div className=""
+        style={{backgroundColor:darkMode ?"#FAFBF9":"#050604"}}
+        >
+          <NavbarGeneral/>
             {MasstechInfo.map ((masstech,index)=>(
-                <div className="flex justify-center items-center" key={index}>
-                <img className="ml-20" src={masstech.image} alt={masstech.name}  width="450px" height="450px"/>
-                <div className="flex flex-col gap-6 w-2/3">
-                <h1 className="text-lg md:text-3xl font-bold w-fit">{masstech.name}</h1>
-                <p className="text-lg font-medium w-fit">{masstech.description}</p>
-                <p className="text-md font-normal w-1/2">{masstech.info}</p>
+                <div className="flex flex-col md:flex-row justify-center items-center" key={index}
+                style={{color:darkMode ?"#050604":"#FAFBF9"}}
+                >
+                <img className="ml-0 md:ml-20 mt-0 md:-mt-24" src={masstech.image} alt={masstech.name}  width="450px" height="450px"/>
+                <div className="flex flex-col gap-6 w-full md:w-2/3 items-center md:items-stretch ">
+                <h1 className="text-xl md:text-3xl font-bold w-fit mt-8 text-center md:text-start">{masstech.name}</h1>
+                <p className="text-lg font-medium w-full md:w-fit text-center md:text-start px-4">{masstech.description}</p>
+                <p className="text-md font-normal w-full md:w-1/2 text-center md:text-start  px-4">{masstech.info}</p>
                 <p className="text-sm font-light">Choose a flavor</p>
                 <div className="flex gap-6 items-center">
             <Tooltip title="Vanilla">
@@ -125,7 +135,7 @@ const Masstech = () => {
                     <p> Flavor: {selectedFlavor}</p>
                     <p> Weight: {selectedWeight}</p>
                     <p className="text-xl font-semibold">Price: {price}</p>
-                    <button onClick={addCart} className="btnThjesht w-2/3">Add to Cart</button>
+                    <button onClick={addCart} className={` ${btnBuy} w-2/3 mb-32`}>Add to Cart</button>
                 </div>
                 <p></p>
                 <p></p>
