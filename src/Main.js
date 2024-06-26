@@ -2684,27 +2684,28 @@ const handleRemoveFriend = (friendToRemove) => {
   setMessageRemovingFriend(true)
 };
 
-const [cartItem, setCartItem] = useState(null);
-const [notificationCart,setNotificationCart]=useState(false)
+const [cartItems, setCartItems] = useState([]);
+const [notificationCart, setNotificationCart] = useState(false);
 
 useEffect(() => {
-  const cartItemFromStorage = JSON.parse(localStorage.getItem('cartItem'));
-  const cartItemFromCookies = JSON.parse(Cookies.get('cartItem') || '{}');
+  const cartItemsFromStorage = JSON.parse(localStorage.getItem('cartItems'));
+  const cartItemsFromCookies = JSON.parse(Cookies.get('cartItems') || '[]');
 
-  if (cartItemFromStorage) {
-    setCartItem(cartItemFromStorage);
-    setNotificationCart(true);
-  } else if (cartItemFromCookies) {
-    setCartItem(cartItemFromCookies);
+  if (cartItemsFromStorage) {
+    setCartItems(cartItemsFromStorage);
+    setNotificationCart(cartItemsFromStorage.length > 0);
+  } else if (cartItemsFromCookies) {
+    setCartItems(cartItemsFromCookies);
   }
 }, []);
 
-const handleClearCart = () => {
-  localStorage.removeItem('cartItem');
-  Cookies.remove('cartItem');
-  setCartItem(null);
-  setNotificationCart(false);
+const removeItem = (index) => {
+  const updatedCartItems = cartItems.filter((_, i) => i !== index);
+  setCartItems(updatedCartItems);
+  localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+  Cookies.set('cartItems', JSON.stringify(updatedCartItems), { expires: 365 });
 };
+
 
   return(
     <div className="relative min-h-screen">
@@ -2890,37 +2891,40 @@ const handleClearCart = () => {
       {/* Drawer Content */}
      
       <div  className={`drawer-content ${shopingCart ? 'show' : 'hide'} z-100`}
-      style={{backgroundColor:darkMode ? "#050604":"#FAFBF9",opacity: drawerOpacity}}
+      style={{backgroundColor:darkMode ? "#FAFBF9":"#050604",opacity: drawerOpacity}}
       >
          <div className="flex items-center justify-center"
          style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
          >
        <div onClick={toggleAllOff}  className="handle mt-3 px-2 pb-2 w-12 rounded-2xl mb-2" style={{backgroundColor:"#525252"}}/>
        </div>
-       {cartItem ? (
-        <>
-          <div
-      className="flex gap-2 items-center justify-between p-4 cursor-pointer"
-      style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}
-        >
-       <div className="flex items-center">
-       <Avatar sx={{width:'55px',height:'55px',marginTop:-3}} src={cartItem.image} alt={cartItem.name} />
-         <div className="flex flex-col items-center">
-         <div>
-         <p className="font-bold text-xl">{cartItem.name}</p>
-         <div className="font-normal text-md flex gap-4">
-         <p> {cartItem.flavor}</p>/
-         <p>{cartItem.weight}</p>
-         </div>
-         </div>
-         <p className="font-semibold text-center" >{cartItem.price}</p>
-       </div>
+       {cartItems.length > 0 ? (
+        cartItems.map((item, index) => (
+          <div key={index} className="flex gap-2 items-center justify-between p-4 cursor-pointer"
+               style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}>
+            <div className="flex items-center justify-between">
+              <div className="flex">
+              <Avatar sx={{width:'55px',height:'55px',marginTop:0}} src={item.image} alt={item.name} />
+              <div className="flex flex-col items-center">
+                <div>
+                  <p className="font-bold text-xl">{item.name}</p>
+                  <div className="font-normal text-md flex gap-4">
+                    <p>{item.flavor}</p>/
+                    <p>{item.weight}</p>
+                  </div>
+                </div>
+                <p className="font-semibold text-center">{item.price}</p>
+              </div>
+              </div>
+            </div>
+            <button
+                    onClick={() => removeItem(index)}
+                    className="bg-red-500 text-white px-4 py-2 rounded"
+                  >
+                    Remove
+                  </button>
           </div>
-          <button className={` ${buttonSwitch} ml-2`}
-          style={{padding:'5px'}}
-          onClick={handleClearCart}><ClearIcon/></button>
-      </div>
-        </>
+        ))
       ) : (
         <div className="flex items-center justify-center mt-4">
           <div>

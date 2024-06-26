@@ -32,11 +32,12 @@ const Masstech = () => {
     const [notificationCart, setNotificationCart] = useState(false);
 
     useEffect(() => {
-        const cartItem = JSON.parse(localStorage.getItem('cartItem'));
-        if (cartItem) {
-          setNotificationCart(true);
-        }
-      }, []);
+      const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+      if (cartItems.length > 0) {
+        setNotificationCart(true);
+      }
+    }, []);
+  
     
 
     const handleFlavorSelect = (flavor) => {
@@ -63,23 +64,26 @@ const Masstech = () => {
 
 
 
-      const addCart =()=>{
-        const cartItem = {
-            name: MasstechInfo[0].name,
-            flavor: selectedFlavor,
-            weight: selectedWeight,
-            price: price,
-            image: MasstechInfo[0].image,
-          };
-          localStorage.setItem('cartItem', JSON.stringify(cartItem));
-          Cookies.set('cartItem', JSON.stringify(cartItem), { expires: 365 });
-          setAddedCartMessage(true)
-          setOpen(true)
-          setTimeout(() => {
-            setAddedCartMessage(false)
-          }, 3000);
+      const addCart = () => {
+        const newCartItem = {
+          name: MasstechInfo[0].name,
+          flavor: selectedFlavor,
+          weight: selectedWeight,
+          price: price,
+          image: MasstechInfo[0].image,
+        };
+      
+        const existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        const updatedCartItems = [...existingCartItems, newCartItem];
+      
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        Cookies.set('cartItems', JSON.stringify(updatedCartItems), { expires: 365 });
+        setAddedCartMessage(true);
+        setOpen(true);
+        setTimeout(() => {
+          setAddedCartMessage(false);
+        }, 3000);
       }
-
 
       const [open,setOpen]=useState(false)
       const [addedCartMessage,setAddedCartMessage]=useState(false)
