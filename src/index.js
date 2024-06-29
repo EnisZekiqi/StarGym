@@ -18,6 +18,8 @@ import Masstech from '../src/MainPage/Masstech'
 import VaportX from './MainPage/VaportX';
 import Celltech from './MainPage/Celltech';
 import Platinum from './MainPage/Platinum';
+import Supplement from './MainPage/Supplements';
+import { SupplementProvider } from './useSupplementContext ';
 
  const router = createBrowserRouter([
    {
@@ -54,6 +56,10 @@ import Platinum from './MainPage/Platinum';
       element:<Platinum/>
     },
     {
+    path:"supplement",
+    element:<Supplement/>
+    },
+    {
        path :"info",
        element:<Info/> 
     }
@@ -62,6 +68,7 @@ import Platinum from './MainPage/Platinum';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+     <SupplementProvider>
      <SuccessMessageProvider>
      <AvatarImageProvider>
       <DarkModeProvider>
@@ -69,6 +76,7 @@ root.render(
       </DarkModeProvider>
      </AvatarImageProvider>
      </SuccessMessageProvider>
+     </SupplementProvider>
   </React.StrictMode>
 );
 

@@ -110,8 +110,8 @@ const Celltech = () => {
                 <img className="ml-0 md:ml-20 mt-0 md:-mt-24" src={cell.image} alt={cell.name}  width="450px" height="450px"/>
                 <div className="flex flex-col gap-6 w-full md:w-2/3 items-center md:items-stretch ">
                 <h1 className="text-xl md:text-3xl font-bold w-fit mt-8 text-center md:text-start">{cell.name}</h1>
-                <p className="text-lg font-medium w-full md:w-fit text-center md:text-start px-4">{cell.description}</p>
-                <p className="text-md font-normal w-full md:w-1/2 text-center md:text-start  px-4">{cell.info}</p>
+                <p className="text-lg font-medium w-full md:w-fit text-center md:text-start px-4 md:px-0">{cell.description}</p>
+                <p className="text-md font-normal w-full md:w-1/2 text-center md:text-start  px-4 md:px-0">{cell.info}</p>
                 <p className="text-sm font-light">Choose a flavor</p>
                 <div className="flex gap-6 items-center">
             <Tooltip title="Chocolate">

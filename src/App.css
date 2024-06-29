@@ -1273,7 +1273,18 @@ z-index: 998
   padding: 10px;
   color:#fafbf9
 }
+.hoverEffect {
+  font-weight: normal;
+  transition: all 0.1s linear;
+}
 
+.hoverEffect:hover {
+  font-weight: 600;
+}
+.shipping{
+  background-color: rgba(82, 82, 82,0.3);
+
+}
 .btnThjesht2{
   border-radius: 5px;
   background-color: #FAFBF9;

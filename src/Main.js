@@ -379,7 +379,7 @@ const ThreeMenu = ()=>{
           onClick={() => setOpen3(false)}
           className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
         >
-          <span>Suplements</span>
+          <a href="/supplement">Suplements</a>
         </motion.li>
     </motion.ul>
   </motion.div>
@@ -1556,26 +1556,28 @@ const handleRemoveFriend = (friendToRemove) => {
 
 /////// Saved Product into cart ///////////
 
-const [cartItem, setCartItem] = useState(null);
-const [notificationCart,setNotificationCart]=useState(false)
+const [cartItems, setCartItems] = useState([]);
+const [notificationCart, setNotificationCart] = useState(false);
 
 useEffect(() => {
-  const cartItemFromStorage = JSON.parse(localStorage.getItem('cartItem'));
-  const cartItemFromCookies = JSON.parse(Cookies.get('cartItem') || '{}');
+  const cartItemsFromStorage = JSON.parse(localStorage.getItem('cartItems'));
+  const cartItemsFromCookies = JSON.parse(Cookies.get('cartItems') || '[]');
 
-  if (cartItemFromStorage) {
-    setCartItem(cartItemFromStorage);
-    setNotificationCart(true);
-  } else if (cartItemFromCookies) {
-    setCartItem(cartItemFromCookies);
+  if (cartItemsFromStorage) {
+    setCartItems(cartItemsFromStorage);
+    setNotificationCart(cartItemsFromStorage.length > 0);
+  } else if (cartItemsFromCookies) {
+    setCartItems(cartItemsFromCookies);
   }
 }, []);
 
-const handleClearCart = () => {
-  localStorage.removeItem('cartItem');
-  Cookies.remove('cartItem');
-  setCartItem(null);
-  setNotificationCart(false);
+
+
+const removeItem = (index) => {
+  const updatedCartItems = cartItems.filter((_, i) => i !== index);
+  setCartItems(updatedCartItems);
+  localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+  Cookies.set('cartItems', JSON.stringify(updatedCartItems), { expires: 365 });
 };
 
   return(
@@ -1584,9 +1586,9 @@ const handleClearCart = () => {
       <div className="fixed w-1/4 h-full mt-16 container mx-auto px-4 "
       style={{zIndex:200}}
       >
-        <div onClick={toggleNews} className="showNews flex gap-2 items-center mt-20  -mb-4 cursor-pointer">
+        <div onClick={toggleNews} className="showNews flex gap-2 items-center mt-20  -mb-4 cursor-pointer w-2/4">
           <FeedIcon />
-          <h3 className="font-medium text-sm mt-4 text-center md:text-start mb-5 w-1/2">News Feed</h3>
+          <h3 className="font-medium text-sm mt-4 text-center md:text-start mb-5 w-2/3">News Feed</h3>
         </div>
         <div className={`news-content ${news ? 'show' : 'hide'} gap-4`}>
           <motion.div
@@ -1629,7 +1631,7 @@ const handleClearCart = () => {
             </div>
           </a>
         </div>
-        <div onClick={toggleShowingNotes} className="flex gap-2 cursor-pointer items-center" style={{ marginTop: news ? "15px" : "15px" }}>
+        <div onClick={toggleShowingNotes} className="flex gap-2 cursor-pointer items-center w-1/4" style={{ marginTop: news ? "15px" : "15px" }}>
           <NewspaperIcon />
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Notes</h3>
         </div>
@@ -1667,7 +1669,7 @@ const handleClearCart = () => {
             </>
           )}
         </div>
-        <div onClick={toggleArchive} className="flex gap-2 cursor-pointer items-center mt-4">
+        <div onClick={toggleArchive} className="flex gap-2 cursor-pointer items-center mt-4 w-1/4">
           <PeopleIcon />
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Friends</h3>
         </div>
@@ -1693,7 +1695,7 @@ const handleClearCart = () => {
          </div>
         )}
         </div>
-        <div onClick={toggleSaved} className="flex gap-2 cursor-pointer items-center mt-4">
+        <div onClick={toggleSaved} className="flex gap-2 cursor-pointer items-center mt-4 w-1/4">
           <BookmarkIcon />
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Saved</h3>
         </div>
@@ -1816,33 +1818,41 @@ const handleClearCart = () => {
         </div>
       </Modal>
         </div>
-        <div onClick={toggleShoppingCart} className="flex gap-2 cursor-pointer items-center mt-4" style={{ marginTop: shopingCart ? "15px" : "15px" }}>
+        <div onClick={toggleShoppingCart} className="flex gap-2 cursor-pointer items-center mt-4 w-1/4" style={{ marginTop: shopingCart ? "15px" : "15px" }}>
           <div>
           {notificationCart && <span class=" absolute inline-flex h-2 w-2 rounded-full bg-emerald opacity-100"></span>}
           <ShoppingCartIcon />
           </div>
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Cart</h3>
         </div>
-        <div className={`news-content flex flex-col ${shopingCart ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
-        {cartItem ? (
-        <>
-          <div
-      className="flex gap-2 items-center p-4 cursor-pointer"
-        >
-       <Avatar sx={{width:'50px',height:'50px',marginTop:-3}} src={cartItem.image} alt={cartItem.name} />
-         <div className="flex flex-col items-center">
-         <div>
-         <p className="font-bold text-xl">{cartItem.name}</p>
-         <div className="font-normal text-md flex gap-4">
-         <p> {cartItem.flavor}</p>/
-         <p>{cartItem.weight}</p>
-         </div>
-         </div>
-         <p className="font-semibold text-center" >{cartItem.price}</p>
+        <div className={`news-content flex flex-col ${shopingCart ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4 w-fit`}>
+        {cartItems.length > 0 ? (
+        cartItems.map((item, index) => (
+          <div key={index} className="flex gap-2 items-center justify-between p-4 cursor-pointer"
+               style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}>
+            <div className="flex items-center justify-between">
+              <div className="flex">
+              <Avatar sx={{width:'55px',height:'55px',marginTop:0}} src={item.image} alt={item.name} />
+              <div className="flex flex-col items-center">
+                <div>
+                  <p className="font-bold text-xl">{item.name}</p>
+                  <div className="font-normal text-md flex gap-4">
+                    <p>{item.flavor}</p>/
+                    <p>{item.weight}</p>
+                  </div>
+                </div>
+                <p className="font-semibold text-center">{item.price}</p>
+              </div>
+              </div>
+            </div>
+            <button
+                    onClick={() => removeItem(index)}
+                    className="bg-red-500 text-white px-4 py-2 rounded"
+                  >
+                    Remove
+                  </button>
           </div>
-      </div>
-      <button className="btnsign" onClick={handleClearCart}>Clear Cart</button>
-        </>
+        ))
       ) : (
         <div className="flex items-center justify-center mt-4">
           <div>
@@ -1852,7 +1862,7 @@ const handleClearCart = () => {
         </div>
       )}
         </div>
-       <div className="flex gap-2 cursor-pointer mt-4 items-center">
+       <div className="flex gap-2 cursor-pointer mt-4 items-center w-1/4">
        <svg
             style={{fill : darkMode ? "#050604":"#FAFBF9"}}
             viewBox="0 0 24 24"
@@ -1863,9 +1873,9 @@ const handleClearCart = () => {
             >
             <path d="M20 10c2 3-3 12-5 12s-2-1-3-1-1 1-3 1-7-9-5-12 5-3 7-2V5C5.38 8.07 4.11 3.78 4.11 3.78S6.77.19 11 5V3h2v5c2-1 5-1 7 2z" />
             </svg>
-       <a href="#about"> <p className="font-medium text-sm mt-2">Diets</p></a>
+       <a href="#about"> <p className="font-medium text-sm mt-2 ">Diets</p></a>
        </div>
-       <div className="flex gap-2 mt-4 cursor-pointer items-center">
+       <div className="flex gap-2 mt-4 cursor-pointer items-center w-2/4">
        <svg
          style={{fill : darkMode ? "#050604":"#FAFBF9"}}
          viewBox="0 0 24 24"
@@ -1878,7 +1888,7 @@ const handleClearCart = () => {
                 </svg>
                 <a href="#about"> <p className="font-medium text-sm mt-2">Planprogram</p></a>
        </div>
-       <div className="flex mt-4 cursor-pointer items-center gap-2">
+       <div className="flex mt-4 cursor-pointer items-center gap-2 w-2/4">
                 <svg
             style={{fill : darkMode ? "#050604":"#FAFBF9"}}
             viewBox="0 0 512 512"
@@ -1889,7 +1899,7 @@ const handleClearCart = () => {
             >
             <path d="M480 448h-12a4 4 0 01-4-4V273.51a4 4 0 00-5.24-3.86 104.92 104.92 0 01-28.32 4.78c-1.18 0-2.3.05-3.4.05a108.22 108.22 0 01-52.85-13.64 8.23 8.23 0 00-8 0 108.18 108.18 0 01-52.84 13.64 106.11 106.11 0 01-52.46-13.79 8.21 8.21 0 00-8.09 0 108.14 108.14 0 01-53.16 13.8 106.19 106.19 0 01-52.77-14 8.25 8.25 0 00-8.16 0 106.19 106.19 0 01-52.77 14c-1.09 0-2.19 0-3.37-.05h-.06a104.91 104.91 0 01-29.28-5.09 4 4 0 00-5.23 3.8V444a4 4 0 01-4 4H32.5c-8.64 0-16.1 6.64-16.48 15.28A16 16 0 0032 480h447.5c8.64 0 16.1-6.64 16.48-15.28A16 16 0 00480 448zm-256-68a4 4 0 01-4 4h-88a4 4 0 01-4-4v-64a12 12 0 0112-12h72a12 12 0 0112 12zm156 68h-72a4 4 0 01-4-4V316a12 12 0 0112-12h56a12 12 0 0112 12v128a4 4 0 01-4 4zM492.57 170.28l-42.92-98.49C438.41 47.62 412.74 32 384.25 32H127.7c-28.49 0-54.16 15.62-65.4 39.79l-42.92 98.49c-9 19.41 2.89 39.34 2.9 39.35l.28.45c.49.78 1.36 2 1.89 2.78.05.06.09.13.14.2l5 6.05a7.45 7.45 0 00.6.65l5 4.83.42.36a69.65 69.65 0 009.39 6.78v.05a74 74 0 0036 10.67h2.47a76.08 76.08 0 0051.89-20.31l.33-.31a7.94 7.94 0 0110.89 0l.33.31a77.3 77.3 0 00104.46 0 8 8 0 0110.87 0 77.31 77.31 0 00104.21.23 7.88 7.88 0 0110.71 0 76.81 76.81 0 0052.31 20.08h2.49a71.35 71.35 0 0035-10.7c.95-.57 1.86-1.17 2.78-1.77A71.33 71.33 0 00488 212.17l1.74-2.63q.26-.4.48-.84c1.66-3.38 10.56-20.76 2.35-38.42z" />
             </svg>
-            <a href="#about"> <p className="font-medium text-sm mt-2">Suplements</p></a>
+            <a href="/supplement"> <p className="font-medium text-sm mt-2 ">Suplements</p></a>
                 </div>
       </div>
       <div className="empty"></div>
