@@ -17,7 +17,7 @@ export const SupplementProvider = ({ children }) => {
     const [weightloss, setWeightloss] = useState(false);
 
     const toggleAmino = () => {
-        setAmino(!amino);
+        setAmino(true);
         setWeight(false)
         setPrework(false)
         setVitamins(false)
@@ -27,7 +27,7 @@ export const SupplementProvider = ({ children }) => {
     };
 
     const toggleWeight = () => {
-        setWeight(!weight);
+        setWeight(true);
         setAmino(false)
         setPrework(false)
         setVitamins(false)
@@ -37,7 +37,7 @@ export const SupplementProvider = ({ children }) => {
     };
 
     const togglePrework = () => {
-        setPrework(!prework);
+        setPrework(true);
         setAmino(false)
         setWeight(false)
         setVitamins(false)
@@ -47,7 +47,7 @@ export const SupplementProvider = ({ children }) => {
     };
 
     const toggleVitamins = () => {
-        setVitamins(!vitamins);
+        setVitamins(true);
         setAmino(false)
         setWeight(false)
         setCreatine(false)
@@ -57,7 +57,7 @@ export const SupplementProvider = ({ children }) => {
     };
 
     const toggleCreatine = () => {
-        setCreatine(!creatine);
+        setCreatine(true);
         setAmino(false)
         setWeight(false)
         setVitamins(false)
@@ -67,7 +67,7 @@ export const SupplementProvider = ({ children }) => {
     };
 
     const toggleProtein = () => {
-        setProtein(!protein);
+        setProtein(true);
         setAmino(false)
         setWeight(false)
         setWeightloss(false)
@@ -77,7 +77,7 @@ export const SupplementProvider = ({ children }) => {
     };
 
     const toggleWeightLoss = () => {
-        setWeightloss(!weightloss);
+        setWeightloss(true);
         setAmino(false)
         setWeight(false)
         setPrework(false)

@@ -1507,11 +1507,6 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
                 >
                   Pre-Workout
                 </a>
-                <a href="#" className="block text-sm text-neutral-400 hoverEffect"
-                  onClick={toggleVitamins}
-                >
-                  Vitamins & Minerals
-                </a>
               </div>
               <div>
                 <h3 className="mb-1 text-sm hoverEffect cursor-pointer"
