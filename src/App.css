@@ -1287,6 +1287,12 @@ z-index: 998
   padding: 10px;
   color:#fafbf9
 }
+.btnnorway{
+  border-radius: 5px;
+  background-color: rgba(5, 6, 4,0.7);
+  padding: 10px;
+  color:#fafbf9
+}
 .hoverEffect {
   font-weight: normal;
   transition: all 0.1s linear;
@@ -1314,6 +1320,12 @@ z-index: 998
 .btnThjesht2{
   border-radius: 5px;
   background-color: #FAFBF9;
+  padding: 10px;
+  color:#050604;
+}
+.btnnorway2{
+  border-radius: 5px;
+  background-color: rgba(250, 251, 249,0.7);
   padding: 10px;
   color:#050604;
 }

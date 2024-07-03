@@ -1489,7 +1489,7 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
 
         return (
           <div>
-            <div className="flex gap-4 justify-between">
+            <div className="flex gap-4 justify-around">
               <div>
                 <h3
                   className="mb-1 text-sm hoverEffect cursor-pointer"
