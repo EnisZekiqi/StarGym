@@ -28,7 +28,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import seriousmass from '../SupplementImages/seriousmass.png'
 import masstechh from '../images/masstech.webp'
 import massgainer from '../SupplementImages/mass-gainer-min.png'
-import extremi from '../SupplementImages/extremi.jpeg'
+import extremi from '../SupplementImages/extremi-removebg-preview.png'
 import vaport from '../images/vaportixx.webp'
 import goldpre from '../SupplementImages/goldpre.png'
 import vaportinext from '../SupplementImages/vaportinext.png'
@@ -399,7 +399,9 @@ useEffect(() => {
                     <p className="mt-3 font-bold text-start w-full px-3 text-lg sm:text-xl">{item.name}</p>
                     <p className="px-3 mt-2 font-normal text-start">{item.description}</p>
                     <p className="text-start w-full px-3 mt-2 font-semibold text-md sm:text-xl">{item.price}</p>
-                    <button className={` ${btnBuy} w-full px-28` } onClick={() => handleButtonClick(item)}>
+                    <button className={` ${btnBuy} w-full px-28` }
+                    style={{color:darkMode ? "#050604 ":"#FAFBF9"}}
+                    onClick={() => handleButtonClick(item)}>
                       More Details
                     </button>
                   </div>

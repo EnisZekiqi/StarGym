@@ -797,7 +797,6 @@ const Option = ({ text, Icon, setOpen }) => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '53%',
     color:darkMode ? "#050604":"FAFBF9" ,
     backgroundColor:'#FAFBF9' ,
     boxShadow: 24,
@@ -831,47 +830,63 @@ const Option = ({ text, Icon, setOpen }) => {
       setModalProfileOpen(false);
     };
   
-    const handleAddFriend = () => {
-      if (selectedFriend) {
-        console.log(`Adding ${selectedFriend.name} as a friend`);
-  
-        // Retrieve existing friends from cookies
-        const friendsCookie = document.cookie.split('; ').find(row => row.startsWith('friends='));
-        const friends = friendsCookie ? JSON.parse(decodeURIComponent(friendsCookie.split('=')[1])) : [];
-  
-        // Check if the friend is already added
-        const isFriendAlreadyAdded = friends.some(friend => friend.name === selectedFriend.name);
-  
-        if (isFriendAlreadyAdded) {
-          setMessageAlreadyFriend(true);
-        } else {
-          // Add new friend to the list
-          friends.push(selectedFriend);
-  
-          // Save updated friends list to cookies
-          document.cookie = `friends=${encodeURIComponent(JSON.stringify(friends))}; max-age=${365 * 24 * 60 * 60};`;
-  
-          // Update local state
-          setFriends(friends);
-          setMessageAddingFriend(true);
-
-
-
-
-
-        }
+    const handleToggleFriend = (supplement) => {
+      const storedFriends = JSON.parse(localStorage.getItem('friends')) || [];
+      let updatedFriends;
+    
+      if (storedFriends.find(friend => friend.name === supplement.name)) {
+        // Remove friend
+        updatedFriends = storedFriends.filter(friend => friend.name !== supplement.name);
+        setMessageRemovingFriend(supplement.name);
+        setTimeout(() => setMessageRemovingFriend(''), 2000);
+      } else {
+        // Add friend
+        updatedFriends = [...storedFriends, { 
+          name: supplement.name, 
+          image: supplement.image, 
+          information: supplement.information 
+        }];
       }
+    
+      // Update state and storage
+      setFriends(updatedFriends);
+      localStorage.setItem('friends', JSON.stringify(updatedFriends));
+      Cookies.set('friends', JSON.stringify(updatedFriends), { expires: 365 });
     };
-  
-    const [friends, setFriends] = useState([]);
-  
-    useEffect(() => {
-      // Retrieve friends from cookies when component mounts
+
+      const handleAddFriend = () => {
+    if (selectedFriend) {
+      console.log(`Adding ${selectedFriend.name} as a friend`);
+
+      // Retrieve existing friends from cookies
       const friendsCookie = document.cookie.split('; ').find(row => row.startsWith('friends='));
-      if (friendsCookie) {
-        const savedFriends = JSON.parse(decodeURIComponent(friendsCookie.split('=')[1]));
-        setFriends(savedFriends);
+      const friends = friendsCookie ? JSON.parse(decodeURIComponent(friendsCookie.split('=')[1])) : [];
+
+      // Check if the friend is already added
+      const isFriendAlreadyAdded = friends.some(friend => friend.name === selectedFriend.name);
+
+      if (isFriendAlreadyAdded) {
+        setMessageAlreadyFriend(true);
+      } else {
+        // Add new friend to the list
+        friends.push(selectedFriend);
+
+        // Save updated friends list to cookies
+        document.cookie = `friends=${encodeURIComponent(JSON.stringify(friends))}; max-age=${365 * 24 * 60 * 60};`;
+
+        // Update local state
+        setFriends(friends);
+        setMessageAddingFriend(true);
       }
+    }
+  };
+  
+  const btnBuy = darkMode ? "btnnorway":"btnnorway2"
+  const [friends, setFriends] = useState([]);
+
+    useEffect(() => {
+      const storedFriends = JSON.parse(localStorage.getItem('friends')) || [];
+      setFriends(storedFriends);
     }, []);
   
   
@@ -935,36 +950,38 @@ const Option = ({ text, Icon, setOpen }) => {
         />
       )}
   
-          <div className={`fixed bottom-0 left-0 w-full p-4  ${bg}}`}
-          style={{backgroundColor:darkMode ? "#FAFBF9":"#050604",zIndex:200}}
-          >
-            
-        <div className="flex justify-around items-center ">
-          {/* News Feed  Not in the smaller Screen !!*/}
-         
-  
-          {/* Notes */}
-          <div onClick={toggleShowingNotes} className="flex flex-col items-center cursor-pointer">
-            <NewspaperIcon />
-            <h3 className="font-normal text-xs sm:text-sm mt-2">Notes</h3>
-          </div>
-  
-          {/* Archive */}
-          <div onClick={toggleArchive} className="flex flex-col items-center cursor-pointer">
-          <PeopleIcon/>
-            <h3 className="font-normal text-xs sm:text-sm mt-2">Friends</h3>
-          </div>
-  
-          {/* Saved */}
-          <div onClick={toggleSaved} className="flex flex-col items-center cursor-pointer">
-            <BookmarkIcon/>
-            <h3 className="font-normal text-xs sm:text-sm mt-2">Saved</h3>
-          </div>
-          <div onClick={toggleShoppingCart} className="flex flex-col items-center cursor-pointer">
-            <ShoppingCartIcon />
-            <h3 className="font-normal text-xs sm:text-sm mt-2">Cart</h3>
-          </div>
+  <div className={`fixed bottom-0 left-0 w-full pb-4 pr-4 pl-4 pt-0  ${bg}}`}
+        style={{backgroundColor:darkMode ? "#FAFBF9":"#050604",zIndex:200}}
+        >
+          
+      <div className="flex justify-around items-center pt-3"
+      style={{ borderTop: '0.2px solid rgba(82, 82, 82,0.3)',}}
+      >
+        {/* News Feed  Not in the smaller Screen !!*/}
+       
+
+        {/* Notes */}
+        <div onClick={toggleShowingNotes} className="flex flex-col items-center cursor-pointer">
+          <NewspaperIcon />
+          <h3 className="font-normal text-xs sm:text-sm mt-1">Notes</h3>
         </div>
+
+        {/* Archive */}
+        <div onClick={toggleArchive} className="flex flex-col items-center cursor-pointer">
+        <PeopleIcon/>
+          <h3 className="font-normal text-xs sm:text-sm mt-1">Friends</h3>
+        </div>
+
+        {/* Saved */}
+        <div onClick={toggleSaved} className="flex flex-col items-center cursor-pointer">
+          <BookmarkIcon/>
+          <h3 className="font-normal text-xs sm:text-sm mt-1">Saved</h3>
+        </div>
+        <div onClick={toggleShoppingCart} className="flex flex-col items-center cursor-pointer">
+          <ShoppingCartIcon />
+          <h3 className="font-normal text-xs sm:text-sm mt-1">Cart</h3>
+        </div>
+      </div>
   
         {/* Drawer Content */}
        
@@ -1064,33 +1081,31 @@ const Option = ({ text, Icon, setOpen }) => {
          <div onClick={toggleAllOff}  className=" mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
          </div>
          {friends.length > 0 ? (
-            friends.map((friend, index) => (
-             <div className="flex justify-between mt-4">
-               <div
-                onClick={() => openFriendProfileHandler(friend)}
-                key={index}
-                className="flex gap-2 items-center p-4 cursor-pointer"
-              >
-                <Avatar sx={{width:"55px",height:"55px"}} alt={friend.name} src={friend.image} />
-                <div>
-                  <p className="font-bold text-xl">{friend.name}</p>
-                  <p className="font-normal text-md">{friend.information}</p>
-                </div>
-              </div>
-              <button 
-              className={` ${buttonSwitch} ml-2`}
-              style={{padding:'0px 5px 0px 5px'}}
-              onClick={() => handleRemoveFriend(friend)}>
-                <ClearIcon/>
-                </button>
-             </div>
-            ))
-          ) : (
-           <div className="flex flex-col items-center justify-center">
-              <img src={Nofriends} width="200px" className="mt-2" alt="" />
-            <p className="text-center mt-2">No friends added yet</p>
-           </div>
-          )}
+  friends.map((friend, index) => (
+    <div className="flex items-center justify-between mt-4" key={index}>
+      <div
+        onClick={() => openFriendProfileHandler(friend)}
+        className="flex gap-2 items-center p-4 cursor-pointer"
+      >
+        <Avatar sx={{width:"55px",height:"55px"}} alt={friend.name} src={friend.image} />
+        <div>
+          <p className="font-bold text-lg md:text-xl">{friend.name}</p>
+          <p className="font-normal text-xs md:text-md">{friend.information}</p>
+        </div>
+      </div>
+      <button className={`${buttonSwitch} text-xs md:text-md mr-2`}
+      style={{padding:'8px',height:'fit-content'}}
+      onClick={() => handleToggleFriend(friend)}>
+        {messageRemovingFriend === friend.name ? "Friend Removed" : "Remove Friend"}
+      </button>
+    </div>
+  ))
+) : (
+  <div className="flex flex-col items-center justify-center">
+    <img src={Nofriends} width="200px" className="mt-2" alt="" />
+    <p className="text-center mt-2">No friends added yet</p>
+  </div>
+)}
         </div>
   
         {/* Saved Drawer */}
@@ -1099,47 +1114,57 @@ const Option = ({ text, Icon, setOpen }) => {
       <div onClick={toggleAllOff} className="mt-3 px-2 pb-2 w-12 rounded-2xl" style={{backgroundColor: "#525252"}} />
     </div>
     {savedSupplements.length === 0 ? (
-      <div className="flex items-center justify-center mt-4">
-        <div>
-          <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
-          <p className="text-center mt-2">Nothing saved yet</p>
-        </div>
+    <div className="flex flex-col items-center justify-center mt-4">
+      <div>
+        <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
+        <p className="text-center mt-2">Nothing saved yet</p>
       </div>
-    ) : (
-      <>
-        <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
-        <div className="saved-items-container flex items-center justify-start gap-4 mt-12 overflow-x-auto whitespace-nowrap">
-          {savedSupplements.map((supplement, index) => (
-            <div
-              key={index}
-              className={`flex flex-col h-36 items-center justify-center my-2 mt-4 ${
-                selectedSupplement && selectedSupplement.name === supplement.name
-                  ? darkMode ? 'highlighted-dark' : 'highlighted-light'
-                  : ''
-              }`}
-            >
-              <div className="items-center flex flex-col"
-               onClick={() => {
-                if (supplement.type === 'supplement') {
-                  openModalSupp(supplement);
-                } else {
+    </div>
+  ) : (
+    <>
+      <div className="saved-items-container flex flex-col  justify-start gap-4  ">
+            {savedSupplements.map((supplement, index) => (
+        <div
+          key={index}
+          className={`flex h-36 items-center justify-between my-2 mt-4 ${
+            selectedSupplement && selectedSupplement.name === supplement.name
+              ? darkMode ? 'highlighted-dark' : 'highlighted-light'
+              : ''
+          }`}
+        >
+          <div className="items-center flex "
+            onClick={() => {
+              if (supplement.type === 'supplement') {
+                openModalSupp(supplement);
+              } else {
                 openModal(supplement, index);
-                }
-                }}
-              >
-                <img
-                  src={supplement.image}
-                  alt={supplement.name}
-                  className="w-16 h-16 mr-2 rounded-full cursor-pointer"
-                  onClick={() => setSelectedSupplement(supplement)}
-                />
-                  <span className="text-center text-sm ">{supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}'s advice` }</span>
-              </div>
+              }
+            }}
+          >
+            <Avatar sx={{width:"55px",height:"55px"}}
+              src={supplement.image}
+              alt={supplement.name}
+              className="w-16 h-16 mr-2 rounded-full cursor-pointer"
+              onClick={() => setSelectedSupplement(supplement)}
+            />
+            <div className="flex flex-col items-start">
+            <span className="text-start font-bold text-lg md:text-xl cursor-pointer">
+              {supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}`}
+            </span>
+              <span className="font-normal text-xs md:text-md">Check out {supplement.name}'s advice</span>
             </div>
-          ))}
+          </div>
+          <button
+            onClick={() => handleToggleFriend(supplement)}
+            className={`${buttonSwitch} p-2 text-xs md:text-md mr-2`}
+          >
+            {friends.find(friend => friend.name === supplement.name) ? 'Remove Friend' : 'Add Friend'}
+          </button>
         </div>
-      </>
-    )}
+      ))}
+      </div>
+    </>
+  )}
   </div>
         <Modal
           open={modalOpen}
