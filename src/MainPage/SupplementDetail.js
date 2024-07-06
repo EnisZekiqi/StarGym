@@ -7,6 +7,8 @@ import { GiStrawberry } from "react-icons/gi";
 import Cookies from 'js-cookie';
 import { Snackbar } from "@mui/material";
 import Alert from '@mui/material/Alert';
+import { GiLemon } from "react-icons/gi";
+import { GiOrangeSlice } from "react-icons/gi";
 const SupplementDetail = ({ supplement,handleBackToList }) => {
 
     const { darkMode } = useDarkMode()
@@ -73,6 +75,7 @@ const SupplementDetail = ({ supplement,handleBackToList }) => {
        <img className="ml-0 md:ml-28 mt-0 md:-mt-20" src={supplement.images} alt={supplement.name} width="250px" height="450px" />
         <div className="flex flex-col gap-6 w-full md:w-2/3 items-center md:items-start ml-0 md:ml-28 ">
         <h2 className="text-xl md:text-3xl font-bold w-fit mt-8 text-center md:text-start">{supplement.name}</h2>
+        <p className="text-lg font-medium w-full md:w-fit text-center md:text-start px-4 md:px-0">{supplement.ingrediants}</p>
         <p> {supplement.description}</p>
         <p className="text-sm font-light">Choose a flavor:</p>
       <div>
@@ -81,6 +84,8 @@ const SupplementDetail = ({ supplement,handleBackToList }) => {
             {flavor === 'Vanilla' && <GiVanillaFlower style={{ scale: '1.5',marginRight:25 }} />}
             {flavor === 'Chocolate' && <GiCookie style={{ scale: '1.5',marginRight:25 }}/>}
             {flavor === 'Strawberry' && <GiStrawberry style={{ scale: '1.5' }} />}
+            {flavor === 'Lemon' && <GiLemon style={{ scale: '1.5' }} />}
+            {flavor === 'Orange' && <GiOrangeSlice style={{ scale: '1.5',marginRight:25 }} />}
           </button>
         ))}
       </div>

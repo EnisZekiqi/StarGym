@@ -172,7 +172,7 @@ useEffect(() => {
           style={{ originY: "top", translateX: "-50%", border: darkMode ? "0.5px solid rgba(5, 6, 4,0.7)" : "0.5px solid rgba(250, 251, 249,0.7)",backgroundColor:darkMode? "rgba(250, 251, 249)":"rgba(5, 6, 4)" }}
           className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl z-50 absolute top-[120%] left-[50%] w-46 -ml-12 md:-ml-4 overflow-hidden"
         >
-           <a href="/main"><Option setOpen={setOpen} Icon={FiHome} text="Home" /></a>
+           <a href="#home"><Option setOpen={setOpen} Icon={FiHome} text="Home" /></a>
          <div onClick={toggleEdit}>
          <Option setOpen={setOpen} Icon={FiEdit} text="Edit Profile"  />
          </div>
@@ -203,7 +203,7 @@ useEffect(() => {
       </div>
      </div>
      <div className="empty"></div>
-     <div className="mt-8 container mx-auto px-4 ">
+     <div id="home" className="mt-8 container mx-auto px-4 ">
      {xs && 
      <div>
       <div className={`hidden md:block`}>
@@ -1478,8 +1478,8 @@ const getIconStyle = (isChecked) => ({
   const [modalProfileOpen, setModalProfileOpen] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
 
-  const openModalProfileHandler = (supplement) => {
-    setSelectedFriend(supplement);
+  const openModalProfileHandler = (friend) => {
+    setSelectedFriend(friend);
     setIsFriendView(false); // This is the original view
     setModalProfileOpen(true);
   };
@@ -1488,6 +1488,31 @@ const getIconStyle = (isChecked) => ({
     setSelectedFriend(null);
     setModalProfileOpen(false);
   };
+
+  const handleToggleFriend = (supplement) => {
+    const storedFriends = JSON.parse(localStorage.getItem('friends')) || [];
+    let updatedFriends;
+  
+    if (storedFriends.find(friend => friend.name === supplement.name)) {
+      // Remove friend
+      updatedFriends = storedFriends.filter(friend => friend.name !== supplement.name);
+      setMessageRemovingFriend(supplement.name);
+      setTimeout(() => setMessageRemovingFriend(''), 2000);
+    } else {
+      // Add friend
+      updatedFriends = [...storedFriends, { 
+        name: supplement.name, 
+        image: supplement.image, 
+        information: supplement.information 
+      }];
+    }
+  
+    // Update state and storage
+    setFriends(updatedFriends);
+    localStorage.setItem('friends', JSON.stringify(updatedFriends));
+    Cookies.set('friends', JSON.stringify(updatedFriends), { expires: 365 });
+  };
+
 
   const handleAddFriend = () => {
     if (selectedFriend) {
@@ -1522,13 +1547,10 @@ const getIconStyle = (isChecked) => ({
   const [friends, setFriends] = useState([]);
 
   useEffect(() => {
-    // Retrieve friends from cookies when component mounts
-    const friendsCookie = document.cookie.split('; ').find(row => row.startsWith('friends='));
-    if (friendsCookie) {
-      const savedFriends = JSON.parse(decodeURIComponent(friendsCookie.split('=')[1]));
-      setFriends(savedFriends);
-    }
+    const storedFriends = JSON.parse(localStorage.getItem('friends')) || [];
+    setFriends(storedFriends);
   }, []);
+
 
 
 const [messageAddingFriend,setMessageAddingFriend]=useState(false) ///// added friend changes
@@ -1673,75 +1695,98 @@ const removeItem = (index) => {
           <PeopleIcon />
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Friends</h3>
         </div>
-        <div className={`news-content flex flex-col ${archive ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4`}>
+        <div className={`news-content flex flex-col ${archive ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4 w-max`}>
         {friends.length > 0 ? (
-          friends.map((friend, index) => (
-            <div
-              onClick={() => openFriendProfileHandler(friend)}
-              key={index}
-              className="flex gap-2 items-center p-4 cursor-pointer"
-            >
-              <Avatar alt={friend.name} src={friend.image} />
-              <div>
-                <p className="font-bold text-xl">{friend.name}</p>
-                <p className="font-normal text-md">{friend.information}</p>
-              </div>
-            </div>
-          ))
-        ) : (
-         <div className="flex flex-col">
-            <img src={Nofriends} width="200px" className="mt-2" alt="" />
-          <p className="text-center mt-2">No friends added yet</p>
-         </div>
-        )}
+  friends.map((friend, index) => (
+    <div className="flex items-center justify-between mt-4 " key={index}>
+      <div
+        onClick={() => openFriendProfileHandler(friend)}
+        className="flex gap-2 items-center p-4 cursor-pointer"
+      >
+        <Avatar sx={{width:"55px",height:"55px"}} alt={friend.name} src={friend.image} />
+        <div>
+          <p className="font-bold text-lg md:text-xl">{friend.name}</p>
+          <p className="font-normal text-xs md:text-md">{friend.information}</p>
+        </div>
+      </div>
+      <button className={`pt-2 pb-2 text-xs md:text-md mr-2`}
+      style={{border:darkMode ? "1px solid #131A0F":"1px solid #FAFBF9",borderRadius:'5px',paddingRight:'16px',paddingLeft:'16px',
+        background: friends.find(friend => friend.name === supplement.name) ? (darkMode ? "#131A0F" : "#FAFBF9") : "transparent",
+        color: friends.find(friend => friend.name === supplement.name) ? (darkMode ? "#FAFBF9" : "#131A0F") : (darkMode ? "#131A0F" : "#FAFBF9"),
+      }}
+      onClick={() => handleToggleFriend(friend)}>
+      {messageRemovingFriend === friend.name ? "Friend Removed" : (friends.find(f => f.name === friend.name) ? "Following" : "Follow")}
+      </button>
+    </div>
+  ))
+) : (
+  <div className="flex flex-col items-center justify-center">
+    <img src={Nofriends} width="200px" className="mt-2" alt="" />
+    <p className="text-center mt-2">No friends added yet</p>
+  </div>
+)}
         </div>
         <div onClick={toggleSaved} className="flex gap-2 cursor-pointer items-center mt-4 w-1/4">
           <BookmarkIcon />
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Saved</h3>
         </div>
-        <div className={`news-content flex flex-col ${saved ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4 overflow-x-auto`}>
-        {savedSupplements.length === 0 ? (
-        <div className="flex items-center justify-center mt-4">
-          <div>
-            <img src={Folder2} width="200px" className="mt-2" alt="No items yet" /> {/* Update with your actual image path */}
-            <p className="text-center mt-2">Nothing saved yet</p>
+        <div className={`news-content flex flex-col ${saved ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4 w-max`}>
+              {savedSupplements.length === 0 ? (
+          <div className="flex flex-col items-center justify-center mt-4">
+            <div>
+              <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
+              <p className="text-center mt-2">Nothing saved yet</p>
+            </div>
           </div>
-        </div>
-      ) : (
-        <>
-          <p className="font-light text-center text-sm mb-4 mt-4">Check what you saved here</p>
-          <div className="flex flex-col gap-4 mt-4 items-start justify-start overflow-x-auto whitespace-nowrap">
-            {savedSupplements.map((supplement, index) => (
+        ) : (
+          <>
+            <div className="saved-items-container flex flex-col  justify-start gap-4  ">
+                  {savedSupplements.map((supplement, index) => (
               <div
                 key={index}
-                className={`flex flex-col h-36 items-center justify-center my-2 ${
-                  selectedSupplement && selectedSupplement.name === supplement.name ? (darkMode ? '' : '') : ''
+                className={`flex h-20 items-center justify-between my-2 mt-4 mb-12 ${
+                  selectedSupplement && selectedSupplement.name === supplement.name
+                    ? darkMode ? 'highlighted-dark' : 'highlighted-light'
+                    : ''
                 }`}
               >
-                <div
-               onClick={() => {
-                if (supplement.type === 'supplement') {
-                  openModalSupp(supplement,index);
-                } else {
-                openModal(supplement, index);
-                }
-                }}
+                <div className="items-center flex mr-8"
+                  onClick={() => {
+                    if (supplement.type === 'supplement') {
+                      openModalSupp(supplement);
+                    } else {
+                      openModal(supplement, index);
+                    }
+                  }}
                 >
-                <img
-                  src={supplement.image}
-                  alt={supplement.name}
-                  className="w-16 h-16 rounded-full mr-2 cursor-pointer"
-                  onClick={() => setSelectedSupplement(supplement)}
-                />
-                <span className="text-center text-bold text-sm w-1/2">{supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}'s advice` }</span>
+                  <Avatar sx={{width:"55px",height:"55px"}}
+                    src={supplement.image}
+                    alt={supplement.name}
+                    className="w-16 h-16 mr-2 rounded-full cursor-pointer"
+                    onClick={() => setSelectedSupplement(supplement)}
+                  />
+                  <div className="flex flex-col items-start">
+                  <span className="text-start font-bold text-lg md:text-xl cursor-pointer">
+                    {supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}`}
+                  </span>
+                    <span className="font-normal text-xs md:text-md">Check out {supplement.name}'s advice</span>
+                  </div>
                 </div>
-              
+                <button
+                  onClick={() => handleToggleFriend(supplement)}
+                  style={{border:darkMode ? "1px solid #131A0F":"1px solid #FAFBF9",borderRadius:'5px',paddingRight:'16px',paddingLeft:'16px',
+                    background: friends.find(friend => friend.name === supplement.name) ? (darkMode ? "#131A0F" : "#FAFBF9") : "transparent",
+                    color: friends.find(friend => friend.name === supplement.name) ? (darkMode ? "#FAFBF9" : "#131A0F") : (darkMode ? "#131A0F" : "#FAFBF9"),
+                  }}
+                  className={` pt-2 pb-2 px-3 text-xs md:text-md mr-2`}
+                >
+                  {friends.find(friend => friend.name === supplement.name) ? 'Following' : 'Follow'}
+                </button>
               </div>
             ))}
-          </div>
-         
-        </>
-      )}
+            </div>
+          </>
+        )}
       <Modal
         open={modalOpen}
         onClose={closeModal}
@@ -1805,12 +1850,19 @@ const removeItem = (index) => {
               </div>
               <div className="rate-newsfeed -mt-5">
               <div className="flex gap-2 justify-end items-end">
-                  {!isFriendView && (
-                    <button onClick={handleAddFriend}>{messageAddingFriend ? "Added Friend":"Add Friend"}</button>
-                  )}
-                  {isFriendView && (
-                    <button onClick={() => handleRemoveFriend(selectedFriend)}>{messageRemovingFriend ? "Friend Removed":"Remove Friend"}</button>
-                  )}
+                 
+              <button
+              onClick={() => handleToggleFriend(selectedFriend)}
+              className={` pt-2 pb-2 text-xs md:text-md mr-2`}
+              style={{border:darkMode ? "1px solid #131A0F":"1px solid #FAFBF9",borderRadius:'5px',paddingRight:'16px',paddingLeft:'16px',
+                background: friends.find(friend => friend.name === selectedFriend.name) ? (darkMode ? "#131A0F" : "#FAFBF9") : "#050604",
+                color: friends.find(friend => friend.name === selectedFriend.name) ? (darkMode ? "#FAFBF9" : "#131A0F") : (darkMode ? "#131A0F" : "#FAFBF9"),
+              }}
+            >
+              {friends.find(friend => friend.name === selectedFriend.name) ? 'Following' : 'Follow'}
+            </button>
+                 
+                 
                 </div>
               </div>
             </>
@@ -1828,7 +1880,7 @@ const removeItem = (index) => {
         <div className={`news-content flex flex-col ${shopingCart ? 'show' : 'hide'} items-center md:items-start rounded-xl gap-4 w-fit overflow-y-auto`}>
         {cartItems.length > 0 ? (
         cartItems.map((item, index) => (
-          <div key={index} className="flex gap-2 items-center justify-between p-4 cursor-pointer"
+          <div key={index} className="flex gap-2 items-center justify-between p-4 cursor-pointer mb-4"
                style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}>
             <div className="flex items-center justify-between">
               <div className="flex">
@@ -1922,10 +1974,24 @@ const removeItem = (index) => {
        {supplementsData.map((supplement, index) => (
         <div
           key={index}
-          style={{ border: darkMode ? '1px solid #050604' : '1px solid #FAFBF9' }}
+          style={{
+            backgroundColor: 'rgb(71,94,54,5%)',
+            borderRadius: '10px',
+            boxShadow: '0 0.4rem #94b57d',
+            transition: 'box-shadow 0.3s ease, transform 0.3s ease',
+            border: '0.2px solid rgba(82, 82, 82,0.3)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 1rem #94b57d';
+            e.currentTarget.style.transform = 'translateY(-0.5rem)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 0.4rem #94b57d';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
           className="bg-newsfeed w-2/3 flex flex-col mb-4"
         >
-          <div className="flex gap-2 items-center p-4 cursor-pointer"
+          <div className="flex gap-5 items-center p-4 cursor-pointer"
          onClick={() => openModalProfileHandler(supplement)}
           >
             <Avatar alt={supplement.name} src={supplement.image} />
@@ -2752,13 +2818,27 @@ const removeItem = (index) => {
             </div>
      </div>
      <div className="empty"/>
-     <div id="advice" className="flex flex-col items-center justify-center  gap-2"
+     <div id="advice" className="flex flex-col items-center justify-center  gap-5"
         >
       {supplementsData.map((supplement, index) => (
         <div
           key={index}
-          style={{ border: darkMode ? '1px solid #050604' : '1px solid #FAFBF9' }}
-          className="bg-newsfeed w-2/3 flex flex-col mb-4"
+          style={{
+            backgroundColor: 'rgb(71,94,54,5%)',
+            borderRadius: '10px',
+            boxShadow: '0 0.4rem #94b57d',
+            transition: 'box-shadow 0.3s ease, transform 0.3s ease',
+            border: '0.2px solid rgba(82, 82, 82,0.3)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 1rem #94b57d';
+            e.currentTarget.style.transform = 'translateY(-0.5rem)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 0.4rem #94b57d';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+          className="bg-newsfeed w-4/5 flex flex-col mb-4"
         >
           <div className="flex gap-2 items-center p-4 cursor-pointer"
            onClick={() => openModalProfileHandler(supplement)}
@@ -2940,7 +3020,7 @@ const removeItem = (index) => {
               <div className="flex flex-col items-center">
                 <div>
                   <p className="font-bold text-xl">{item.name}</p>
-                  <div className="font-normal text-md flex gap-4">
+                  <div className="font-normal text-sm flex gap-4">
                     <p>{item.flavor}</p>/
                     <p>{item.weight}</p>
                   </div>
@@ -2950,8 +3030,9 @@ const removeItem = (index) => {
               </div>
             </div>
             <button
+            style={{border:darkMode ? "1px solid #050604":"1px solid #FAFBF9",}}
                     onClick={() => removeItem(index)}
-                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    className="bg-red-500 text-white pt-2 pb-2 px-2 rounded text-sm"
                   >
                     Remove
                   </button>
@@ -3029,8 +3110,15 @@ const removeItem = (index) => {
           <p className="font-normal text-xs md:text-md">{friend.information}</p>
         </div>
       </div>
-      <button className={`${buttonSwitch} text-xs md:text-md mr-2`}
-      style={{padding:'8px',height:'fit-content'}}
+      <button className={`pt-2 pb-2 text-xs md:text-md mr-2`}
+ style={{
+  border: darkMode ? "1px solid #131A0F" : "1px solid #FAFBF9",
+  borderRadius: '5px',
+  paddingRight: '10px',
+  paddingLeft: '10px',
+  background: friends.find(friend => friend.name === friend.name) ? (darkMode ? "#131A0F" : "#FAFBF9") : "transparent",
+  color: friends.find(friend => friend.name === friend.name) ? (darkMode ? "#FAFBF9" : "#131A0F") : (darkMode ? "#131A0F" : "#FAFBF9"),
+}}
       onClick={() => handleToggleFriend(friend)}>
         {messageRemovingFriend === friend.name ? "Friend Removed" : "Remove Friend"}
       </button>
@@ -3062,7 +3150,7 @@ const removeItem = (index) => {
             {savedSupplements.map((supplement, index) => (
         <div
           key={index}
-          className={`flex h-36 items-center justify-between my-2 mt-4 ${
+          className={`flex h-20 items-center justify-between my-2 mt-4 ${
             selectedSupplement && selectedSupplement.name === supplement.name
               ? darkMode ? 'highlighted-dark' : 'highlighted-light'
               : ''
@@ -3080,19 +3168,23 @@ const removeItem = (index) => {
             <Avatar sx={{width:"55px",height:"55px"}}
               src={supplement.image}
               alt={supplement.name}
-              className="w-16 h-16 mr-2 rounded-full cursor-pointer"
+              className="w-16 h-16 mr-2 rounded-full cursor-pointer ml-4"
               onClick={() => setSelectedSupplement(supplement)}
             />
             <div className="flex flex-col items-start">
             <span className="text-start font-bold text-lg md:text-xl cursor-pointer">
               {supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}`}
             </span>
-              <span className="font-normal text-xs md:text-md">Check out {supplement.name}'s advice</span>
+              <span className="font-normal text-xs md:text-md">{supplement.name}'s advice</span>
             </div>
           </div>
           <button
             onClick={() => handleToggleFriend(supplement)}
-            className={`${buttonSwitch} p-2 text-xs md:text-md mr-2`}
+            className={` pt-2 pb-2 text-xs md:text-md mr-2`}
+            style={{border:darkMode ? "1px solid #131A0F":"1px solid #FAFBF9",borderRadius:'5px',paddingRight:'10px',paddingLeft:'10px',
+              background: friends.find(friend => friend.name === supplement.name) ? (darkMode ? "#131A0F" : "#FAFBF9") : "transparent",
+              color: friends.find(friend => friend.name === supplement.name) ? (darkMode ? "#FAFBF9" : "#131A0F") : (darkMode ? "#131A0F" : "#FAFBF9"),
+            }}
           >
             {friends.find(friend => friend.name === supplement.name) ? 'Remove Friend' : 'Add Friend'}
           </button>
@@ -3170,12 +3262,12 @@ const removeItem = (index) => {
               </div>
               <div className="rate-newsfeed -mt-5">
               <div className="flex gap-2 justify-end items-end">
-                  {!isFriendView && (
-                    <button onClick={handleAddFriend}>{messageAddingFriend ? "Added Friend":"Add Friend"}</button>
-                  )}
-                  {isFriendView && (
-                    <button onClick={() => handleRemoveFriend(selectedFriend)}>{messageRemovingFriend ? "Friend Removed":"Remove Friend"}</button>
-                  )}
+              <button
+              onClick={() => handleToggleFriend(selectedFriend)}
+              className={`${buttonSwitch} p-2 text-xs md:text-md mr-2`}
+            >
+              {friends.find(friend => friend.name === selectedFriend.name) ? 'Remove Friend' : 'Add Friend'}
+            </button>
                 </div>
               </div>
             </>

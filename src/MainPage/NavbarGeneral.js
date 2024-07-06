@@ -1126,7 +1126,7 @@ const Option = ({ text, Icon, setOpen }) => {
             {savedSupplements.map((supplement, index) => (
         <div
           key={index}
-          className={`flex h-36 items-center justify-between my-2 mt-4 ${
+          className={`flex h-20 items-center justify-between my-2 mt-4 ${
             selectedSupplement && selectedSupplement.name === supplement.name
               ? darkMode ? 'highlighted-dark' : 'highlighted-light'
               : ''

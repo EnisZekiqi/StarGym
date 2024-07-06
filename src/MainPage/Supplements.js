@@ -49,6 +49,7 @@ const Supplement = () => {
           name:'MuscleTech Amino Build',
           price:'55$'  ,
           shipping:'Free Shipping',
+          ingrediants :'7g BCAA , 4g Leucine , 2.5g Betaine , 1g Taurine',
           description:'Performance-Enhancing BCAA Formula',
           images:amino1,
           route: '/aminobuild',
@@ -73,8 +74,9 @@ const Supplement = () => {
         },
         {
             name:'Platinum Glutamine',
-            price:'60$',
+            price:'55$',
             shipping:'Free Shipping',
+            ingrediants :'3.2g Beta-Alanine, 3g Creatine Monohydrate , 2.5g Betanine , 1.5g Nitrosigne',
             description:'Performance-Enhancing BCAA Formula',
             images:platinum,
             route: '/platinum',
@@ -83,17 +85,17 @@ const Supplement = () => {
               brand: darkMode ? musscletechicon : musscletechicondarkmode,
               info: {
                 flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
-                weight: ['1 lb', '2 lbs', '5 lbs'],
+                weight: ['30 Servings', '45 Servings', '50 Servings'],
                 prices: {
-                  'Vanilla-1 lb': '55$',
-                  'Vanilla-2 lbs': '65$',
-                  'Vanilla-5 lbs': '75$',
-                  'Chocolate-1 lb': '58$',
-                  'Chocolate-2 lbs': '68$',
-                  'Chocolate-5 lbs': '78$',
-                  'Strawberry-1 lb': '60$',
-                  'Strawberry-2 lbs': '70$',
-                  'Strawberry-5 lbs': '80$',
+                  'Vanilla-30 Serving': '31$',
+                  'Vanilla-45 Servings': '47$',
+                  'Vanilla-50 Servings': '52$',
+                  'Chocolate-30 Servings': '41$',
+                  'Chocolate-45 Servings': '49$',
+                  'Chocolate-50 Servings': '54$',
+                  'Strawberry-30 Servings': '42$',
+                  'Strawberry-45 Servings': '51$',
+                  'Strawberry-50 Servings': '54$',
                 },
               },
         },
@@ -101,14 +103,24 @@ const Supplement = () => {
             name:'Platinum BCAA',
             price:'25$',
             shipping:'Free Shipping',
+            ingrediants :'1000mg Pure BCAA',
             description:'Promotes Muscle also Protein Synthesis',
             images:platinumbcaa,
             route: '/platinumv2',
              width:'120px',
              marginLeft:'-37px',
              scale:1.3,
-             brand: darkMode ? musscletechicon : musscletechicondarkmode
-             
+             brand: darkMode ? musscletechicon : musscletechicondarkmode,
+             info: {
+              flavor: ['Vanilla', 'Chocolate'],
+              weight: ['200 Caps','250 Caps'],
+              prices: {
+                'Vanilla-200 Caps': '26.5$',
+                'Vanilla-250 Caps': '29.5$',
+                'Chocolate-200 Caps': '28$',
+                'Chocolate-250 Caps': '30$',
+              },
+            },
         },
     ]
 
@@ -117,13 +129,24 @@ const Supplement = () => {
     const aminoOptimum =[
         {
             name:'EAA Energy',
-            price:'40$',
+            price:'27$',
             shipping:'Free Shipping',
+            ingrediants :'10g EAAs , Full EAA Blend',
             description:'Support Energy , Focus & Essential also Amino Acid Intake',
             images:eaa,
             route: '/aminobuild',
             width:'120px',
-            brand: darkMode ? oplight : op
+            brand: darkMode ? oplight : op,
+            info: {
+              flavor: ['Orange', 'Lemon'],
+              weight: ['432g', '552g'],
+              prices: {
+                'Orange-432g': '25.3$',
+                'Orange-552g': '27$',
+                'Lemon-432g': '25$',
+                'Lemon-552g': '27$',
+              },
+            },
         },
         {
         name:'Glutanime Muscle',
@@ -134,18 +157,46 @@ const Supplement = () => {
         route: '/aminobuild',
         width:'120px',
         marginLeft:'-13px',
-        brand: darkMode ? oplight : op
+        brand: darkMode ? oplight : op,
+        info: {
+          flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+          weight: ['1 lb', '2 lbs', '5 lbs'],
+          prices: {
+            'Vanilla-1 lb': '55$',
+            'Vanilla-2 lbs': '65$',
+            'Vanilla-5 lbs': '75$',
+            'Chocolate-1 lb': '58$',
+            'Chocolate-2 lbs': '68$',
+            'Chocolate-5 lbs': '78$',
+            'Strawberry-1 lb': '60$',
+            'Strawberry-2 lbs': '70$',
+            'Strawberry-5 lbs': '80$',
+          },
+        },
         },
         {
             name:'Amino Super',
             price:'35$',
             shipping:'Free Shipping',
+            ingrediants :'Milk & Soy Ingredients , Full Amino',
             description:'Amino tablets and amino  spectrum',
             images:aminosuper,
             route: '/aminobuild',
             width:'120px',
             marginLeft:'-25px',
-            brand: darkMode ? oplight : op
+            brand: darkMode ? oplight : op,
+            info: {
+              flavor: ['Vanilla', 'Chocolate', 'Lemon'],
+              weight: ['1000 Tabs', '2222 Tabs'],
+              prices: {
+                'Vanilla-1000 Tabs': '35$',
+                'Vanilla-2222 Tabs': '49$',
+                'Chocolate-1000 Tabs': '38$',
+                'Chocolate-2222 Tabs': '48$',
+                'Lemon-1000 Tabs': '35.4$',
+                'Lemon-2222 Tabs': '44$',
+              },
+            },
             }
     ]
    
@@ -161,7 +212,22 @@ const Supplement = () => {
         images:masstechh,
         route: '/masstech',
         width:'135px',
-        brand: darkMode ? musscletechicon : musscletechicondarkmode
+        brand: darkMode ? musscletechicon : musscletechicondarkmode,
+        info: {
+          flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+          weight: ['1 lb', '2 lbs', '5 lbs'],
+          prices: {
+            'Vanilla-1 lb': '55$',
+            'Vanilla-2 lbs': '65$',
+            'Vanilla-5 lbs': '75$',
+            'Chocolate-1 lb': '58$',
+            'Chocolate-2 lbs': '68$',
+            'Chocolate-5 lbs': '78$',
+            'Strawberry-1 lb': '60$',
+            'Strawberry-2 lbs': '70$',
+            'Strawberry-5 lbs': '80$',
+          },
+        },
     },
     {
     name:'Muscletech Mass Gainer',
@@ -171,7 +237,22 @@ const Supplement = () => {
     images:massgainer,
     route: '/aminobuild',
     width:'130px',
-    brand: darkMode ? musscletechicon : musscletechicondarkmode
+    brand: darkMode ? musscletechicon : musscletechicondarkmode,
+    info: {
+      flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+      weight: ['1 lb', '2 lbs', '5 lbs'],
+      prices: {
+        'Vanilla-1 lb': '55$',
+        'Vanilla-2 lbs': '65$',
+        'Vanilla-5 lbs': '75$',
+        'Chocolate-1 lb': '58$',
+        'Chocolate-2 lbs': '68$',
+        'Chocolate-5 lbs': '78$',
+        'Strawberry-1 lb': '60$',
+        'Strawberry-2 lbs': '70$',
+        'Strawberry-5 lbs': '80$',
+      },
+    },
     },
     {
         name:'Masstech Extreme 2000',
@@ -182,7 +263,22 @@ const Supplement = () => {
         route: '/aminobuild',
         width:'140px',
         marginLeft:'-25px',
-        brand: darkMode ? musscletechicon : musscletechicondarkmode
+        brand: darkMode ? musscletechicon : musscletechicondarkmode,
+        info: {
+          flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+          weight: ['1 lb', '2 lbs', '5 lbs'],
+          prices: {
+            'Vanilla-1 lb': '55$',
+            'Vanilla-2 lbs': '65$',
+            'Vanilla-5 lbs': '75$',
+            'Chocolate-1 lb': '58$',
+            'Chocolate-2 lbs': '68$',
+            'Chocolate-5 lbs': '78$',
+            'Strawberry-1 lb': '60$',
+            'Strawberry-2 lbs': '70$',
+            'Strawberry-5 lbs': '80$',
+          },
+        },
         }
 ]
 
@@ -198,7 +294,22 @@ const weightOptimum =[
         route: '/aminobuild',
         width:'120px',
          marginLeft:'-37px',
-         brand: darkMode ? oplight : op
+         brand: darkMode ? oplight : op,
+         info: {
+          flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+          weight: ['1 lb', '2 lbs', '5 lbs'],
+          prices: {
+            'Vanilla-1 lb': '55$',
+            'Vanilla-2 lbs': '65$',
+            'Vanilla-5 lbs': '75$',
+            'Chocolate-1 lb': '58$',
+            'Chocolate-2 lbs': '68$',
+            'Chocolate-5 lbs': '78$',
+            'Strawberry-1 lb': '60$',
+            'Strawberry-2 lbs': '70$',
+            'Strawberry-5 lbs': '80$',
+          },
+        },
     }
 ]
 
@@ -214,7 +325,22 @@ const preworkMusscletech =[
         images:vaport,
         route: '/vaporx5',
         width:'140px',
-        brand: darkMode ? musscletechicon : musscletechicondarkmode
+        brand: darkMode ? musscletechicon : musscletechicondarkmode,
+        info: {
+          flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+          weight: ['1 lb', '2 lbs', '5 lbs'],
+          prices: {
+            'Vanilla-1 lb': '55$',
+            'Vanilla-2 lbs': '65$',
+            'Vanilla-5 lbs': '75$',
+            'Chocolate-1 lb': '58$',
+            'Chocolate-2 lbs': '68$',
+            'Chocolate-5 lbs': '78$',
+            'Strawberry-1 lb': '60$',
+            'Strawberry-2 lbs': '70$',
+            'Strawberry-5 lbs': '80$',
+          },
+        },
     },
     {
     name:'Muscletech Vapor X5 Next Gen',
@@ -224,7 +350,22 @@ const preworkMusscletech =[
     images:vaportinext,
     route: '/aminobuild',
     width:'140px',
-    brand: darkMode ? musscletechicon : musscletechicondarkmode
+    brand: darkMode ? musscletechicon : musscletechicondarkmode,
+    info: {
+      flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+      weight: ['1 lb', '2 lbs', '5 lbs'],
+      prices: {
+        'Vanilla-1 lb': '55$',
+        'Vanilla-2 lbs': '65$',
+        'Vanilla-5 lbs': '75$',
+        'Chocolate-1 lb': '58$',
+        'Chocolate-2 lbs': '68$',
+        'Chocolate-5 lbs': '78$',
+        'Strawberry-1 lb': '60$',
+        'Strawberry-2 lbs': '70$',
+        'Strawberry-5 lbs': '80$',
+      },
+    },
     },
 ]
 ////////// prework for musscletech /////////
@@ -238,7 +379,22 @@ const preOptimum =[
         route: '/aminobuild',
         width:'120px',
          marginLeft:'-37px',
-         brand: darkMode ? oplight : op
+         brand: darkMode ? oplight : op,
+         info: {
+          flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+          weight: ['1 lb', '2 lbs', '5 lbs'],
+          prices: {
+            'Vanilla-1 lb': '55$',
+            'Vanilla-2 lbs': '65$',
+            'Vanilla-5 lbs': '75$',
+            'Chocolate-1 lb': '58$',
+            'Chocolate-2 lbs': '68$',
+            'Chocolate-5 lbs': '78$',
+            'Strawberry-1 lb': '60$',
+            'Strawberry-2 lbs': '70$',
+            'Strawberry-5 lbs': '80$',
+          },
+        },
     }
 ]
 
@@ -252,7 +408,22 @@ const creatineMuscletech =[
       images:celltech,
       route: '/celltech',
       width:'140px',
-      brand: darkMode ? musscletechicon : musscletechicondarkmode
+      brand: darkMode ? musscletechicon : musscletechicondarkmode,
+      info: {
+        flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+        weight: ['1 lb', '2 lbs', '5 lbs'],
+        prices: {
+          'Vanilla-1 lb': '55$',
+          'Vanilla-2 lbs': '65$',
+          'Vanilla-5 lbs': '75$',
+          'Chocolate-1 lb': '58$',
+          'Chocolate-2 lbs': '68$',
+          'Chocolate-5 lbs': '78$',
+          'Strawberry-1 lb': '60$',
+          'Strawberry-2 lbs': '70$',
+          'Strawberry-5 lbs': '80$',
+        },
+      },
   },
   {
   name:'Cell Tech Creator',
@@ -262,7 +433,22 @@ const creatineMuscletech =[
   images:creatori,
   route: '/aminobuild',
   width:'120px',
-  brand: darkMode ? musscletechicon : musscletechicondarkmode
+  brand: darkMode ? musscletechicon : musscletechicondarkmode,
+  info: {
+    flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+    weight: ['1 lb', '2 lbs', '5 lbs'],
+    prices: {
+      'Vanilla-1 lb': '55$',
+      'Vanilla-2 lbs': '65$',
+      'Vanilla-5 lbs': '75$',
+      'Chocolate-1 lb': '58$',
+      'Chocolate-2 lbs': '68$',
+      'Chocolate-5 lbs': '78$',
+      'Strawberry-1 lb': '60$',
+      'Strawberry-2 lbs': '70$',
+      'Strawberry-5 lbs': '80$',
+    },
+  },
   },
 ]
 const creatineOptimum =[
@@ -274,7 +460,22 @@ const creatineOptimum =[
       images:micro,
       route: '/aminobuild',
       width:'120px',
-      brand: darkMode ? oplight : op
+      brand: darkMode ? oplight : op,
+      info: {
+        flavor: ['Vanilla', 'Chocolate', 'Strawberry'],
+        weight: ['1 lb', '2 lbs', '5 lbs'],
+        prices: {
+          'Vanilla-1 lb': '55$',
+          'Vanilla-2 lbs': '65$',
+          'Vanilla-5 lbs': '75$',
+          'Chocolate-1 lb': '58$',
+          'Chocolate-2 lbs': '68$',
+          'Chocolate-5 lbs': '78$',
+          'Strawberry-1 lb': '60$',
+          'Strawberry-2 lbs': '70$',
+          'Strawberry-5 lbs': '80$',
+        },
+      },
   }
 ]
 

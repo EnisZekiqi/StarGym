@@ -20,6 +20,12 @@ import Celltech from './MainPage/Celltech';
 import Platinum from './MainPage/Platinum';
 import Supplement from './MainPage/Supplements';
 import { SupplementProvider } from './useSupplementContext ';
+import { AuthProvider, useAuth } from './AuthContext';
+import { Navigate } from 'react-router-dom';
+const ProtectedRoute = ({ element }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? element : <Navigate to="/" />;
+};
 
  const router = createBrowserRouter([
    {
@@ -36,8 +42,7 @@ import { SupplementProvider } from './useSupplementContext ';
     },
     {
       path: "main",
-      element: <Main/> ,
-     
+      element: <ProtectedRoute element={<Main />} />,
     },
     ,{
       path:"masstech",
@@ -68,15 +73,17 @@ import { SupplementProvider } from './useSupplementContext ';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-     <SupplementProvider>
-     <SuccessMessageProvider>
-     <AvatarImageProvider>
-      <DarkModeProvider>
-        <RouterProvider router={router} />
-      </DarkModeProvider>
-     </AvatarImageProvider>
-     </SuccessMessageProvider>
-     </SupplementProvider>
+    <AuthProvider>
+      <SupplementProvider>
+        <SuccessMessageProvider>
+          <AvatarImageProvider>
+            <DarkModeProvider>
+              <RouterProvider router={router} />
+            </DarkModeProvider>
+          </AvatarImageProvider>
+        </SuccessMessageProvider>
+      </SupplementProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 
