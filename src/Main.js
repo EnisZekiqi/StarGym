@@ -124,6 +124,19 @@ useEffect(() => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+  useEffect(() => {
+   if(setOpen === true){
+    setXs(true)
+    setEdit(false)
+   }
+  }, []);
+
+
+  const handleLogout = () => {
+    Cookies.remove('isAuthenticated');
+    navigate('/');
+  };
+
   return (
     <div
       style={{
@@ -193,7 +206,9 @@ useEffect(() => {
             ) : ""
             }
           </motion.div>
-         <a href="/"> <Option setOpen={setOpen} Icon={FiLogOut} text="Log Out" /></a>
+            <div onClick={handleLogout}>
+          <Option setOpen={setOpen} Icon={FiLogOut} text="Log Out" />
+        </div>
         </motion.ul>
       </motion.div>
     </div>
@@ -1885,7 +1900,7 @@ const removeItem = (index) => {
             <div className="flex items-center justify-between">
               <div className="flex">
               <Avatar sx={{width:'55px',height:'55px',marginTop:0}} src={item.image} alt={item.name} />
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center mr-6">
                 <div>
                   <p className="font-bold text-xl">{item.name}</p>
                   <div className="font-normal text-md flex gap-4">
@@ -1896,13 +1911,14 @@ const removeItem = (index) => {
                 <p className="font-semibold text-center">{item.price}</p>
               </div>
               </div>
-            </div>
-            <button
+              <button
                     onClick={() => removeItem(index)}
-                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    className="pt-2 pb-2 "
+                    style={{border:darkMode ? "1px solid #131A0F":"1px solid #FAFBF9",borderRadius:'5px',paddingRight:'10px',paddingLeft:'10px',}}
                   >
                     Remove
                   </button>
+            </div>
           </div>
         ))
       ) : (

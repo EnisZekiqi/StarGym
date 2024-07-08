@@ -70,6 +70,7 @@ const Navbar = () => {
       };
       const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
       const [password, setPassword] = useState(Cookies.get('password') || '');
+      
       const [error,setError]=useState(false)
       const [error2,setError2]=useState(false)
       const [success,setSuccess]=useState(false)
@@ -129,6 +130,7 @@ const Navbar = () => {
 
         if (storedNickname && storedPassword && nickname.trim() === storedNickname && password === storedPassword) {
           setSuccess(true);
+          Cookies.set('isAuthenticated', 'true', { expires: 1 }); // Expires in 1 day
           setTimeout(() => {
                 setNickname('');
                 setPassword('');
@@ -142,6 +144,18 @@ const Navbar = () => {
 
       };
     
+      const [isAuthenticated, setIsAuthenticated] = useState(false);
+      useEffect(() => {
+        const isAuthenticated = Cookies.get('isAuthenticated');
+    
+        if (isAuthenticated === 'true') {
+          setIsAuthenticated(true);
+          navigate('/main'); // Redirect to main page if already authenticated
+        }
+      }, [navigate]); //// autorizimi nese i ke plotsu nickname and password 
+
+
+
       const handleNicknameChange = (e) => {
         setNickname(e.target.value);
       };

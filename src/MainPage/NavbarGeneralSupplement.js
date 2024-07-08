@@ -47,6 +47,8 @@ import avatar5 from '../AvatarImages/images8.jpg'
 import ShopCart from '../images/Shopping.svg'
 import ClearIcon from '@mui/icons-material/Clear';
 import { useSupplementContext } from '../useSupplementContext ';
+import { GiWeightLiftingUp } from "react-icons/gi";
+import { CSSTransition } from 'react-transition-group'
 import {
   FiArrowRight,
   FiBarChart2,
@@ -64,7 +66,8 @@ import musscletechicondarkmode from '../images/musscletechicondarkmode-removebg-
 import SendIcon from '@mui/icons-material/Send';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import Nofriends from '../images/World travel.svg'
-
+import { GiBiceps } from "react-icons/gi";
+import Switch from '@mui/material/Switch';
 const NavbarGeneralSupplement = ({ setDisplayContent }) => {
    
 
@@ -129,8 +132,102 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
           };
         }, []);
     
-      
+        const [suppSettings,setSuppSettings]=useState(false)
 
+      const toggleDrawerSupp = ()=>{
+        setSuppSettings(true)
+      }
+
+      const {
+        toggleAmino,
+        toggleWeight,
+        togglePrework,
+        toggleVitamins,
+        toggleCreatine,
+        toggleProtein,
+        toggleWeightLoss
+    } = useSupplementContext();
+
+    const [activeSwitch, setActiveSwitch] = useState('all');
+
+   const handleSwitchChange = (switchName) => {
+    setActiveSwitch(switchName);
+    // Call appropriate toggle function based on switchName
+    switch (switchName) {
+      case 'all':
+        break; // Assuming there's no toggle function for 'all'
+      case 'amino':
+        toggleAmino();
+        break;
+      case 'weight':
+        toggleWeight();
+        break;
+      case 'prework':
+        togglePrework();
+        break;
+      case 'creatine':
+        toggleCreatine();
+        break;
+      case 'protein':
+        toggleProtein();
+        break;
+      case 'weightloss':
+        toggleWeightLoss();
+        break;
+      default:
+        break;
+    }
+  };
+  const CustomSwitch = styled(Switch)(({ theme }) => ({
+    width: 42,
+    height: 26,
+    padding: 0,
+    '& .MuiSwitch-switchBase': {
+      padding: 0,
+      margin: 2,
+      transitionDuration: '300ms',
+      '&.Mui-checked': {
+        transform: 'translateX(16px)',
+        color: '#fff',
+        '& + .MuiSwitch-track': {
+          backgroundColor: '#94b57d', // Custom color for checked state
+          opacity: 1,
+          border: 0,
+        },
+        '&.Mui-disabled + .MuiSwitch-track': {
+          opacity: 0.5,
+        },
+      },
+      '&.Mui-focusVisible .MuiSwitch-thumb': {
+        color: '#33cf4d',
+        border: '6px solid #fff',
+      },
+      '&.Mui-disabled .MuiSwitch-thumb': {
+        color:
+          theme.palette.mode === 'light'
+            ? theme.palette.grey[100]
+            : theme.palette.grey[600],
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+      },
+    },
+    '& .MuiSwitch-thumb': {
+      boxSizing: 'border-box',
+      width: 22,
+      height: 22,
+    },
+    '& .MuiSwitch-track': {
+      borderRadius: 26 / 2,
+      backgroundColor: theme.palette.mode === 'light' ? '#525252' : '#39393D',
+      opacity: 1,
+      transition: theme.transitions.create(['background-color'], {
+        duration: 500,
+      }),
+    },
+  }));
+
+  const bg2 = darkMode ? "bg-rose":"bg-rose"
         return ( 
             <div>
       <div
@@ -152,6 +249,9 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
             </div>
             <div className="fonk flex gap-4 items-center">
             <h1 className="font-bold ml-4 text-xl mt-4 mb-4">StarGym</h1>
+            <div onClick={toggleDrawerSupp}>
+              <MenuIcon/>
+            </div>
             </div>
             <div className="flex items-center gap-6">
               <div className="nonomi4">
@@ -220,6 +320,79 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
           
           </div>
         </div>
+        {suppSettings && 
+        <div
+        className={`fixed inset-0 opacity-50 drawer-backdrop ${suppSettings ? 'open' : ''} ${bg2}`}
+        style={{zIndex:200}}
+        onClick={()=>setSuppSettings(false)}
+      />
+        }
+        <AnimatePresence>
+        {suppSettings && 
+        <div>
+        <motion.div
+          initial={{opacity:0,}}
+          animate={{opacity:1,transition:0.3}}
+          exit={{opacity:0,}}
+         className={`fixed top-0 right-0 bottom-0 w-72 h-screen drawer ${suppSettings ? 'open' : ''}`}
+          style={{ backgroundColor: darkMode ? " #FAFBF9":"#050604", zIndex: 201 }}
+        >
+          <p className="text-center mt-2 font-medium">Category</p>
+          <div className="flex flex-col gap-4 ml-2">
+                <div className="flex items-center mt-2 gap-3">
+                  <CustomSwitch
+                    checked={activeSwitch === 'all'}
+                    onChange={() => handleSwitchChange('all')}
+                  />
+                  <p>All</p>
+                </div>
+                <div className="flex items-center mt-2 gap-3">
+                  <CustomSwitch
+                    checked={activeSwitch === 'amino'}
+                    onChange={() => handleSwitchChange('amino')}
+                  />
+                  <p>Amino Acids</p>
+                </div>
+                <div className="flex items-center mt-2 gap-3">
+                  <CustomSwitch
+                    checked={activeSwitch === 'weight'}
+                    onChange={() => handleSwitchChange('weight')}
+                  />
+                  <p>Weight Gainers</p>
+                </div>
+                <div className="flex items-center mt-2 gap-3">
+                  <CustomSwitch
+                    checked={activeSwitch === 'prework'}
+                    onChange={() => handleSwitchChange('prework')}
+                  />
+                  <p>Pre-Workout</p>
+                </div>
+                <div className="flex items-center mt-2 gap-3">
+                  <CustomSwitch
+                    checked={activeSwitch === 'creatine'}
+                    onChange={() => handleSwitchChange('creatine')}
+                  />
+                  <p>Creatine</p>
+                </div>
+                <div className="flex items-center mt-2 gap-3">
+                  <CustomSwitch
+                    checked={activeSwitch === 'protein'}
+                    onChange={() => handleSwitchChange('protein')}
+                  />
+                  <p>Protein</p>
+                </div>
+                <div className="flex items-center mt-2 gap-3">
+                  <CustomSwitch
+                    checked={activeSwitch === 'weightloss'}
+                    onChange={() => handleSwitchChange('weightloss')}
+                  />
+                  <p>Weight loss</p>
+                </div>
+              </div>
+        </motion.div>
+        </div>
+        }
+        </AnimatePresence>
             </div>
          );
     }
@@ -1561,31 +1734,25 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
       const Blog = () => {
         return (
           <div>
-            <div className="grid grid-cols-2 gap-2">
-              <a href="#">
-                <img
-                  className="mb-2 h-14 w-full rounded object-cover"
-                  src="/imgs/blog/4.png"
-                  alt="Placeholder image"
-                />
-                <h4 className="mb-0.5 text-sm font-medium">Lorem ipsum dolor</h4>
-                <p className="text-xs text-neutral-400">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet illo
-                  quidem eos.
+            <div className="flex justify-around items-center gap-4">
+             <div>
+             <div className="flex gap-4 items-center">
+              <GiBiceps style={{scale:1.5}}/>
+                <h4 className="mb-0.5 text-sm font-medium">Regen and Toning</h4>
+              </div>
+              <p className="text-xs text-neutral-400 mt-4">
+              The process of replacing or restoring damaged or missing cells, tissues, organs, and even entire body parts to full function
                 </p>
-              </a>
-              <a href="#">
-                <img
-                  className="mb-2 h-14 w-full rounded object-cover"
-                  src="/imgs/blog/5.png"
-                  alt="Placeholder image"
-                />
-                <h4 className="mb-0.5 text-sm font-medium">Lorem ipsum dolor</h4>
-                <p className="text-xs text-neutral-400">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet illo
-                  quidem eos.
+             </div>
+             <div>
+             <div className="flex gap-4 items-center">
+              <GiWeightLiftingUp  style={{scale:1.5}}/>
+                <h4 className="mb-0.5 text-sm font-medium">Performance</h4>
+              </div>
+              <p className="text-xs text-neutral-400 mt-4">
+              The process of gaining more power , endurance and resistance through intensive workout is called performance activity 
                 </p>
-              </a>
+             </div>
             </div>
             <button className="ml-auto mt-4 flex items-center gap-1 text-sm text-indigo-300">
               <span>View more</span>

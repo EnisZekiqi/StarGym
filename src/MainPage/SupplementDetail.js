@@ -9,6 +9,9 @@ import { Snackbar } from "@mui/material";
 import Alert from '@mui/material/Alert';
 import { GiLemon } from "react-icons/gi";
 import { GiOrangeSlice } from "react-icons/gi";
+import { GiChocolateBar } from "react-icons/gi";
+import { GiMeltingIceCube } from "react-icons/gi";
+import { GiFruitBowl } from "react-icons/gi";
 const SupplementDetail = ({ supplement,handleBackToList }) => {
 
     const { darkMode } = useDarkMode()
@@ -82,10 +85,13 @@ const SupplementDetail = ({ supplement,handleBackToList }) => {
         {supplement.info.flavor.map((flavor, index) => (
           <button key={index} onClick={() => handleFlavorSelect(flavor)}>
             {flavor === 'Vanilla' && <GiVanillaFlower style={{ scale: '1.5',marginRight:25 }} />}
-            {flavor === 'Chocolate' && <GiCookie style={{ scale: '1.5',marginRight:25 }}/>}
+            {flavor === 'Chocolate' && <GiChocolateBar style={{ scale: '1.5',marginRight:25 }}/>}
             {flavor === 'Strawberry' && <GiStrawberry style={{ scale: '1.5' }} />}
-            {flavor === 'Lemon' && <GiLemon style={{ scale: '1.5' }} />}
+            {flavor === 'Lemon' && <GiLemon style={{ scale: '1.5',marginRight:25 }} />}
             {flavor === 'Orange' && <GiOrangeSlice style={{ scale: '1.5',marginRight:25 }} />}
+            {flavor === 'Cookie' && <GiCookie style={{ scale: '1.5',marginRight:25 }} />}
+            {flavor === 'Fruit' && <GiFruitBowl  style={{ scale: '1.5',marginRight:25 }} />}
+            {flavor === 'IceMelt' && <GiMeltingIceCube  style={{ scale: '1.5',marginRight:25 }} />}
           </button>
         ))}
       </div>

@@ -20,71 +20,65 @@ import Celltech from './MainPage/Celltech';
 import Platinum from './MainPage/Platinum';
 import Supplement from './MainPage/Supplements';
 import { SupplementProvider } from './useSupplementContext ';
-import { AuthProvider, useAuth } from './AuthContext';
-import { Navigate } from 'react-router-dom';
-const ProtectedRoute = ({ element }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? element : <Navigate to="/" />;
-};
+import ProtectedRoute from './ProtectedRoute';
 
- const router = createBrowserRouter([
-   {
-     path: "/",
-     element: <App/> ,
-   },
-   {
-      path: "signup",
-      element: <SignUp/> ,
-    },
-    {
-      path: "editprofile",
-      element: <EditProfile/> ,
-    },
-    {
-      path: "main",
-      element: <ProtectedRoute element={<Main />} />,
-    },
-    ,{
-      path:"masstech",
-      element:<Masstech/>
-    },
-    {
-      path:"Vaporx5",
-      element:<VaportX/>
-    },
-    {
-      path:"celltech",
-      element:<Celltech/>
-    },
-    {
-      path:"platinum",
-      element:<Platinum/>
-    },
-    {
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App/> ,
+  },
+  {
+    path: "signup",
+    element: <SignUp/> ,
+  },
+  {
+    path: "editprofile",
+    element: <ProtectedRoute><EditProfile/></ProtectedRoute> ,
+  },
+  {
+    path: "main",
+    element: <ProtectedRoute><Main/></ProtectedRoute> ,
+  },
+  {
+    path:"masstech",
+    element:<ProtectedRoute><Masstech/></ProtectedRoute>
+  },
+  {
+    path:"Vaporx5",
+    element:<ProtectedRoute><VaportX/></ProtectedRoute>
+  },
+  {
+    path:"celltech",
+    element:<ProtectedRoute><Celltech/></ProtectedRoute>
+  },
+  {
+    path:"platinum",
+    element:<ProtectedRoute><Platinum/></ProtectedRoute>
+  },
+  {
     path:"supplement",
-    element:<Supplement/>
-    },
-    {
-       path :"info",
-       element:<Info/> 
-    }
-])
+    element:<ProtectedRoute><Supplement/></ProtectedRoute>
+  },
+  {
+    path :"info",
+    element:<ProtectedRoute><Info/></ProtectedRoute>
+  }
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <SupplementProvider>
-        <SuccessMessageProvider>
-          <AvatarImageProvider>
-            <DarkModeProvider>
-              <RouterProvider router={router} />
-            </DarkModeProvider>
-          </AvatarImageProvider>
-        </SuccessMessageProvider>
-      </SupplementProvider>
-    </AuthProvider>
-  </React.StrictMode>
+  <SupplementProvider>
+    <SuccessMessageProvider>
+      <AvatarImageProvider>
+        <DarkModeProvider>
+          <RouterProvider router={router} />
+        </DarkModeProvider>
+      </AvatarImageProvider>
+    </SuccessMessageProvider>
+  </SupplementProvider>
+</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
