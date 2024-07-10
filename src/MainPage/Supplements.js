@@ -36,12 +36,15 @@ import celltech from '../images/cellmax.webp'
 import creatori from '../SupplementImages/creatori.png'
 import micro from '../SupplementImages/micro.png'
 import SupplementDetail from "./SupplementDetail";
-
+import nitrotech from '../SupplementImages/nitrotech.png'
+import nitrowhey from '../SupplementImages/nitrowhey.png'
+import goldwhey from '../SupplementImages/goldwhey.png'
+import hydro from '../SupplementImages/hydro.png'
 
 const Supplement = () => {
     const { darkMode } = useDarkMode()
 
-    const { amino, weight, prework, vitamins, creatine, protein, weightloss } = useSupplementContext();
+    const { amino, weight, prework, vitamins, creatine, protein, weightloss,all } = useSupplementContext();
 
 
     const aminoMusscletech = [
@@ -441,6 +444,98 @@ const creatineOptimum =[
   }
 ]
 
+const ProteinMuscletech =[
+  {
+      name:'Nitrotech ELITE ',
+      price:'45$',
+      shipping:'48 hours Shipping',
+      ingrediants  :'30g protein , 1.5g calcium , 300mg prohydrolase',
+      description:' Muscle Strength Amplifier with 5-in-1 protein formula',
+      images:nitrotech,
+      route: '/celltech',
+      width:'140px',
+      brand: darkMode ? musscletechicon : musscletechicondarkmode,
+      info: {
+        flavor: ['Cookies', 'Chocolate', 'Strawberry'],
+        weight:['30 Servings','120 Servings'],
+        prices: { 'Chocolate-30 Servings': '41.5$','Chocolate-120 Servings': '64$',
+             'Cookies-30 Servings': '42$','Cookies-120 Servings': '65.7$', 
+             'Strawberry-30 Servings': '38$','Strawberry-120 Servings': '58.2$' },
+      },
+  },
+  {
+  name:'Nitrotech Whey Protein Classic',
+  price:'80$',
+  shipping:'Free Shipping',
+  ingrediants  :'30g protein , 3g creatine , 6.6g bcaa',
+  description:'Improve Recovery & Increase Strength , builds 70% more muscle',
+  images:nitrowhey,
+  route: '/aminobuild',
+  width:'140px',
+  brand: darkMode ? musscletechicon : musscletechicondarkmode,
+  info: {
+    flavor: ['Cookies', 'Chocolate', 'Vanilla'],
+    weight:['907g','1.8 kg'],
+    prices: { 'Chocolate-907g': '41.5$','Chocolate-1.8 kg': '70$',
+         'Cookies-907g': '42$','Cookies-1.8 kg': '71.7$', 
+         'Vanilla-907g': '38$','Vanilla-1.8 kg': '68.2$' },
+  },
+  },
+]
+
+const ProteinOptimum =[
+  {
+      name:'Whey Gold Standard',
+      price:'40$',
+      shipping:'72 hours Shipping',
+      ingrediants  :'24g protein , 5.5g bcaa',
+      description:'For muscle support & recovery',
+      images:goldwhey,
+      route: '/aminobuild',
+      width:'140px',
+      brand: darkMode ? oplight : op,
+      info: {
+        flavor: ['Chocolate', 'Cookie', 'Orange'],
+        weight: ['907g', '1.7 kg'],
+        prices: {
+          'Chocolate-907g': '35$',
+          'Chocolate-1.7 kg': '55$',
+          
+          'Cookie-907g': '38$',
+          'Cookie-1.7 kg': '58$',
+          
+          'Orange-907g': '32$',
+          'Orange-1.7 kg': '60$',
+        },
+      },
+  },
+  {
+    name:'Hydro Whey',
+    price:'100$',
+    shipping:'Free Shipping',
+    ingrediants  :'30g protein , 9.5g bcaa',
+    description:'Advanced Hydrolysed whey protein isolates ',
+    images:hydro,
+    route: '/aminobuild',
+    width:'120px',
+    brand: darkMode ? oplight : op,
+    info: {
+      flavor: ['Milk', 'Cookie', 'Chocolate'],
+      weight: ['1.6 kg', '2.2 kg'],
+      prices: {
+        'Milk-1.6 kg': '47$',
+        'Milk-2.2 kg': '75$',
+        
+        'Cookie-1.6 kg': '48$',
+        'Cookie-2.2 kg': '79$',
+        
+        'Chocolate-1.6 kg': '42$',
+        'Chocolate-2.2 kg': '69$',
+      },
+    },
+}
+]
+
 const combinedItems = [
     ...aminoMusscletech,
     ...aminoOptimum,
@@ -449,7 +544,9 @@ const combinedItems = [
     ...preworkMusscletech,
     ...preOptimum,
     ...creatineMuscletech,
-    ...creatineOptimum
+    ...creatineOptimum,
+    ...ProteinMuscletech,
+    ...ProteinOptimum
   ];
 
   // Determine items to display
@@ -461,6 +558,8 @@ const combinedItems = [
     ? [...preworkMusscletech, ...preOptimum]
     : creatine
     ? [...creatineMuscletech, ...creatineOptimum]
+    :protein
+    ?[ ...ProteinMuscletech, ...ProteinOptimum]
     : combinedItems;
 
 
@@ -471,6 +570,7 @@ useEffect(() => {
       setDefaultShow(false);
     }
   }, [amino, weight, prework, vitamins, creatine, protein, weightloss]);
+
 
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);

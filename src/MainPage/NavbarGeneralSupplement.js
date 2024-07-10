@@ -49,6 +49,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useSupplementContext } from '../useSupplementContext ';
 import { GiWeightLiftingUp } from "react-icons/gi";
 import { CSSTransition } from 'react-transition-group'
+import Slider from '@mui/material/Slider';
 import {
   FiArrowRight,
   FiBarChart2,
@@ -145,7 +146,11 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
         toggleVitamins,
         toggleCreatine,
         toggleProtein,
-        toggleWeightLoss
+        toggleWeightLoss,
+        toggleAll,
+        setAmino,setWeight,setPrework,setCreatine,setProtein,setWeightloss,
+        amino,weight,prework,creatine,protein,weightLoss
+
     } = useSupplementContext();
 
     const [activeSwitch, setActiveSwitch] = useState('all');
@@ -155,6 +160,13 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
     // Call appropriate toggle function based on switchName
     switch (switchName) {
       case 'all':
+        setAmino(false);
+        setWeight(false);
+        setPrework(false);
+        setCreatine(false);
+        setProtein(false);
+        setWeightloss(false);
+        setDefaultShow(true);
         break; // Assuming there's no toggle function for 'all'
       case 'amino':
         toggleAmino();
@@ -178,7 +190,7 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
         break;
     }
   };
-  const CustomSwitch = styled(Switch)(({ theme }) => ({
+  const CustomSwitch = styled(Switch)(({ theme }) => ({  ///// switch costum css 
     width: 42,
     height: 26,
     padding: 0,
@@ -219,13 +231,63 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
     },
     '& .MuiSwitch-track': {
       borderRadius: 26 / 2,
-      backgroundColor: theme.palette.mode === 'light' ? '#525252' : '#39393D',
+      backgroundColor: theme.palette.mode === 'light' ? 'rgb(82, 82, 82,0.7)' : '#39393D',
       opacity: 1,
       transition: theme.transitions.create(['background-color'], {
         duration: 500,
       }),
     },
   }));
+
+  const PrettoSlider = styled(Slider)({   /// costum slider css 
+    color: '#94b57d',
+    height: 8,
+    '& .MuiSlider-track': {
+      border: 'none',
+    },
+    '& .MuiSlider-thumb': {
+      height: 24,
+      width: 24,
+      backgroundColor: '#fff',
+      border: '2px solid currentColor',
+      '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
+        boxShadow: 'inherit',
+      },
+      '&::before': {
+        display: 'none',
+      },
+    },
+    '& .MuiSlider-valueLabel': {
+      lineHeight: 1.2,
+      fontSize: 12,
+      background: 'unset',
+      padding: 0,
+      width: 32,
+      height: 32,
+      borderRadius: '50% 50% 50% 0',
+      backgroundColor: '#94b57d',
+      transformOrigin: 'bottom left',
+      transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
+      '&::before': { display: 'none' },
+      '&.MuiSlider-valueLabelOpen': {
+        transform: 'translate(50%, -100%) rotate(-45deg) scale(1)',
+      },
+      '& > *': {
+        transform: 'rotate(45deg)',
+      },
+    },
+  });
+
+  const [defaultShow, setDefaultShow] = useState(true);
+
+  useEffect(() => {
+    if (amino || weight || prework || creatine || protein || weightLoss) {
+      setDefaultShow(false);
+    } else {
+      setDefaultShow(true); // This handles the case when none of the specific categories are true, which should mean "All" is selected
+    }
+  }, [amino, weight, prework, creatine, protein, weightLoss]);
+
 
   const bg2 = darkMode ? "bg-rose":"bg-rose"
         return ( 
@@ -338,7 +400,7 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
           style={{ backgroundColor: darkMode ? " #FAFBF9":"#050604", zIndex: 201 }}
         >
           <p className="text-center mt-2 font-medium">Category</p>
-          <div className="flex flex-col gap-4 ml-2">
+          <div className="flex flex-col gap-4 ml-2 mt-4">
                 <div className="flex items-center mt-2 gap-3">
                   <CustomSwitch
                     checked={activeSwitch === 'all'}
@@ -381,12 +443,14 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
                   />
                   <p>Protein</p>
                 </div>
-                <div className="flex items-center mt-2 gap-3">
-                  <CustomSwitch
-                    checked={activeSwitch === 'weightloss'}
-                    onChange={() => handleSwitchChange('weightloss')}
-                  />
-                  <p>Weight loss</p>
+                
+                <p className="text-center mt-2 font-medium">Prices</p>
+                <div className="w-4/5 flex items-center">
+                <PrettoSlider
+                valueLabelDisplay="auto"
+                aria-label="pretto slider"
+                defaultValue={20}
+              />
                 </div>
               </div>
         </motion.div>
@@ -971,7 +1035,6 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '53%',
         color:darkMode ? "#050604":"FAFBF9" ,
         backgroundColor:'#FAFBF9' ,
         boxShadow: 24,
@@ -1028,26 +1091,42 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
               // Update local state
               setFriends(friends);
               setMessageAddingFriend(true);
-    
-    
-    
-    
-    
             }
           }
         };
       
         const [friends, setFriends] = useState([]);
       
-        useEffect(() => {
-          // Retrieve friends from cookies when component mounts
-          const friendsCookie = document.cookie.split('; ').find(row => row.startsWith('friends='));
-          if (friendsCookie) {
-            const savedFriends = JSON.parse(decodeURIComponent(friendsCookie.split('=')[1]));
-            setFriends(savedFriends);
+        const handleToggleFriend = (supplement) => {
+          const storedFriends = JSON.parse(localStorage.getItem('friends')) || [];
+          let updatedFriends;
+        
+          if (storedFriends.find(friend => friend.name === supplement.name)) {
+            // Remove friend
+            updatedFriends = storedFriends.filter(friend => friend.name !== supplement.name);
+            setMessageRemovingFriend(supplement.name);
+            setTimeout(() => setMessageRemovingFriend(''), 2000);
+          } else {
+            // Add friend
+            updatedFriends = [...storedFriends, { 
+              name: supplement.name, 
+              image: supplement.image, 
+              information: supplement.information 
+            }];
           }
-        }, []);
+        
+          // Update state and storage
+          setFriends(updatedFriends);
+          localStorage.setItem('friends', JSON.stringify(updatedFriends));
+          Cookies.set('friends', JSON.stringify(updatedFriends), { expires: 365 });
+        };
       
+      const btnBuy = darkMode ? "btnnorway":"btnnorway2"
+      
+        useEffect(() => {
+          const storedFriends = JSON.parse(localStorage.getItem('friends')) || [];
+          setFriends(storedFriends);
+        }, []);
       
       const [messageAddingFriend,setMessageAddingFriend]=useState(false) ///// added friend changes
       const [messageRemovingFriend,setMessageRemovingFriend]=useState(false) //// removing friend changes
@@ -1087,16 +1166,15 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
         }
       }, []);
       
-     
-    
       const removeItem = (index) => {
         const updatedCartItems = cartItems.filter((_, i) => i !== index);
         setCartItems(updatedCartItems);
         localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
         Cookies.set('cartItems', JSON.stringify(updatedCartItems), { expires: 365 });
       };
+      
     
-    
+
         return(
           <div className="relative min-h-fit ">
             
@@ -1151,40 +1229,41 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
              <div onClick={toggleAllOff}  className="handle mt-3 px-2 pb-2 w-12 rounded-2xl mb-2" style={{backgroundColor:"#525252"}}/>
              </div>
              {cartItems.length > 0 ? (
-            cartItems.map((item, index) => (
-              <div key={index} className="flex gap-2 items-center justify-between p-4 cursor-pointer"
-                   style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}>
-                <div className="flex items-center justify-between">
-                  <div className="flex">
-                  <Avatar sx={{width:'55px',height:'55px',marginTop:0}} src={item.image} alt={item.name} />
-                  <div className="flex flex-col items-center">
-                    <div>
-                      <p className="font-bold text-xl">{item.name}</p>
-                      <div className="font-normal text-md flex gap-4">
-                        <p>{item.flavor}</p>/
-                        <p>{item.weight}</p>
-                      </div>
-                    </div>
-                    <p className="font-semibold text-center">{item.price}</p>
-                  </div>
+        cartItems.map((item, index) => (
+          <div key={index} className="flex gap-2 items-center justify-between p-4 cursor-pointer"
+               style={{backgroundColor:darkMode ? "#FAFBF9":"#050604"}}>
+            <div className="flex items-center justify-between">
+              <div className="flex">
+              <Avatar sx={{width:'55px',height:'55px',marginTop:0}} src={item.image} alt={item.name} />
+              <div className="flex flex-col items-center">
+                <div>
+                  <p className="font-bold text-lg sm:text-xl">{item.name}</p>
+                  <div className="font-normal text-sm flex gap-4">
+                    <p>{item.flavor}</p>/
+                    <p>{item.weight}</p>
                   </div>
                 </div>
-                <button
-                        onClick={() => removeItem(index)}
-                        className="bg-red-500 text-white px-4 py-2 rounded"
-                      >
-                        Remove
-                      </button>
+                <p className="font-semibold text-center">{item.price}</p>
               </div>
-            ))
-          ) : (
-            <div className="flex items-center justify-center mt-4">
-              <div>
-                <img src={ShopCart} width="200px" className="mt-2" alt="No items yet" />
-                <p className="text-center mt-2">No items in the cart yet</p>
               </div>
             </div>
-          )}
+            <button
+            style={{border:darkMode ? "1px solid #050604":"1px solid #FAFBF9",}}
+                    onClick={() => removeItem(index)}
+                    className="bg-red-500 text-white pt-2 pb-2 px-2 rounded text-sm"
+                  >
+                    Remove
+                  </button>
+          </div>
+        ))
+      ) : (
+        <div className="flex items-center justify-center mt-4">
+          <div>
+            <img src={ShopCart} width="200px" className="mt-2" alt="No items yet" />
+            <p className="text-center mt-2">No items in the cart yet</p>
+          </div>
+        </div>
+      )}
           
             </div>
           
@@ -1238,33 +1317,38 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
              <div onClick={toggleAllOff}  className=" mt-3 px-2 pb-2 w-12 rounded-2xl " style={{backgroundColor:"#525252"}}/>
              </div>
              {friends.length > 0 ? (
-                friends.map((friend, index) => (
-                 <div className="flex justify-between mt-4">
-                   <div
-                    onClick={() => openFriendProfileHandler(friend)}
-                    key={index}
-                    className="flex gap-2 items-center p-4 cursor-pointer"
-                  >
-                    <Avatar sx={{width:"55px",height:"55px"}} alt={friend.name} src={friend.image} />
-                    <div>
-                      <p className="font-bold text-xl">{friend.name}</p>
-                      <p className="font-normal text-md">{friend.information}</p>
-                    </div>
-                  </div>
-                  <button 
-                  className={` ${buttonSwitch} ml-2`}
-                  style={{padding:'0px 5px 0px 5px'}}
-                  onClick={() => handleRemoveFriend(friend)}>
-                    <ClearIcon/>
-                    </button>
-                 </div>
-                ))
-              ) : (
-               <div className="flex flex-col items-center justify-center">
-                  <img src={Nofriends} width="200px" className="mt-2" alt="" />
-                <p className="text-center mt-2">No friends added yet</p>
-               </div>
-              )}
+  friends.map((friend, index) => (
+    <div className="flex items-center justify-between mt-4" key={index}>
+      <div
+        onClick={() => openFriendProfileHandler(friend)}
+        className="flex gap-2 items-center p-4 cursor-pointer"
+      >
+        <Avatar sx={{width:"55px",height:"55px"}} alt={friend.name} src={friend.image} />
+        <div>
+          <p className="font-bold text-lg md:text-xl">{friend.name}</p>
+          <p className="font-normal text-xs md:text-md">{friend.information}</p>
+        </div>
+      </div>
+      <button className={`pt-2 pb-2 text-xs md:text-md mr-2`}
+ style={{
+  border: darkMode ? "1px solid #131A0F" : "1px solid #FAFBF9",
+  borderRadius: '5px',
+  paddingRight: '10px',
+  paddingLeft: '10px',
+  background: friends.find(friend => friend.name === friend.name) ? (darkMode ? "#131A0F" : "#FAFBF9") : "transparent",
+  color: friends.find(friend => friend.name === friend.name) ? (darkMode ? "#FAFBF9" : "#131A0F") : (darkMode ? "#131A0F" : "#FAFBF9"),
+}}
+      onClick={() => handleToggleFriend(friend)}>
+        {messageRemovingFriend === friend.name ? "Friend Removed" : "Remove Friend"}
+      </button>
+    </div>
+  ))
+) : (
+  <div className="flex flex-col items-center justify-center">
+    <img src={Nofriends} width="200px" className="mt-2" alt="" />
+    <p className="text-center mt-2">No friends added yet</p>
+  </div>
+)}
             </div>
       
             {/* Saved Drawer */}
@@ -1273,47 +1357,61 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
           <div onClick={toggleAllOff} className="mt-3 px-2 pb-2 w-12 rounded-2xl" style={{backgroundColor: "#525252"}} />
         </div>
         {savedSupplements.length === 0 ? (
-          <div className="flex items-center justify-center mt-4">
-            <div>
-              <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
-              <p className="text-center mt-2">Nothing saved yet</p>
+    <div className="flex flex-col items-center justify-center mt-4">
+      <div>
+        <img src={Folder2} width="200px" className="mt-2" alt="No items yet" />
+        <p className="text-center mt-2">Nothing saved yet</p>
+      </div>
+    </div>
+  ) : (
+    <>
+      <div className="saved-items-container flex flex-col  justify-start gap-4  ">
+            {savedSupplements.map((supplement, index) => (
+        <div
+          key={index}
+          className={`flex h-20 items-center justify-between my-2 mt-4 ${
+            selectedSupplement && selectedSupplement.name === supplement.name
+              ? darkMode ? 'highlighted-dark' : 'highlighted-light'
+              : ''
+          }`}
+        >
+          <div className="items-center flex "
+            onClick={() => {
+              if (supplement.type === 'supplement') {
+                openModalSupp(supplement);
+              } else {
+                openModal(supplement, index);
+              }
+            }}
+          >
+            <Avatar sx={{width:"55px",height:"55px"}}
+              src={supplement.image}
+              alt={supplement.name}
+              className="w-16 h-16 mr-2 rounded-full cursor-pointer ml-4"
+              onClick={() => setSelectedSupplement(supplement)}
+            />
+            <div className="flex flex-col items-start">
+            <span className="text-start font-bold text-lg md:text-xl cursor-pointer">
+              {supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}`}
+            </span>
+              <span className="font-normal text-xs md:text-md">{supplement.name}'s advice</span>
             </div>
           </div>
-        ) : (
-          <>
-            <p className="font-light text-center text-sm mb-4 mt-4">Click on the item if you want to remove them</p>
-            <div className="saved-items-container flex items-center justify-start gap-4 mt-12 overflow-x-auto whitespace-nowrap">
-              {savedSupplements.map((supplement, index) => (
-                <div
-                  key={index}
-                  className={`flex flex-col h-36 items-center justify-center my-2 mt-4 ${
-                    selectedSupplement && selectedSupplement.name === supplement.name
-                      ? darkMode ? 'highlighted-dark' : 'highlighted-light'
-                      : ''
-                  }`}
-                >
-                  <div className="items-center flex flex-col"
-                   onClick={() => {
-                    if (supplement.type === 'supplement') {
-                      openModalSupp(supplement);
-                    } else {
-                    openModal(supplement, index);
-                    }
-                    }}
-                  >
-                    <img
-                      src={supplement.image}
-                      alt={supplement.name}
-                      className="w-16 h-16 mr-2 rounded-full cursor-pointer"
-                      onClick={() => setSelectedSupplement(supplement)}
-                    />
-                      <span className="text-center text-sm ">{supplement.type === 'supplement' ? 'View Supplement' : `${supplement.name}'s advice` }</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+          <button
+            onClick={() => handleToggleFriend(supplement)}
+            className={` pt-2 pb-2 text-xs md:text-md mr-2`}
+            style={{border:darkMode ? "1px solid #131A0F":"1px solid #FAFBF9",borderRadius:'5px',paddingRight:'10px',paddingLeft:'10px',
+              background: friends.find(friend => friend.name === supplement.name) ? (darkMode ? "#131A0F" : "#FAFBF9") : "transparent",
+              color: friends.find(friend => friend.name === supplement.name) ? (darkMode ? "#FAFBF9" : "#131A0F") : (darkMode ? "#131A0F" : "#FAFBF9"),
+            }}
+          >
+            {friends.find(friend => friend.name === supplement.name) ? 'Remove Friend' : 'Add Friend'}
+          </button>
+        </div>
+      ))}
+      </div>
+    </>
+  )}
       </div>
             <Modal
               open={modalOpen}
@@ -1692,11 +1790,7 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
                 >
                   Protein
                 </a>
-                <a href="#" className="mb-1 block text-sm text-neutral-400 hoverEffect"
-                  onClick={toggleWeightLoss}
-                >
-                  Weight loss
-                </a>
+                
               </div>
             </div>
           </div>

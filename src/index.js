@@ -21,6 +21,7 @@ import Platinum from './MainPage/Platinum';
 import Supplement from './MainPage/Supplements';
 import { SupplementProvider } from './useSupplementContext ';
 import ProtectedRoute from './ProtectedRoute';
+import PlanProgram from './MainPage/Planprogram';
 
 
 const router = createBrowserRouter([
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
   {
     path:"supplement",
     element:<ProtectedRoute><Supplement/></ProtectedRoute>
+  },
+  {
+    path:"planprogram",
+    element:<ProtectedRoute><PlanProgram/></ProtectedRoute>
   },
   {
     path :"info",

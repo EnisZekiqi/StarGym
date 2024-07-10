@@ -12,6 +12,7 @@ import { GiOrangeSlice } from "react-icons/gi";
 import { GiChocolateBar } from "react-icons/gi";
 import { GiMeltingIceCube } from "react-icons/gi";
 import { GiFruitBowl } from "react-icons/gi";
+import { GiMilkCarton } from "react-icons/gi";
 const SupplementDetail = ({ supplement,handleBackToList }) => {
 
     const { darkMode } = useDarkMode()
@@ -75,7 +76,7 @@ const SupplementDetail = ({ supplement,handleBackToList }) => {
         <div className="">
         <button className="mt-8 ml-8" onClick={handleBackToList}><ArrowBackIcon style={{ scale: '1.5' }} /></button>
        <div className="flex flex-col md:flex-row justify-center items-center">
-       <img className="ml-0 md:ml-28 mt-0 md:-mt-20" src={supplement.images} alt={supplement.name} width="250px" height="450px" />
+       <img className="ml-0 md:ml-28 mt-0 md:-mt-20" src={supplement.images} alt={supplement.name} width="225px" height="400px" />
         <div className="flex flex-col gap-6 w-full md:w-2/3 items-center md:items-start ml-0 md:ml-28 ">
         <h2 className="text-xl md:text-3xl font-bold w-fit mt-8 text-center md:text-start">{supplement.name}</h2>
         <p className="text-lg font-medium w-full md:w-fit text-center md:text-start px-4 md:px-0">{supplement.ingrediants}</p>
@@ -92,6 +93,7 @@ const SupplementDetail = ({ supplement,handleBackToList }) => {
             {flavor === 'Cookie' && <GiCookie style={{ scale: '1.5',marginRight:25 }} />}
             {flavor === 'Fruit' && <GiFruitBowl  style={{ scale: '1.5',marginRight:25 }} />}
             {flavor === 'IceMelt' && <GiMeltingIceCube  style={{ scale: '1.5',marginRight:25 }} />}
+            {flavor === 'Milk' && <GiMilkCarton   style={{ scale: '1.5',marginRight:25 }} />}
           </button>
         ))}
       </div>

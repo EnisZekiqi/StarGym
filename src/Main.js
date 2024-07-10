@@ -387,7 +387,7 @@ const ThreeMenu = ()=>{
           onClick={() => setOpen3(false)}
           className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
         >
-          <span>PlanProgram</span>
+          <a href="/planprogram">PlanProgram</a>
         </motion.li>
         <motion.li
           variants={itemVariants}
@@ -1759,7 +1759,7 @@ const removeItem = (index) => {
                   {savedSupplements.map((supplement, index) => (
               <div
                 key={index}
-                className={`flex h-20 items-center justify-between my-2 mt-4 mb-12 ${
+                className={`flex h-20 items-center justify-between my-2 mt-4  ${
                   selectedSupplement && selectedSupplement.name === supplement.name
                     ? darkMode ? 'highlighted-dark' : 'highlighted-light'
                     : ''
@@ -1871,7 +1871,7 @@ const removeItem = (index) => {
               className={` pt-2 pb-2 text-xs md:text-md mr-2`}
               style={{border:darkMode ? "1px solid #131A0F":"1px solid #FAFBF9",borderRadius:'5px',paddingRight:'16px',paddingLeft:'16px',
                 background: friends.find(friend => friend.name === selectedFriend.name) ? (darkMode ? "#131A0F" : "#FAFBF9") : "#050604",
-                color: friends.find(friend => friend.name === selectedFriend.name) ? (darkMode ? "#FAFBF9" : "#131A0F") : (darkMode ? "#131A0F" : "#FAFBF9"),
+                color: friends.find(friend => friend.name === selectedFriend.name) ? (darkMode ? "#FAFBF9" : "#131A0F") : (darkMode ? "#FAFBF9" : ""),
               }}
             >
               {friends.find(friend => friend.name === selectedFriend.name) ? 'Following' : 'Follow'}
@@ -1913,7 +1913,7 @@ const removeItem = (index) => {
               </div>
               <button
                     onClick={() => removeItem(index)}
-                    className="pt-2 pb-2 "
+                    className="pt-1 pb-1 "
                     style={{border:darkMode ? "1px solid #131A0F":"1px solid #FAFBF9",borderRadius:'5px',paddingRight:'10px',paddingLeft:'10px',}}
                   >
                     Remove
@@ -1954,7 +1954,7 @@ const removeItem = (index) => {
                 >
                 <path d="M12 5c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2m10-4v5h-2V4H4v2H2V1h2v2h16V1h2m-7 10.26V23h-2v-5h-2v5H9V11.26C6.93 10.17 5.5 8 5.5 5.5V5h2v.5C7.5 8 9.5 10 12 10s4.5-2 4.5-4.5V5h2v.5c0 2.5-1.43 4.67-3.5 5.76z" />
                 </svg>
-                <a href="#about"> <p className="font-medium text-sm mt-2">Planprogram</p></a>
+                <a href="/planprogram"> <p className="font-medium text-sm mt-2">Planprogram</p></a>
        </div>
        <div className="flex mt-4 cursor-pointer items-center gap-2 w-2/4">
                 <svg
