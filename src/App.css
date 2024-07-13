@@ -751,7 +751,41 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.offer-card {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
 
+.offer-card.hide {
+  opacity: 0;
+}
+
+.offer-text {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  display: none;
+}
+
+.offer-text-1,
+.offer-text-2,
+.offer-text-3 {
+  opacity: 1;
+  display: block;
+}
+
+.drawer-content2 {
+  position: fixed;
+  bottom: -100%; /* adjust as needed to be above the navigation bar */
+  left: 0;
+  width: 100%;
+  max-height: 70vh;
+  overflow-y:auto ;
+  overflow-x: hidden;
+  transition: bottom 0.5s ease;
+  z-index: 50;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
 
 .drawer-content {
   position: fixed;
@@ -767,7 +801,17 @@ input:checked + .slider:before {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
-
+@media (max-width:420px) {
+  .cardoffer1{
+    width: 300px !important;
+  }
+  .cardoffer2{
+    width: 300px !important;
+  }
+  .cardoffer3{
+    width: 300px !important;
+  }
+}
 .drawer-content.show {
     bottom: 0;
 }
@@ -775,7 +819,18 @@ input:checked + .slider:before {
   bottom: -100%;
   transition: bottom 0.5s ease;
 }
-
+.drawer-content2.show {
+  bottom: 0;
+}
+.drawer-content2.hide {
+bottom: -100%;
+transition: bottom 0.5s ease;
+}
+@media (max-width:1024px) {
+  #chartcontainer{
+    width: 100% !important;
+  }
+}
 .backdrop-smaller{
   position: fixed;
   inset: 0;

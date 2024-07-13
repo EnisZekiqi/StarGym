@@ -446,11 +446,6 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
                 
                 <p className="text-center mt-2 font-medium">Prices</p>
                 <div className="w-4/5 flex items-center">
-                <PrettoSlider
-                valueLabelDisplay="auto"
-                aria-label="pretto slider"
-                defaultValue={20}
-              />
                 </div>
               </div>
         </motion.div>
