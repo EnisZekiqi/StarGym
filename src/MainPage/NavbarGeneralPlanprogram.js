@@ -46,8 +46,9 @@ import avatar4 from '../AvatarImages/images 5.jpg'
 import avatar5 from '../AvatarImages/images8.jpg'
 import ShopCart from '../images/Shopping.svg'
 import ClearIcon from '@mui/icons-material/Clear';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+    LineChart, Line, XAxis, YAxis,AreaChart, Area, CartesianGrid, Tooltip, Legend, ResponsiveContainer
   } from 'recharts';
 import Slider from '@mui/material/Slider';
 import {
@@ -127,7 +128,7 @@ const NavbarGeneralPlanprogram = () => {
 
     const [workoutData, setWorkoutData] = useState([]);
         const [suppPlanprogram,setSuppPlanprogram]=useState(false)
-        const [selectedWorkoutPlan, setSelectedWorkoutPlan] = useState(null);
+        const [selectedWorkoutPlan, setSelectedWorkoutPlan] = useState('');
 
         useEffect(() => {
             // Retrieve selected workout plan and workout data from cookies
@@ -151,50 +152,94 @@ const NavbarGeneralPlanprogram = () => {
         }, []);
 
 
+        useEffect(() => {
+          const savedPlan = Cookies.get('selectedWorkoutPlan');
+          const savedData = Cookies.get('workoutData');
+      
+          if (savedPlan) {
+            setSelectedWorkoutPlan(savedPlan);
+          }
+      
+          if (savedData) {
+            setWorkoutData(JSON.parse(savedData));
+          }
+        }, []);
+
+        const handleInputChange = (index, key, value) => {
+          const updatedData = [...workoutData];
+          updatedData[index][key] = value;
+          setWorkoutData(updatedData);
+        };
+      
+        const handleSaveChanges = () => {
+          Cookies.set('workoutData', JSON.stringify(workoutData));
+          const totalPercentage = workoutData.reduce((acc, workout) => acc + workout.percentage, 0) / workoutData.length;
+          setTargetPercentage(totalPercentage);
+        };
+
+        useEffect(() => {
+          const savedWorkoutData = Cookies.get('workoutData');
+          if (savedWorkoutData) {
+              setWorkoutData(JSON.parse(savedWorkoutData));
+          }
+      }, []);
+
           const bg2 = darkMode ? "bg-rose":"bg-rose"
 
-          const data = [
-            { date: '2024-07-01', percentage: 45 },
-            { date: '2024-07-02', percentage: 50 },
-            { date: '2024-07-03', percentage: 35 },
-            { date: '2024-07-04', percentage: 75 },
-            { date: '2024-07-05', percentage: 65 },
-        ];
-
-          const CustomTooltip = ({ active, payload, label }) => {
+        
+         
+          const CustomTooltip = ({ active, payload }) => {
             if (active && payload && payload.length) {
-              return (
-                <div className="custom-tooltip" style={{ backgroundColor: '#fff', border: '1px solid #ccc', padding: '10px' }}>
-                  <p className="label">{`Date : ${label}`}</p>
-                  <p className="intro">{`Percentage : ${payload[0].value}%`}</p>
-                  <p className="desc">{payload[0].payload.info}</p>
-                </div>
-              );
+                const { date, workout, percentage } = payload[0].payload;
+                return (
+                    <div className="custom-tooltip">
+                        <p className="label">{`${date} : ${workout}`}</p>
+                        <p className="intro">{`Percentage: ${percentage}%`}</p>
+                    </div>
+                );
             }
-          
             return null;
-          };
+        };
 
           const[chartShow,setChartShow]=useState(true)
+          const [plansetting,setPlansetting]=useState(false)
 
           const [percentage,setPercentage]=useState(0)
+          const [targetPercentage, setTargetPercentage] = useState(0);
+          useEffect(() => {
+            if (workoutData.length > 0) {
+              const totalPercentage = workoutData.reduce((acc, workout) => acc + workout.percentage, 0) / workoutData.length;
+              setTargetPercentage(totalPercentage);
+            }
+          }, [workoutData])
 
           useEffect(() => {
-            if (suppPlanprogram && percentage < 33) {
-              const interval = setInterval(() => {
-                setPercentage(prevPercentage => {
-                  if (prevPercentage < 33) {
-                    return prevPercentage + 1;
-                  } else {
-                    clearInterval(interval);
-                    return prevPercentage;
-                  }
-                });
-              }, 100); // Increment every 1 second (1000 milliseconds)
-        
-              return () => clearInterval(interval);
+            if (suppPlanprogram) {
+                const interval = setInterval(() => {
+                    setPercentage((prevPercentage) => {
+                        if (prevPercentage < targetPercentage) {
+                            return Math.min(prevPercentage + 1, 100); // Ensure percentage does not exceed 100%
+                        } else {
+                            clearInterval(interval);
+                            return prevPercentage;
+                        }
+                    });
+                }, 100);
+    
+                return () => clearInterval(interval);
             }
-          }, [suppPlanprogram, percentage]);
+        }, [suppPlanprogram, targetPercentage]);
+
+
+          const handleButtonClick = (button) => {
+            if (button === 'chart') {
+              setChartShow(true);
+              setPlansetting(false);
+            } else if (button === 'plan') {
+              setChartShow(false);
+              setPlansetting(true);
+            }
+          };
     return ( 
         <div>
  <div>
@@ -308,47 +353,92 @@ const NavbarGeneralPlanprogram = () => {
             style={{backgroundColor:'#94b57d',color:darkMode? "#FAFBF9":"#050604"}}
             >
                  <Avatar  sx={{ marginTop: "15px",scale:'1.3' }} src={fileURL}></Avatar>
-                <button onClick={()=>setChartShow(prevMode => !prevMode)} className="p-3"
-                    style={{backgroundColor:chartShow ? "#475E36":"",borderRadius:'10px'}}
+                <button  onClick={() => handleButtonClick('chart')} className="p-3"
+                    style={{backgroundColor:chartShow ? "#475E36":"#a2be8e",borderRadius:'10px'}}
                     >
                     <SignalCellularAltIcon/>
                 </button>
+                <button    onClick={() => handleButtonClick('plan')} className="p-3"
+                    style={{backgroundColor:plansetting ? "#475E36":"#a2be8e",borderRadius:'10px'}}
+                    >
+                    <ManageAccountsIcon/>
+                </button>
             </div>
-           <div className="flex flex-col lg:flex-row w-full mt-6 gap-8 lg:gap-0">
-           {selectedWorkoutPlan && (
-                <div className="workout-plan">
-                    <h2>Selected Workout Plan</h2>
-                    <p>{selectedWorkoutPlan}</p>
-                </div>
-            )}
+           <div className="flex flex-col lg:flex-row w-full items-center justify-center mt-6 gap-8 lg:gap-0">
            {chartShow ?
            
-                <ResponsiveContainer id='chartcontainer' width="65%" height={400}
-                style={{backgroundColor: 'rgb(71,94,54,5%)', border: '0.2px solid rgba(82, 82, 82,0.3)',borderRadius:'10px',marginLeft:15}}
-                >
-           <LineChart
-              data={workoutData}
-             margin={{
-               top: 5, right: 30, left: 20, bottom: 5,
-             }}
-           >
-             <CartesianGrid strokeDasharray="3 3" />
-             <XAxis dataKey="date" />
-             <YAxis />
-             <Tooltip content={<CustomTooltip />} />
-             <Legend />
-             <Line type="monotone" dataKey="percentage" stroke="#94b57d" activeDot={{ r: 8 }} />
-           </LineChart>
-         </ResponsiveContainer> 
+            <ResponsiveContainer id='chartcontainer' width="100%" height={380} style={{ backgroundColor: 'rgb(71,94,54,5%)', border: '0.2px solid rgba(82, 82, 82,0.3)', borderRadius: '10px', marginLeft: 15 }}>
+           
+           <AreaChart data={workoutData} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
+               <CartesianGrid strokeDasharray="3 3" />
+               <XAxis dataKey="date" />
+               <YAxis />
+               <Tooltip content={<CustomTooltip />} />
+               <Legend />
+               <Area type="monotone" dataKey="percentage" stroke={ darkMode ? "#475E36" :"#B2C9A1"} fill="rgba(148, 181, 125,0.7)" />
+           </AreaChart>
+       </ResponsiveContainer>
+           
              
           
          :(
             ''
          )
            }
-           <div className="pecentage p-3 flex flex-col items-center justify-center w-full lg:w-1/3"
+           {plansetting && (
+        <div>
+          <div className="flex flex-col items-center justify-center w-full">
+            {selectedWorkoutPlan && (
+              <div className="workout-plan flex gap-2 items-center mb-2 ml-4">
+                <h2 className="font-semibold text-md">Selected Workout</h2>
+                <p className="font-light text-sm">{selectedWorkoutPlan}</p>
+              </div>
+            )}
+
+            {workoutData.map((workout, index) => (
+              <div key={index} className="flex flex-col lg:flex-row mb-2  items-center justify-center">
+                 <div class="input-wrapper2  mt-9 lg:mt-4 ">
+                 <input
+                  type="text"
+                  value={workout.date}
+                  onChange={(e) => handleInputChange(index, 'date', e.target.value)}
+                  className="p-2 border rounded input"
+                />
+                 </div>
+                <div class="input-wrapper2 mt-4 ">
+                <input
+                  type="text"
+                  value={workout.workout}
+                  onChange={(e) => handleInputChange(index, 'workout', e.target.value)}
+                  className="p-2 border rounded mx-2 input"
+                />
+                </div>
+                <div class="input-wrapper2 mt-4 ">
+                <input
+                  type="number"
+                  value={workout.percentage}
+                  onChange={(e) => handleInputChange(index, 'percentage', e.target.value)}
+                  className="p-2 border rounded input"
+                />
+                </div>
+                <div style={{backgroundColor: darkMode ? "rgba(5, 6, 4,0.7)":"rgba(250, 251, 249, 0.75)"}} className="vizorja flex items-center"></div>
+              </div>
+            ))}
+
+            <button
+              onClick={handleSaveChanges}
+              className="p-3 bg-blue-500 text-white rounded"
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      )}
+
+           {chartShow && 
+           <div className="pecentage p-3 flex flex-col items-center justify-center w-full h-96 lg:w-1/3"
            style={{ borderRadius:"10px",backgroundColor: "#94b57d",
-            height:'63vh' ,marginLeft:15,marginRight:15
+             marginLeft:25,marginRight:15
            }}
            >
              <p className="text-6xl font-semibold text-center"
@@ -356,6 +446,7 @@ const NavbarGeneralPlanprogram = () => {
              >{percentage} %</p>
              <p className="text-md font-light"  style={{color:darkMode? "#FAFBF9":"#050604"}}>Planprogram Finished</p>
          </div>
+           }
            </div>
            </div>
         </div>
