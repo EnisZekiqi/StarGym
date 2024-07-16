@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import NavbarGeneralPlanprogram from "./NavbarGeneralPlanprogram";
 import Cookies from 'js-cookie';
+import { Snackbar } from "@mui/material";
+import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 
 const PlanProgram = () => {
     const { darkMode } = useDarkMode()
@@ -12,6 +15,10 @@ const PlanProgram = () => {
     const [offer2 ,setOffer2]=useState(false)
     const [offer3 ,setOffer3]=useState(false)
     const [workoutData, setWorkoutData] = useState([]);
+    const [workoutSuccess,setworkoutSuccess]=useState(false)
+    const [workoutSuccessMessage,setWorkoutSuccessMessage]=useState('')
+
+    const navigate =useNavigate()
 
     const workoutPlans = {
       offer1: "High Intensity Workout",
@@ -60,6 +67,19 @@ const PlanProgram = () => {
     Cookies.set('selectedWorkout', selectedPlan);
     Cookies.set('workoutData', JSON.stringify(workoutData));
 
+    setOpen(true)
+    setworkoutSuccess(true)
+    setWorkoutSuccessMessage(`Planprogram ${selectedPlan} chosen successfully!`)
+    setTimeout(() => {
+      setworkoutSuccess(false);
+      setWorkoutSuccessMessage('');
+  }, 3000);
+
+  if(workoutSuccess){
+    navigate('/planprogram')
+  }
+
+
     // Toggle the offer state to show the chart
     switch (offer) {
         case 'offer1':
@@ -82,6 +102,12 @@ const PlanProgram = () => {
     }
 };
 
+const [open,setOpen]=useState(false)
+
+const handleClose=()=>{
+  setOpen(false)
+}
+
  const btnBuy = darkMode ? "btnThjesht":"btnThjesht2"
 
     return ( 
@@ -94,7 +120,7 @@ const PlanProgram = () => {
             <div style={{backgroundColor: darkMode ? "#FAFBF9":"#050604",color:darkMode ? "#050604":"#FAFBF9"}} className="container mx-auto px-0 md:px-8 flex flex-col items-center md:items-stretch gap-8">
                 <h1 className="text-4xl font-bold">Planprogram</h1>
                 <p className="text-md font-normal -mt-6">Avilable Workouts get one now</p>
-                <div className="flex flex-col md:flex-row items-center lg:items-stretch justify-between gap-10 md:gap-2"
+                <div className="flex flex-col lg:flex-row items-center lg:items-stretch justify-between gap-10 md:gap-2"
                 style={{
                     justifyContent:(offer1 || offer2 || offer3) ? "start":""
                 }}
@@ -250,7 +276,7 @@ const PlanProgram = () => {
                         <p className="font-light text-sm">Legs </p>
                         <p className="font-light text-xs">4 Workouts & 3 sets each</p>
                        </div>
-                       <button className={` ${btnBuy}  mt-4`} onClick={() => handleStartWorkout('offer3')}>
+                       <button className={` ${btnBuy}  mt-4`} onClick={() => handleStartWorkout('offer2')}>
                         Start the Planprogram</button>
                       </div>
                     </div>
@@ -290,6 +316,23 @@ const PlanProgram = () => {
                     </div>
                     }
                    </AnimatePresence>
+                   {workoutSuccess &&
+                   <Snackbar
+                   open={open}
+                   autoHideDuration={6000}
+                   onClose={handleClose}
+                   message="Note archived"
+                   
+                 >
+                     <Alert
+                   severity="success"
+                   variant="filled"
+                   sx={{width:"fit-content" ,marginLeft:'20px',marginTop:'20px'}}
+                   >
+                   <p>  {workoutSuccessMessage}</p>
+                   </Alert>
+                     </Snackbar>
+                   }
                 </div>
             </div>
            <div className="empty"  style={{backgroundColor: darkMode ? "#FAFBF9":"#050604",color:darkMode ? "#050604":"#FAFBF9"}}></div>

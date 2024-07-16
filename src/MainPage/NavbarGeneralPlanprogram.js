@@ -63,6 +63,10 @@ import {
 } from "react-icons/fi";
 import Nofriends from '../images/World travel.svg'
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css'; 
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+
 const NavbarGeneralPlanprogram = () => {
 
     const [nickname, setNickname] = useState(Cookies.get('nickname') || '');
@@ -126,35 +130,69 @@ const NavbarGeneralPlanprogram = () => {
       };
     }, []);
 
-    const [workoutData, setWorkoutData] = useState([]);
-        const [suppPlanprogram,setSuppPlanprogram]=useState(false)
-        const [selectedWorkoutPlan, setSelectedWorkoutPlan] = useState('');
+    const [workoutData, setWorkoutData] = useState([]); //// infromation of the workout 
+        const [suppPlanprogram,setSuppPlanprogram]=useState(false) /// the drawer is clicked with this 
+        const [selectedWorkoutPlan, setSelectedWorkoutPlan] = useState(''); //// name of the workout taken 
+        const [workoutCalendar,setWorkoutCalendar]=useState(false)  /// the calendar is shown with this 
+        const [date, setDate] = useState(new Date());  ///// calendar setup 
+        const workoutDays = ['Monday', 'Tuesday', 'Thursday','Friday'];
+
+        const tileClassName = ({ date, view }) => {
+          const dayOfWeek = date.toLocaleString('en-us', { weekday: 'long' });
+      
+          // Check if the day of the week is in the workoutData array
+          const isWorkoutDay = workoutData.some(day => day.date === dayOfWeek);
+      
+          // Customize the className based on the condition
+          return isWorkoutDay ? 'workout-day' : '';
+      };
 
         useEffect(() => {
-            // Retrieve selected workout plan and workout data from cookies
-            const planFromCookie = Cookies.get('selectedWorkoutPlan');
-            const dataFromCookie = Cookies.get('workoutData');
-    
-            if (planFromCookie && dataFromCookie) {
-                setSelectedWorkoutPlan(planFromCookie);
-                try {
-                    setWorkoutData(JSON.parse(dataFromCookie));
-                } catch (error) {
-                    console.error('Error parsing workout data from cookies:', error);
-                    setWorkoutData([]);
-                }
-            } else {
-                // Handle case where cookies are not set or data is missing
-                console.warn('Workout plan or data not found in cookies.');
-                setSelectedWorkoutPlan(null);
-                setWorkoutData([]);
+          const savedWorkoutData = Cookies.get('workoutData');
+          if (savedWorkoutData) {
+              try {
+                  setWorkoutData(JSON.parse(savedWorkoutData));
+              } catch (error) {
+                  console.error('Error parsing workout data from cookies:', error);
+                  setWorkoutData([]);
+              }
+          } else {
+              setWorkoutData([]);
+          }
+      }, []);
+
+        useEffect(() => {
+          const planFromCookie = Cookies.get('selectedWorkoutPlan');
+          const dataFromCookie = Cookies.get('workoutData');
+        
+          if (planFromCookie && dataFromCookie) {
+            try {
+              const parsedData = JSON.parse(dataFromCookie);
+              setWorkoutData(parsedData);
+              // Find the corresponding workout plan name
+              const matchingPlan = parsedData.find(workout => workout.workout === planFromCookie);
+              if (matchingPlan) {
+                setSelectedWorkoutPlan(matchingPlan.workout);
+              } else {
+                console.warn('Workout plan not found in workout data.');
+                setSelectedWorkoutPlan('');
+              }
+            } catch (error) {
+              console.error('Error parsing workout data from cookies:', error);
+              setSelectedWorkoutPlan('');
+              setWorkoutData([]);
             }
+          } else {
+            console.warn('Workout plan or data not found in cookies.');
+            setSelectedWorkoutPlan('');
+            setWorkoutData([]);
+          }
         }, []);
 
 
         useEffect(() => {
-          const savedPlan = Cookies.get('selectedWorkoutPlan');
-          const savedData = Cookies.get('workoutData');
+          const savedPlan = Cookies.get('selectedWorkout',{ expires: 30 });
+          const savedData = Cookies.get('workoutData',{ expires: 30 });
       
           if (savedPlan) {
             setSelectedWorkoutPlan(savedPlan);
@@ -235,11 +273,20 @@ const NavbarGeneralPlanprogram = () => {
             if (button === 'chart') {
               setChartShow(true);
               setPlansetting(false);
+              setWorkoutCalendar(false)
             } else if (button === 'plan') {
               setChartShow(false);
               setPlansetting(true);
+              setWorkoutCalendar(false)
+            }else if (button === 'calendar'){
+              setWorkoutCalendar(true)
+              setChartShow(false);
+              setPlansetting(false);
             }
           };
+
+        
+           const btnBuy = darkMode ? "btnThjesht":"btnThjesht2"
     return ( 
         <div>
  <div>
@@ -349,7 +396,7 @@ const NavbarGeneralPlanprogram = () => {
            <div className="flex"
            style={{minHeight:"70vh"}}
            >
-            <div className="flex flex-col gap-4 w-16 items-center"
+            <div className=" flex flex-col gap-4 w-16 items-center"
             style={{backgroundColor:'#94b57d',color:darkMode? "#FAFBF9":"#050604"}}
             >
                  <Avatar  sx={{ marginTop: "15px",scale:'1.3' }} src={fileURL}></Avatar>
@@ -362,6 +409,11 @@ const NavbarGeneralPlanprogram = () => {
                     style={{backgroundColor:plansetting ? "#475E36":"#a2be8e",borderRadius:'10px'}}
                     >
                     <ManageAccountsIcon/>
+                </button>
+                <button    onClick={() => handleButtonClick('calendar')} className="p-3"
+                    style={{backgroundColor:workoutCalendar ? "#475E36":"#a2be8e",borderRadius:'10px'}}
+                    >
+                    <CalendarMonthIcon/>
                 </button>
             </div>
            <div className="flex flex-col lg:flex-row w-full items-center justify-center mt-6 gap-8 lg:gap-0">
@@ -385,55 +437,59 @@ const NavbarGeneralPlanprogram = () => {
             ''
          )
            }
-           {plansetting && (
-        <div>
-          <div className="flex flex-col items-center justify-center w-full">
-            {selectedWorkoutPlan && (
-              <div className="workout-plan flex gap-2 items-center mb-2 ml-4">
-                <h2 className="font-semibold text-md">Selected Workout</h2>
-                <p className="font-light text-sm">{selectedWorkoutPlan}</p>
-              </div>
-            )}
+        {plansetting && (
+  <div>
+    <div className="flex flex-col items-center justify-center w-full">
+      {(selectedWorkoutPlan || workoutData.length > 0) ? (
+        <>
+          {selectedWorkoutPlan && (
+            <div className="workout-plan flex gap-2 items-center mb-2 ml-4">
+              <h2 className="font-semibold text-md">Selected Workout</h2>
+              <p className="font-light text-sm">{selectedWorkoutPlan}</p>
+            </div>
+          )}
 
-            {workoutData.map((workout, index) => (
-              <div key={index} className="flex flex-col lg:flex-row mb-2  items-center justify-center">
-                 <div class="input-wrapper2  mt-9 lg:mt-4 ">
-                 <input
+          {workoutData.map((workout, index) => (
+            <div key={index} className="flex flex-col lg:flex-row mb-2 items-center justify-center">
+              <div className="input-wrapper2 mt-9 lg:mt-4">
+                <input
                   type="text"
                   value={workout.date}
                   onChange={(e) => handleInputChange(index, 'date', e.target.value)}
                   className="p-2 border rounded input"
                 />
-                 </div>
-                <div class="input-wrapper2 mt-4 ">
+              </div>
+              <div className="input-wrapper2 mt-4">
                 <input
                   type="text"
                   value={workout.workout}
                   onChange={(e) => handleInputChange(index, 'workout', e.target.value)}
                   className="p-2 border rounded mx-2 input"
                 />
-                </div>
-                <div class="input-wrapper2 mt-4 ">
+              </div>
+              <div className="input-wrapper2 mt-4">
                 <input
                   type="number"
                   value={workout.percentage}
                   onChange={(e) => handleInputChange(index, 'percentage', e.target.value)}
                   className="p-2 border rounded input"
                 />
-                </div>
-                <div style={{backgroundColor: darkMode ? "rgba(5, 6, 4,0.7)":"rgba(250, 251, 249, 0.75)"}} className="vizorja flex items-center"></div>
               </div>
-            ))}
-
-            <button
-              onClick={handleSaveChanges}
-              className="p-3 bg-blue-500 text-white rounded"
-            >
-              Save Changes
-            </button>
-          </div>
-        </div>
+            </div>
+          ))}
+        </>
+      ) : (
+        <p className="font-light text-sm">No plan program added</p>
       )}
+       <button
+                onClick={handleSaveChanges}
+                className={` ${btnBuy} mt-4 mb-6`}
+              >
+                Save Changes
+              </button>
+    </div>
+  </div>
+)}
 
            {chartShow && 
            <div className="pecentage p-3 flex flex-col items-center justify-center w-full h-96 lg:w-1/3"
@@ -449,6 +505,17 @@ const NavbarGeneralPlanprogram = () => {
            }
            </div>
            </div>
+           {workoutCalendar && 
+           <div className="flex items-center justify-center "
+            style={{marginTop:'-360px'}}
+           >
+             <Calendar
+        onChange={setDate}
+        value={date}
+        tileClassName={tileClassName}
+      />
+           </div>
+           }
         </div>
     
         

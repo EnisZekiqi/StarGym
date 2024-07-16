@@ -1553,13 +1553,32 @@ z-index: 998
     width: 200px;
     margin-top: 40px;
   }
+  #mu{
+    display: none !important;
+  }
   .vizorja2{
     height: 1px;
     width: 200px;
     margin-top: 40px;
   }
 }
-
+.workout-day {
+  background-color: #94b57d; 
+  border:1px solid #000;/* Customize background color */ /* Text color */
+  border-radius: 50%; /* Rounded border */
+}
+.vizorja3{
+  width: 200px;
+  height: 0px;
+  border-radius: 50%;
+}
+@media (max-width:770px) {
+  .vizorja3{
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+  }
+}
 .saved-items-container::-webkit-scrollbar {
   height:9px;
 }
