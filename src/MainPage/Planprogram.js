@@ -64,8 +64,8 @@ const PlanProgram = () => {
     }
 
     // Save selected plan to cookie
-    Cookies.set('selectedWorkout', selectedPlan);
-    Cookies.set('workoutData', JSON.stringify(workoutData));
+    Cookies.set('selectedWorkout', selectedPlan, { expires: 30 });
+    Cookies.set('workoutData', JSON.stringify(workoutData), { expires: 30 });
 
     setOpen(true)
     setworkoutSuccess(true)

@@ -157,6 +157,13 @@ width: 200px;
 .empty4{
   height: 200px;
 }
+.emptyFull{
+  height: 800px;
+}
+.emptyFull2{
+  height: 600px;
+}
+
 
 
 .showi2{
@@ -1566,12 +1573,15 @@ z-index: 998
   background-color: #94b57d; 
   border:1px solid #000;/* Customize background color */ /* Text color */
   border-radius: 50%; /* Rounded border */
+  width: 300px;
 }
 .vizorja3{
   width: 200px;
   height: 0px;
   border-radius: 50%;
 }
+
+
 @media (max-width:770px) {
   .vizorja3{
     width: 0px;

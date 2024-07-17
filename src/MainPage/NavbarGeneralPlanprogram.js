@@ -66,6 +66,7 @@ import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; 
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 const NavbarGeneralPlanprogram = () => {
 
@@ -191,8 +192,8 @@ const NavbarGeneralPlanprogram = () => {
 
 
         useEffect(() => {
-          const savedPlan = Cookies.get('selectedWorkout',{ expires: 30 });
-          const savedData = Cookies.get('workoutData',{ expires: 30 });
+          const savedPlan = Cookies.get('selectedWorkout');
+          const savedData = Cookies.get('workoutData');
       
           if (savedPlan) {
             setSelectedWorkoutPlan(savedPlan);
@@ -286,6 +287,48 @@ const NavbarGeneralPlanprogram = () => {
           };
 
         
+         const workoutMethod = [
+            { name:'Chest', work: ['Chest Cable Flies','Chest Incline Dumbell Press','Chest Incline Smith Machine','PeckDeck Flies'] },
+            { name: 'Back',  work: ['Lat Pulldown','Single Arm Rows','T Bar Row','Incline Dumbell Rows'] },
+            { name: 'Biceps', work: ['Biceps Curls','Biceps Spider Curl','Biceps Dumbell Curls'] },
+            { name: 'Triceps',  work: ['Skull Crusher','Triceps Pushdown','Overhead Triceps Pushup','Single Arm Triceps Push'] },
+            { name: 'Shoulder',  work:[ 'Dumbell Shoulder Press','Smith Shoulder Press','Lateral Raises','Overhead Cable Delts','Dumbell Traps'] },
+            { name: 'Legs', work: ['Hexadon Squad','Smith Squad','Leg Extension','Hamstring Extension','Calves Workout'] },
+        ]
+        const [checkedItems, setCheckedItems] = useState({});
+
+        useEffect(() => {
+          const savedCheckedItems = Cookies.get('checkedItems');
+          if (savedCheckedItems) {
+              setCheckedItems(JSON.parse(savedCheckedItems));
+          }
+      }, []);
+  
+      const handleCheckboxChange = (name, work) => {
+          setCheckedItems(prevState => ({
+              ...prevState,
+              [name]: {
+                  ...prevState[name],
+                  [work]: !prevState[name]?.[work]
+              }
+          }));
+      };
+  
+      const handleSave = () => {
+          Cookies.set('checkedItems', JSON.stringify(checkedItems));
+          const data = Object.entries(checkedItems).flatMap(([name, works]) =>
+              Object.entries(works).filter(([work, checked]) => checked).map(([work]) => ({
+                  date: new Date().toLocaleDateString(), // Example date, modify as needed
+                  percentage: 100, // Example percentage, modify as needed
+                  name,
+                  work
+              }))
+          );
+          setWorkoutData(data);
+          setChartShow(true);
+      };
+  
+
            const btnBuy = darkMode ? "btnThjesht":"btnThjesht2"
     return ( 
         <div>
@@ -391,13 +434,12 @@ const NavbarGeneralPlanprogram = () => {
         }
        
         <div  className={`drawer-content2 ${suppPlanprogram ? 'show' : 'hide'}`}
-        style={{backgroundColor:darkMode ? "#FAFBF9":"#050604",zIndex:201,minHeight:"70vh"}}
+        style={{backgroundColor:darkMode ? "#FAFBF9":"#050604",zIndex:201,minHeight:"70vh",overflowY:'hidden'}}
         >
-           <div className="flex"
-           style={{minHeight:"70vh"}}
+           <div className="flex h-screen"
            >
-            <div className=" flex flex-col gap-4 w-16 items-center"
-            style={{backgroundColor:'#94b57d',color:darkMode? "#FAFBF9":"#050604"}}
+            <div className="sidebar fixed flex flex-col gap-4 w-16 items-center"
+            style={{backgroundColor: '#94b57d', color: darkMode ? "#FAFBF9" : "#050604", position: "sticky", top: 0, height: "70vh"}}
             >
                  <Avatar  sx={{ marginTop: "15px",scale:'1.3' }} src={fileURL}></Avatar>
                 <button  onClick={() => handleButtonClick('chart')} className="p-3"
@@ -413,37 +455,52 @@ const NavbarGeneralPlanprogram = () => {
                 <button    onClick={() => handleButtonClick('calendar')} className="p-3"
                     style={{backgroundColor:workoutCalendar ? "#475E36":"#a2be8e",borderRadius:'10px'}}
                     >
-                    <CalendarMonthIcon/>
+                    <FitnessCenterIcon/>
                 </button>
             </div>
-           <div className="flex flex-col lg:flex-row w-full items-center justify-center mt-6 gap-8 lg:gap-0">
-           {chartShow ?
-           
-            <ResponsiveContainer id='chartcontainer' width="100%" height={380} style={{ backgroundColor: 'rgb(71,94,54,5%)', border: '0.2px solid rgba(82, 82, 82,0.3)', borderRadius: '10px', marginLeft: 15 }}>
-           
-           <AreaChart data={workoutData} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
-               <CartesianGrid strokeDasharray="3 3" />
-               <XAxis dataKey="date" />
-               <YAxis />
-               <Tooltip content={<CustomTooltip />} />
-               <Legend />
-               <Area type="monotone" dataKey="percentage" stroke={ darkMode ? "#475E36" :"#B2C9A1"} fill="rgba(148, 181, 125,0.7)" />
-           </AreaChart>
-       </ResponsiveContainer>
-           
-             
+           <div className="content flex flex-col lg:flex-row w-full items-center justify-center  mt-6 gap-8 lg:gap-0"
+            style={{ height:"70vh", overflowY: "auto"}}
+           >
           
-         :(
-            ''
-         )
-           }
+    
+          {chartShow && (
+                <div className="flex flex-col lg:flex-row items-center">
+               <div className="empty2"></div>
+               <div className="empty3"></div>
+                    <ResponsiveContainer className="responsive-container" id='chartcontainer' width="100%" height={380} style={{ backgroundColor: 'rgb(71,94,54,5%)', border: '0.2px solid rgba(82, 82, 82,0.3)', borderRadius: '10px', marginLeft: 15}}>
+                        <AreaChart data={workoutData} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="date" />
+                            <YAxis />
+                            <Tooltip content={<CustomTooltip />} />
+                            <Legend />
+                            <Area type="monotone" dataKey="percentage" stroke="#475E36" fill="rgba(148, 181, 125,0.7)" />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                    <h3 className="text-lg font-semibold block lg:hidden mt-4">Selected Workouts:</h3>
+                    <div className="mt-4 mb-4 flex flex-row lg:flex-col px-3">
+                    <h3 className="text-lg font-semibold hidden lg:block mt-4">Selected Workouts:</h3>  
+                        {Object.entries(checkedItems).map(([name, works]) => (
+                            <div key={name} className="flex flex-col lg:flex-row gap-2 lg:gap-5 mb-4 lg:mb-2">
+                                <p className="font-semibold text-md mb-2">{name}</p>
+                                <ul className="list-disc list-inside">
+                                    {Object.entries(works).filter(([work, checked]) => checked).map(([work]) => (
+                                        <li key={work} className="font-light text-xs lg:text-sm">{work}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         {plansetting && (
   <div>
+    <div className="emptyFull block lg:hidden "></div>
     <div className="flex flex-col items-center justify-center w-full">
       {(selectedWorkoutPlan || workoutData.length > 0) ? (
         <>
           {selectedWorkoutPlan && (
-            <div className="workout-plan flex gap-2 items-center mb-2 ml-4">
+            <div className="workout-plan flex gap-2 items-center mb-2 ml-4 mt-8">
               <h2 className="font-semibold text-md">Selected Workout</h2>
               <p className="font-light text-sm">{selectedWorkoutPlan}</p>
             </div>
@@ -481,41 +538,53 @@ const NavbarGeneralPlanprogram = () => {
       ) : (
         <p className="font-light text-sm">No plan program added</p>
       )}
+      {selectedWorkoutPlan && 
        <button
                 onClick={handleSaveChanges}
-                className={` ${btnBuy} mt-4 mb-6`}
+                className={` ${btnBuy} mt-4 mb-24 lg:mb-12`}
               >
                 Save Changes
               </button>
+      }
     </div>
   </div>
 )}
 
-           {chartShow && 
-           <div className="pecentage p-3 flex flex-col items-center justify-center w-full h-96 lg:w-1/3"
-           style={{ borderRadius:"10px",backgroundColor: "#94b57d",
-             marginLeft:25,marginRight:15
-           }}
-           >
-             <p className="text-6xl font-semibold text-center"
-             style={{color:darkMode? "#FAFBF9":"#050604"}}
-             >{percentage} %</p>
-             <p className="text-md font-light"  style={{color:darkMode? "#FAFBF9":"#050604"}}>Planprogram Finished</p>
-         </div>
+      {workoutCalendar && 
+           <div>
+            <div className="flex flex-col lg:flex-row justify-between px-2">
+            <div className="emptyFull2 -mt-2 block lg:hidden"></div>
+           
+           {workoutMethod.map((works, index) => (
+               <div key={index} className="mb-4 lg:mb-0 lg:mr-4">
+                   <p className="font-semibold text-md mb-2">{works.name}</p>
+                   <div className="flex flex-col">
+                       {works.work.map((work, workIndex) => (
+                           <label key={workIndex} className="flex items-center mb-1">
+                               <input
+                                   className="mr-2"
+                                   type="checkbox"
+                                   checked={checkedItems[works.name]?.[work] || false}
+                                   onChange={() => handleCheckboxChange(works.name, work)}
+                                   style={{ width: '20px', height: '20px' }}
+                               />
+                               <span className={`font-light text-sm ${checkedItems[works.name]?.[work] ? 'text-[#94b57d]' : ''}`}>{work}</span>
+                           </label>
+                       ))}
+                   </div>
+               </div>
+           ))}
+       </div>
+     <div className="flex items-center justify-center w-full">
+     <button className={` ${btnBuy} mt-4 mb-24 lg:mb-12 `} 
+     style={{paddingRight:'20px',paddingLeft:'20px'}}
+     onClick={handleSave}>Save</button>
+     </div>
+           </div>
            }
            </div>
            </div>
-           {workoutCalendar && 
-           <div className="flex items-center justify-center "
-            style={{marginTop:'-360px'}}
-           >
-             <Calendar
-        onChange={setDate}
-        value={date}
-        tileClassName={tileClassName}
-      />
-           </div>
-           }
+           
         </div>
     
         
