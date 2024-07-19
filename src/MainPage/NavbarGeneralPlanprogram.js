@@ -501,7 +501,7 @@ const NavbarGeneralPlanprogram = () => {
         <>
           {selectedWorkoutPlan && (
             <div className="workout-plan flex gap-2 items-center mb-2 ml-4 mt-8">
-              <h2 className="font-semibold text-md">Selected Workout</h2>
+              <h2 className="font-semibold text-md">Selected Planprogram</h2>
               <p className="font-light text-sm">{selectedWorkoutPlan}</p>
             </div>
           )}

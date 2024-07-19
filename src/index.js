@@ -22,6 +22,7 @@ import Supplement from './MainPage/Supplements';
 import { SupplementProvider } from './useSupplementContext ';
 import ProtectedRoute from './ProtectedRoute';
 import PlanProgram from './MainPage/Planprogram';
+import Diets from './MainPage/Diets';
 
 
 const router = createBrowserRouter([
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
   },
   {
     path: "editprofile",
-    element: <ProtectedRoute><EditProfile/></ProtectedRoute> ,
+    element: <EditProfile/> ,
   },
   {
     path: "main",
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
   {
     path:"planprogram",
     element:<ProtectedRoute><PlanProgram/></ProtectedRoute>
+  },
+  {
+    path:"diets",
+    element:<ProtectedRoute><Diets/></ProtectedRoute>
   },
   {
     path :"info",

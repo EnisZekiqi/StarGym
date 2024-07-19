@@ -107,7 +107,7 @@ const [open,setOpen]=useState(false)
 const handleClose=()=>{
   setOpen(false)
 }
-
+const [closingOffers, setClosingOffers] = useState({ offer1: false, offer2: false, offer3: false });
  const btnBuy = darkMode ? "btnThjesht":"btnThjesht2"
 
     return ( 
@@ -214,7 +214,7 @@ const handleClose=()=>{
                     </div>
                    <AnimatePresence>
                    {offer1 && 
-                    <div className="offer-text offer-text-1"
+                    <div className={`offer-text  ${offer1 ? 'open' : 'close'}  offer-text-1`}
                     >
                       <div className="flex flex-col gap-2 pr-2 pl-2">
                        <div className="flex gap-2 items-center">
@@ -248,7 +248,7 @@ const handleClose=()=>{
                     </div>
                     }
                     {offer2 && 
-                    <div className="offer-text offer-text-1"
+                    <div className={`offer-text  ${offer2 ? 'open' : 'close'}  offer-text-1`}
                     >
                       <div className="flex flex-col gap-2 pr-2 pl-2">
                        <div className="flex gap-2 items-center">
@@ -282,7 +282,7 @@ const handleClose=()=>{
                     </div>
                     }
                     {offer3 && 
-                    <div className="offer-text offer-text-1"
+                    <div className={`offer-text  ${offer3 ? 'open' : 'close'}  offer-text-1`}
                     >
                       <div className="flex flex-col gap-2 pr-2 pl-2">
                        <div className="flex gap-2 items-center">

@@ -11,7 +11,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useSuccessMessage } from './SuccessMessageContext';
 import { useNavigate } from 'react-router-dom';
-
+import Cookies from 'js-cookie';
 
 const SignUp = () => {
 
@@ -90,6 +90,19 @@ const SignUp = () => {
           if (email.trim() !== '' && password.trim() !== '' && repassword.trim() !== '' && repassword.trim() === password.trim() ) {
               setSuccess(true);
               setTimeout(() => {
+                Cookies.remove('notes');
+              Cookies.remove('favorites');
+              Cookies.remove('bookmarks');
+              Cookies.remove('gender');
+              Cookies.remove('country');
+              Cookies.remove('avatar');
+              Cookies.remove('description');
+              localStorage.removeItem('selectedImageURL');
+              localStorage.removeItem('cartItems');
+              localStorage.removeItem('friends')
+              Cookies.remove('cartItems')
+              Cookies.remove('selectedWorkoutPlan')
+              Cookies.remove('workoutData')
                 navigate('/editprofile');
               }, 3000);
             } else {

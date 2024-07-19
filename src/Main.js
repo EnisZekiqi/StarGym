@@ -185,7 +185,7 @@ useEffect(() => {
           style={{ originY: "top", translateX: "-50%", border: darkMode ? "0.5px solid rgba(5, 6, 4,0.7)" : "0.5px solid rgba(250, 251, 249,0.7)",backgroundColor:darkMode? "rgba(250, 251, 249)":"rgba(5, 6, 4)" }}
           className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl z-50 absolute top-[120%] left-[50%] w-46 -ml-12 md:-ml-4 overflow-hidden"
         >
-           <a href="#home"><Option setOpen={setOpen} Icon={FiHome} text="Home" /></a>
+           <a href="/main"><Option setOpen={setOpen} Icon={FiHome} text="Home" /></a>
          <div onClick={toggleEdit}>
          <Option setOpen={setOpen} Icon={FiEdit} text="Edit Profile"  />
          </div>
@@ -217,7 +217,7 @@ useEffect(() => {
         </div>
       </div>
      </div>
-     <div className="empty"></div>
+     {xs ? <div className="empty"></div>:<div className="empty3"></div> }
      <div id="home" className="mt-8 container mx-auto px-4 ">
      {xs && 
      <div>
@@ -380,7 +380,7 @@ const ThreeMenu = ()=>{
           onClick={() => setOpen3(false)}
           className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
         >
-          <span className="text-center">Diets</span>
+           <a href="/diets">PlanProgram</a>
         </motion.li>
         <motion.li
           variants={itemVariants}
@@ -1887,7 +1887,6 @@ const removeItem = (index) => {
         </div>
         <div onClick={toggleShoppingCart} className="flex gap-2 cursor-pointer items-center mt-4 w-1/4" style={{ marginTop: shopingCart ? "15px" : "15px" }}>
           <div>
-          {notificationCart && <span class=" absolute inline-flex h-2 w-2 rounded-full bg-emerald opacity-100"></span>}
           <ShoppingCartIcon />
           </div>
           <h3 className="font-medium text-sm mt-2 text-start mb-2">Cart</h3>
@@ -1941,7 +1940,7 @@ const removeItem = (index) => {
             >
             <path d="M20 10c2 3-3 12-5 12s-2-1-3-1-1 1-3 1-7-9-5-12 5-3 7-2V5C5.38 8.07 4.11 3.78 4.11 3.78S6.77.19 11 5V3h2v5c2-1 5-1 7 2z" />
             </svg>
-       <a href="#about"> <p className="font-medium text-sm mt-2 ">Diets</p></a>
+       <a href="/diets"> <p className="font-medium text-sm mt-2 ">Diets</p></a>
        </div>
        <div className="flex gap-2 mt-4 cursor-pointer items-center w-2/4">
        <svg

@@ -767,17 +767,75 @@ input:checked + .slider:before {
   opacity: 0;
 }
 
-.offer-text {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  display: none;
+@keyframes slideInX {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
-.offer-text-1,
-.offer-text-2,
-.offer-text-3 {
-  opacity: 1;
-  display: block;
+@keyframes slideOutX {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+/* Keyframes for small screens (enter and exit) */
+@keyframes slideInY {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutY {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+/* Base styles for the offer-text */
+.offer-text {
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+}
+
+/* Styles for large screens */
+@media (min-width: 1024px) {
+  .offer-text.open {
+    animation: slideInX 0.5s forwards;
+  }
+  .offer-text.close {
+    animation: slideOutX 0.5s forwards;
+  }
+}
+
+/* Styles for small screens */
+@media (max-width: 1023px) {
+  .offer-text.open {
+    animation: slideInY 0.5s forwards;
+  }
+  .offer-text.close {
+    animation: slideOutY 0.5s forwards;
+  }
 }
 
 .drawer-content2 {
