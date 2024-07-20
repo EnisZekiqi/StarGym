@@ -328,7 +328,34 @@ const NavbarGeneralPlanprogram = () => {
           setChartShow(true);
       };
   
-
+      const styles = {
+        checkbox: {
+          width: '20px',
+          height: '20px',
+          appearance: 'none', // Remove default appearance
+          border:darkMode? '1px solid #050406':'1px solid #FAFBF9', // Customize the border
+          borderRadius: '4px', // Add border radius if needed
+          outline: 'none',
+          cursor: 'pointer',
+          position: 'relative',
+        },
+        checkboxChecked: {
+          backgroundColor: 'rgb(148, 181, 125)', // Change this to the desired color
+          position: 'relative',
+        },
+        checkmark: {
+          content: '""',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '10px', // Customize the size
+          height: '10px', // Customize the size
+          backgroundColor: '#FAFBF9', // Customize the checkmark color
+          borderRadius: '2px',
+        },
+      };
+ ///////////check box css       
            const btnBuy = darkMode ? "btnThjesht":"btnThjesht2"
     return ( 
         <div>
@@ -566,7 +593,10 @@ const NavbarGeneralPlanprogram = () => {
                                    type="checkbox"
                                    checked={checkedItems[works.name]?.[work] || false}
                                    onChange={() => handleCheckboxChange(works.name, work)}
-                                   style={{ width: '20px', height: '20px' }}
+                                   style={{ width: '20px', height: '20px',
+                                    ...styles.checkbox,
+                                    ...(checkedItems[works.name]?.[work] ? styles.checkboxChecked : {})
+                                    }}
                                />
                                <span className={`font-light text-sm ${checkedItems[works.name]?.[work] ? 'text-[#94b57d]' : ''}`}>{work}</span>
                            </label>

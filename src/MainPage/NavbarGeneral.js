@@ -304,33 +304,33 @@ const Option = ({ text, Icon, setOpen }) => {
       </button>
   
       <motion.ul
-        initial={wrapperVariants.closed}
-        variants={wrapperVariants}
-        style={{ originY: "top", translateX: "-50%", border: darkMode ? "0.5px solid rgba(5, 6, 4,0.7)" : "0.5px solid rgba(250, 251, 249,0.7)",backgroundColor:darkMode? "rgba(250, 251, 249)":"rgba(5, 6, 4)" }}
-        className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl z-50 absolute top-[120%] left-[50%] w-50 overflow-hidden"
-      >
+            initial={wrapperVariants.closed}
+            variants={wrapperVariants}
+            style={{ originY: "top", translateX: "-50%", border: darkMode ? "0.5px solid rgba(5, 6, 4,0.7)" : "0.5px solid rgba(250, 251, 249,0.7)",backgroundColor:darkMode? "rgba(250, 251, 249)":"rgba(5, 6, 4)" }}
+            className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl z-50 absolute top-[120%] left-[50%] w-50 overflow-hidden"
+          >
+                  <motion.li
+                variants={itemVariants}
+                onClick={() => setOpen3(false)}
+                className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+              >
+                  <a href="/diets">Diets</a>
+              </motion.li>
               <motion.li
-            variants={itemVariants}
-            onClick={() => setOpen3(false)}
-            className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
-          >
-            <span className="text-center">Diets</span>
-          </motion.li>
-          <motion.li
-            variants={itemVariants}
-            onClick={() => setOpen3(false)}
-            className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
-          >
-            <span>PlanProgram</span>
-          </motion.li>
-          <motion.li
-            variants={itemVariants}
-            onClick={() => setOpen3(false)}
-            className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
-          >
-            <span>Suplements</span>
-          </motion.li>
-      </motion.ul>
+                variants={itemVariants}
+                onClick={() => setOpen3(false)}
+                className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+              >
+                 <a href="/planprogram">PlanProgram</a>
+              </motion.li>
+              <motion.li
+                variants={itemVariants}
+                onClick={() => setOpen3(false)}
+                className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
+              >
+                <a href="/supplement">Suplements</a>
+              </motion.li>
+          </motion.ul>
     </motion.div>
   </div>
     )

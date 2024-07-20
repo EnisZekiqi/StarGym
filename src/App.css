@@ -838,6 +838,15 @@ input:checked + .slider:before {
   }
 }
 
+.faq-content {
+  transition: opacity 0.4s ease, max-height 0.4s ease;
+  overflow: hidden;
+}
+
+.faq-content > div {
+  margin-bottom: 1rem;
+}
+
 .drawer-content2 {
   position: fixed;
   bottom: -100%; /* adjust as needed to be above the navigation bar */

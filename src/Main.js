@@ -380,7 +380,7 @@ const ThreeMenu = ()=>{
           onClick={() => setOpen3(false)}
           className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
         >
-           <a href="/diets">PlanProgram</a>
+           <a href="/diets">Diets</a>
         </motion.li>
         <motion.li
           variants={itemVariants}
@@ -1443,7 +1443,7 @@ const modalStyleJr = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '40%',
+  
   backgroundColor:  '#FAFBF9' ,
   boxShadow: 24,
   padding: '16px',
@@ -1868,11 +1868,8 @@ const removeItem = (index) => {
                  
               <button
               onClick={() => handleToggleFriend(selectedFriend)}
-              className={` pt-2 pb-2 text-xs md:text-md mr-2`}
-              style={{border:darkMode ? "1px solid #131A0F":"1px solid #FAFBF9",borderRadius:'5px',paddingRight:'16px',paddingLeft:'16px',
-                background: friends.find(friend => friend.name === selectedFriend.name) ? (darkMode ? "#131A0F" : "#FAFBF9") : "#050604",
-                color: friends.find(friend => friend.name === selectedFriend.name) ? (darkMode ? "#FAFBF9" : "#131A0F") : (darkMode ? "#FAFBF9" : ""),
-              }}
+              className={`${buttonSwitch} p-2 text-xs md:text-md mr-2`}
+              
             >
               {friends.find(friend => friend.name === selectedFriend.name) ? 'Following' : 'Follow'}
             </button>

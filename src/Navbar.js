@@ -130,7 +130,7 @@ const Navbar = () => {
 
         if (storedNickname && storedPassword && nickname.trim() === storedNickname && password === storedPassword) {
           setSuccess(true);
-          Cookies.set('isAuthenticated', 'true', { expires: 1 }); // Expires in 1 day
+          Cookies.set('isAuthenticated', 'true', { expires: 3 }); // Expires in 3 day
           setTimeout(() => {
                 setNickname('');
                 setPassword('');

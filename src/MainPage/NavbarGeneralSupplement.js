@@ -550,21 +550,21 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
                 onClick={() => setOpen3(false)}
                 className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
               >
-                <span className="text-center">Diets</span>
+                  <a href="/diets">Diets</a>
               </motion.li>
               <motion.li
                 variants={itemVariants}
                 onClick={() => setOpen3(false)}
                 className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
               >
-                <span>PlanProgram</span>
+                 <a href="/planprogram">PlanProgram</a>
               </motion.li>
               <motion.li
                 variants={itemVariants}
                 onClick={() => setOpen3(false)}
                 className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-indigo-100 text-slate-700 hover:text-indigo-500 transition-colors cursor-pointer"
               >
-                <span>Suplements</span>
+                <a href="/supplement">Suplements</a>
               </motion.li>
           </motion.ul>
         </motion.div>
