@@ -109,9 +109,6 @@ const EditProfile = () => {
 
   return (
     <div>
-      <div className="backdrop">
-        <div className="loader"></div>
-      </div>
       <h1 className="font-bold ml-4 text-3xl mt-4 mb-4">StarGym</h1>
       <div className="container mx-auto px-4 mt-12 md:mt-20">
         <h1 className="font-bold text-2xl">Account</h1>
