@@ -27,21 +27,23 @@ const Diets = () => {
       setIsOpen(false)
     }
 
+/////////// healthy diets
+
     const bionatural =[
       {
         name:'Oats',
         weight:['2 Scoups (75gr)','1 Scoups (37.5gr)'],
-        nutri:['2gr Fat','19gr Protein','1gr Suggar']
+        nutri:['2gr Fat','19gr Protein','1gr Suggar','144 Calories']
       },
       {
         name:'Peanut Butter',
         weight:['2 Small spoons (25gr)','1 spoon (17gr)'],
-        nutri:['12gr Fat','29gr Protein','0.5gr Suggar']
+        nutri:['12gr Fat','29gr Protein','0.5gr Suggar','76 Calories']
       },
       {
         name:'Bananas',
         weight:['2 Bananas (203gr)','1 Banana (101gr)'],
-        nutri:['4gr Fat','4gr Protein','8gr Suggar']
+        nutri:['4gr Fat','4gr Protein','8gr Suggar','104 Calories']
       }
     ]
 
@@ -49,19 +51,60 @@ const Diets = () => {
       {
         name:'Rice Cakes',
         weight:['5 cakes (33gr)','7 Scoups (42.5gr)'],
-        nutri:['4.2gr Fat','9.5gr Protein','2.6gr Fibre']
+        nutri:['4.2gr Fat','9.5gr Protein','2.6gr Fibre','16 Calories']
       },
       {
         name:'Apples',
         weight:['2 Small Apples (85gr)','1 Apple (43gr)'],
-        nutri:['95 Calories','2gr Protein','25gr Carbohydrate']
+        nutri:['95 Calories','2gr Protein','25gr Carbohydrate','95 Calories']
       },
       {
         name:'White Meat',
         weight:['1 Slice (123gr)','2 Slices (222gr)'],
-        nutri:['4gr Iron','34gr Protein','3gr Vitamin B']
+        nutri:['4gr Iron','34gr Protein','3gr Vitamin B','231 Calories']
       }
     ]
+
+/////////// mass diets
+
+const massdiet =[
+  {
+    name:'Rice Cakes',
+    weight:['5 cakes (33gr)','7 Scoups (42.5gr)'],
+    nutri:['4.2gr Fat','9.5gr Protein','2.6gr Fibre']
+  },
+  {
+    name:'Apples',
+    weight:['2 Small Apples (85gr)','1 Apple (43gr)'],
+    nutri:['95 Calories','2gr Protein','25gr Carbohydrate']
+  },
+  {
+    name:'White Meat',
+    weight:['1 Slice (123gr)','2 Slices (222gr)'],
+    nutri:['4gr Iron','34gr Protein','3gr Vitamin B']
+  }
+]
+
+const massdiet2 =[
+  {
+    name:'Beef',
+    weight:['2 slices (94gr)','4 slices (199.5gr)'],
+    nutri:['19gr Fat','29.5gr Protein','265 Calories']
+  },
+  {
+    name:'Meat',
+    weight:['110gr','143gr'],
+    nutri:['122 Calories','3gr Fat','25gr Protein']
+  },
+  {
+    name:'Protein Bar',
+    weight:['1 Bar (75gr)'],
+    nutri:['90 Calories','30gr Protein','12gr Suggar']
+  }
+]
+
+
+
 
 
     const [selectedNutri, setSelectedNutri] = useState([]);
@@ -85,7 +128,7 @@ const Diets = () => {
         } else {
           updatedItems.push(item);
         }
-        Cookies.set('selectedNutri', JSON.stringify(updatedItems));
+        Cookies.set('selectedNutri', JSON.stringify(updatedItems),{expires:30});
         return updatedItems;
       });
     };
@@ -101,7 +144,7 @@ const Diets = () => {
      ///// calculate weight
 
      const calculateTotalNutri = () => {
-      const totalNutri = { fat: 0, protein: 0, sugar: 0, fibre: 0, calories: 0, carbohydrate: 0, iron: 0, vitaminB: 0 };
+      const totalNutri = { fat: 0, protein: 0, sugar: 0, fibre: 0, calories: 0, carbohydrate: 0, iron: 0, vitaminB: 0 ,calories:0};
       selectedNutri.forEach((item) => {
         item.nutri.forEach((nutri) => {
           const [amount, type] = nutri.split(' ');
@@ -122,7 +165,10 @@ const Diets = () => {
             totalNutri.iron += value;
           } else if (type.includes('Vitamin B')) {
             totalNutri.vitaminB += value;
+          }else if (type.includes('Calories')) {
+            totalNutri.calories += value;
           }
+          
         });
       });
       return totalNutri;
@@ -363,6 +409,178 @@ const Diets = () => {
                           onChange={(e) => handleWeightChange(bio2.name, e.target.value)}
                         >
                           {bio2.weight.map((wt2, wt2Index) => (
+                            <option key={wt2Index} value={wt2}>
+                              {wt2}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  );
+                })}
+          </div>
+        </div>
+        </div>
+        <div className="flex flex-col md:flex-row items-center justify-center md:justify-around">
+        <div className="mt-4">
+        <h3 className="font-semibold text-md">Your Selected Diet:</h3>
+        {selectedNutri.map((item, index) => (
+          <div key={index} className="flex gap-3 justify-between mb-2">
+            <p className="text-xs font-light">{item.name}</p>
+            <p className="text-xs font-light">{selectedWeights[item.name]}</p>
+          </div>
+
+        ))}
+        </div>
+         <div className="mt-2 flex flex-col gap-1">
+              <h3 className="font-semibold text-md">Total Nutrition:</h3>
+              <p className="text-xs font-light">Total Fat: <b>{totalNutri.fat}</b>gr</p>
+              <p className="text-xs font-light">Total Protein: <b> {totalNutri.protein}</b>gr</p>
+              <p className="text-xs font-light">Total Sugar: <b>{totalNutri.sugar}</b> gr</p>
+              <p className="text-xs font-light">Total Fibre:<b>{totalNutri.fibre}</b> gr</p>
+              <p className="text-xs font-light">Total Calories: <b>{totalNutri.calories}</b> </p>
+              <p className="text-xs font-light">Total Carbohydrate:<b>{totalNutri.carbohydrate}</b> gr</p>
+              <p className="text-xs font-light">Total Iron:<b>{totalNutri.iron}</b>gr</p>
+              <p className="text-xs font-light">Total Vitamin B:<b>{totalNutri.vitaminB}</b>gr</p>
+            </div>
+        </div>
+        
+       </div>
+      )}
+       {massContent && (
+       <div className="flex flex-col">
+             <div className="flex justify-center w-full gap-8 md:gap-0 mt-5 md:w-auto md:justify-around items-center flex-col md:flex-row">
+          <div 
+          className={`flex flex-col w-full  p-4 rounded-xl mr-2 ml-2`} // Conditional background color
+          style={{
+            transition: 'background-color 0.3s ease',backgroundColor :isOpen?"rgb(71,94,54,5%)":"", border:isOpen ?'0.2px solid rgba(82, 82, 82,0.6)' :'0.2px solid rgba(82, 82, 82,0.3)',
+          }}
+        >
+          {/* FAQ Header */}
+          <div 
+            className="flex justify-between items-center cursor-pointer"
+            onClick={handleToggle}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              transition: 'background-color 0.3s ease',
+            }}
+          >
+            <p className="font-semibold text-md">High Caloric Diet</p>
+            <FiPlus
+              style={{
+                transition: 'transform 0.3s ease',
+                transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                scale:1.5
+              }}
+            />
+          </div>
+          {/* FAQ Content */}
+          <div className="faq-content" style={{
+            maxHeight: isOpen ? '500px' : '0', // Adjust as needed
+            overflow: 'hidden',
+            transition: 'max-height 0.3s ease, opacity 0.3s ease',
+            opacity: isOpen ? 1 : 0,
+            paddingTop: isOpen ? '10px' : '0', // Adds spacing when opened
+          }}>
+             {massdiet.map((mass, index) => {
+            const isSelected = selectedNutri.some((item) => item.name === mass.name);
+            return (
+              <div
+                key={index}
+                className={`flex gap-3 justify-between mb-4 p-2 ${isSelected ? 'bg-green-100' : ''}`}
+                onClick={() => handleItemClick(mass)}
+                style={{
+                  cursor: 'pointer',
+                  backgroundColor: isSelected ? 'rgba(71, 94, 54, 0.1)' : 'transparent'
+                }}
+              >
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm font-medium">{mass.name}</p>
+                  <p className="text-xs font-light">{mass.nutri.join(', ')}</p>
+                </div>
+                <div className="input-wrapper">
+                  <select
+                    className="custom-select"
+                    style={{
+                      backgroundColor: 'rgb(71,94,54,5%)',
+                      height: '55px'
+                    }}
+                    value={selectedWeights[mass.name] || ''}
+                    onChange={(e) => handleWeightChange(mass.name, e.target.value)}
+                  >
+                    {mass.weight.map((wt, wtIndex) => (
+                      <option key={wtIndex} value={wt}>
+                        {wt}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            );
+          })}
+              </div>
+        </div>
+        <div 
+          className={`flex flex-col w-full  p-4 rounded-xl mr-2 ml-2`} // Conditional background color
+          style={{
+            transition: 'background-color 0.3s ease',backgroundColor :isOpen?"rgb(71,94,54,5%)":"", border:isOpen ?'0.2px solid rgba(82, 82, 82,0.6)' :'0.2px solid rgba(82, 82, 82,0.3)',
+          }}
+        >
+          {/* FAQ Header */}
+          <div 
+            className="flex justify-between items-center cursor-pointer"
+            onClick={handleToggle2}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              transition: 'background-color 0.3s ease',
+            }}
+          >
+            <p className="font-semibold text-md">High Protein Diet</p>
+            <FiPlus
+              style={{
+                transition: 'transform 0.3s ease',
+                transform: isOpen2 ? 'rotate(45deg)' : 'rotate(0deg)',
+                scale:1.5
+              }}
+            />
+          </div>
+          {/* FAQ Content */}
+          <div className="faq-content" style={{
+            maxHeight: isOpen2 ? '500px' : '0', // Adjust as needed
+            overflow: 'hidden',
+            transition: 'max-height 0.3s ease, opacity 0.3s ease',
+            opacity: isOpen2 ? 1 : 0,
+            paddingTop: isOpen2 ? '10px' : '0', // Adds spacing when opened
+          }}>
+           {massdiet2.map((mass2, index) => {
+                  const isSelected = selectedNutri.some((item) => item.name === mass2.name);
+                  return (
+                    <div
+                      key={index}
+                      className={`flex gap-3 justify-between mb-4 p-2 ${isSelected ? 'bg-green-100' : ''}`}
+                      onClick={() => handleItemClick(mass2)}
+                      style={{
+                        cursor: 'pointer',
+                        backgroundColor: isSelected ? 'rgba(71, 94, 54, 0.1)' : 'transparent'
+                      }}
+                    >
+                      <div className="flex flex-col gap-2">
+                        <p className="text-sm font-medium">{mass2.name}</p>
+                        <p className="text-xs font-light">{mass2.nutri.join(', ')}</p>
+                      </div>
+                      <div className="input-wrapper">
+                        <select
+                          className="custom-select"
+                          style={{
+                            backgroundColor: 'rgb(71,94,54,5%)',
+                            height: '55px'
+                          }}
+                          value={selectedWeights[mass2.name] || ''}
+                          onChange={(e) => handleWeightChange(mass2.name, e.target.value)}
+                        >
+                          {mass2.weight.map((wt2, wt2Index) => (
                             <option key={wt2Index} value={wt2}>
                               {wt2}
                             </option>

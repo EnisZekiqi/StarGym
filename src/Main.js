@@ -237,7 +237,7 @@ useEffect(() => {
       </div>
       
       <div className="empty"></div>
-      <div className="empty"></div>
+      <div className="empty hidden lg:block"></div>
     </div>
   );
 }

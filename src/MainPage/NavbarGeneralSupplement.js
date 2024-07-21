@@ -444,7 +444,7 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
                   <p>Protein</p>
                 </div>
                 
-                <p className="text-center mt-2 font-medium">Prices</p>
+               
                 <div className="w-4/5 flex items-center">
                 </div>
               </div>
@@ -1186,7 +1186,9 @@ const NavbarGeneralSupplement = ({ setDisplayContent }) => {
               style={{backgroundColor:darkMode ? "#FAFBF9":"#050604",zIndex:200}}
               >
                 
-            <div className="flex justify-around items-center ">
+            <div className="flex justify-around items-center pt-3"
+             style={{ borderTop: '0.2px solid rgba(82, 82, 82,0.3)',}}
+            >
               {/* News Feed  Not in the smaller Screen !!*/}
              
       

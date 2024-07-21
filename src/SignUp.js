@@ -103,6 +103,7 @@ const SignUp = () => {
               Cookies.remove('cartItems')
               Cookies.remove('selectedWorkoutPlan')
               Cookies.remove('workoutData')
+              Cookies.remove('selectedNutri')
                 navigate('/editprofile');
               }, 3000);
             } else {

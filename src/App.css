@@ -164,7 +164,9 @@ width: 200px;
   height: 600px;
 }
 
-
+.emptysm{
+  height: 25px;
+}
 
 .showi2{
   display: none;

@@ -11,6 +11,7 @@ import Clients from './Clients';
 import Example from './Example';
 import { useDarkMode } from "./DarkModeContext";
 import FuzzyOverlayExample from './FuzzyOverlayExample';
+import { MarqueeDemo } from './MarqueeDemo';
 
 
 function App() {
@@ -36,8 +37,8 @@ function App() {
           <Suplements/>
           <Example/>
           <div className="empty"/>
-          <Clients/>
-          <div className="empty3"/>
+          <MarqueeDemo/>
+          <div className="emptysm"/>
       </header>
     </div>
   );
